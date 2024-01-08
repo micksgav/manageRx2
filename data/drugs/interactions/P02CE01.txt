@@ -1,0 +1,2 @@
+[P02CA03, albendazole, The bioavailability of Albendazole can be increased when combined with Levamisole.]
+[P02CF01, ivermectin, The bioavailability of Ivermectin can be increased when combined with Levamisole.]

@@ -1,0 +1,4 @@
+[J07BK01, varicella-zoster virus vaccine live (Oka-Merck) strain, The therapeutic efficacy of Varicella zoster vaccine (live/attenuated) can be decreased when used in combination with Onasemnogene abeparvovec.]
+[L01EX15, pexidartinib, Onasemnogene abeparvovec may increase the hepatotoxic activities of Pexidartinib.]
+[J07BK01, varicella-zoster virus vaccine live (Oka-Merck) strain, The therapeutic efficacy of Varicella zoster vaccine (live/attenuated) can be decreased when used in combination with Onasemnogene abeparvovec.]
+[L01EX15, pexidartinib, Onasemnogene abeparvovec may increase the hepatotoxic activities of Pexidartinib.]

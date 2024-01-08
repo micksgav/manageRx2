@@ -1,0 +1,7 @@
+[B01AA03, warfarin, The therapeutic efficacy of Warfarin can be increased when used in combination with Anidulafungin.]
+[B01AA07, acenocoumarol, The therapeutic efficacy of Acenocoumarol can be increased when used in combination with Anidulafungin.]
+[B01AA01, dicumarol, The therapeutic efficacy of Dicoumarol can be increased when used in combination with Anidulafungin.]
+[B01AA11, tioclomarol, The therapeutic efficacy of Tioclomarol can be increased when used in combination with Anidulafungin.]
+[B01AA12, fluindione, The therapeutic efficacy of Fluindione can be increased when used in combination with Anidulafungin.]
+[B01AA02, phenindione, The therapeutic efficacy of Phenindione can be increased when used in combination with Anidulafungin.]
+[B01AA04, phenprocoumon, The therapeutic efficacy of Phenprocoumon can be increased when used in combination with Anidulafungin.]

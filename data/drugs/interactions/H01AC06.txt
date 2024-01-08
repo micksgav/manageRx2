@@ -1,0 +1,2 @@
+[S03BA02, prednisolone, The serum concentration of the active metabolites of Prednisolone can be reduced when Prednisolone is used in combination with Tesamorelin resulting in a loss in efficacy.]
+[H02AB07, prednisone, The serum concentration of the active metabolites of Prednisone can be reduced when Prednisone is used in combination with Tesamorelin resulting in a loss in efficacy.]

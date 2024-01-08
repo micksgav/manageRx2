@@ -1,0 +1,4 @@
+[C10AC04, colesevelam, The therapeutic efficacy of Odevixibat can be decreased when used in combination with Colesevelam.]
+[V03AE02, sevelamer, The therapeutic efficacy of Odevixibat can be decreased when used in combination with Sevelamer.]
+[C10AC01, cholestyramine resin, The therapeutic efficacy of Odevixibat can be decreased when used in combination with Cholestyramine.]
+[C10AC02, colestipol, The therapeutic efficacy of Odevixibat can be decreased when used in combination with Colestipol.]

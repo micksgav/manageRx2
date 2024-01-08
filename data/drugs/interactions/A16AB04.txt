@@ -1,0 +1,3 @@
+[S03AA06, gentamicin, The therapeutic efficacy of Agalsidase beta can be decreased when used in combination with Gentamicin.]
+[P01BA01, chloroquine, The therapeutic efficacy of Agalsidase beta can be decreased when used in combination with Chloroquine.]
+[C01BD01, amiodarone, The therapeutic efficacy of Agalsidase beta can be decreased when used in combination with Amiodarone.]

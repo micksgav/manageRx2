@@ -1,0 +1,2 @@
+[P03AA04, disulfiram, The risk or severity of adverse effects can be increased when Calcium carbimide is combined with Disulfiram.]
+[V03AZ01, ethanol, The risk or severity of adverse effects can be increased when Calcium carbimide is combined with Ethanol.]

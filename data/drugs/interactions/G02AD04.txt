@@ -1,0 +1,7 @@
+[G02AD01, dinoprost, Carboprost tromethamine may increase the uterotonic activities of Dinoprost.]
+[G02AD02, dinoprostone, Carboprost tromethamine may increase the uterotonic activities of Dinoprostone.]
+[G02AB03, ergonovine, Carboprost tromethamine may increase the uterotonic activities of Ergometrine.]
+[N02CA02, ergotamine, Carboprost tromethamine may increase the uterotonic activities of Ergotamine.]
+[G02AD06, misoprostol, Carboprost tromethamine may increase the uterotonic activities of Misoprostol.]
+[G02AB01, methylergonovine, Carboprost tromethamine may increase the uterotonic activities of Methylergometrine.]
+[H01BB02, oxytocin, Carboprost tromethamine may increase the uterotonic activities of Oxytocin.]
