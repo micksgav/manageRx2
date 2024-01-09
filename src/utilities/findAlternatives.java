@@ -9,9 +9,10 @@ public class findAlternatives {
     //example usage:
 //    String[] test = findAlternative("02513889");
 //    for (int i = 0; i < test.length; i++) System.out.println(test[i]);
-    public static String[] findAlternative(String inDIN) {
+    public static String[][] findAlternative(String inDIN) {
        try {
            ArrayList<String> alts = new ArrayList<>();
+           ArrayList<String> names = new ArrayList<>();
            BufferedReader br = new BufferedReader(new FileReader("data" + sep + "drugs" + sep + "drugData.txt"));
 
            String line;
@@ -26,15 +27,19 @@ public class findAlternatives {
                    br = new BufferedReader(new FileReader("data" + sep + "drugs" + sep + "drugData.txt"));
                    while ((line = br.readLine()) != null) {
                        line2 = br.readLine();
-                       if (line2.substring(0, line2.indexOf(" ")).equals(code)) {
+                       if (line2.substring(0, line2.indexOf(" ")).compareTo(code) == 0) {
                            alts.add(line.substring(0, line.indexOf(" ")));
+                           names.add(line.substring(line.indexOf(" ")));
                        }
                    }
                    break;
                }
            }
-           String[] toReturn = new String[alts.size()];
-           for (int i = 0; i < alts.size(); i++) toReturn[i] = alts.get(i);
+           String[][] toReturn = new String[alts.size()][2];
+           for (int i = 0; i < alts.size(); i++) {
+        	   toReturn[i][0] = alts.get(i);
+        	   toReturn[i][1] = names.get(i);
+           }
            return toReturn;
 
        } catch (Exception e) {
