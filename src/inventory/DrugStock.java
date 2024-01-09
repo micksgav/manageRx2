@@ -39,14 +39,6 @@ public class DrugStock {
 		return drug;
 	} // end getDrug
 	
-	public String[] getAlternatives() {
-		return drug.getAlternatives();
-	} // end getDrugNameGen
-	
-	public void setAlternatives(String[] alts) {
-		drug.setAlternatives(alts);
-	} // end setAlternatives
-	
 	public String getDrugName() {
 		return drug.getDrugName();
 	} // end getDrugName

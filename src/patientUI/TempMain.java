@@ -10,19 +10,15 @@ public class TempMain {
 	public static void main(String[] args) {
 		String[][] idk = { { "h", "h" }, { "h", "h" } };
 		String[] alts = { "h", "h" };
-		Drug drug = new Drug("00015", "Advil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk, "RXCUI", "DPC",
-				"ATC", alts);
-		Drug drug2 = new Drug("00015", "notAdvil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk, "RXCUI",
-				"DPC", "ATC", alts);
-		Drug drug3 = new Drug("00015", "defNotAdvil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk, "RXCUI",
-				"DPC", "ATC", alts);
-		Drug drug4 = new Drug("00015", "notAdvilAtAll", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk,
-				"RXCUI", "DPC", "ATC", alts);
+		Drug drug = new Drug("00015", "Advil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
+		Drug drug2 = new Drug("00015", "notAdvil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
+		Drug drug3 = new Drug("00015", "defNotAdvil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
+		Drug drug4 = new Drug("00015", "notAdvilAtAll", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
 		FamilyDoctor doc = new FamilyDoctor("Joe Mama", "123 Address Street", "5191234566");
-		Prescription script = new Prescription(drug, "December 28, 2023", 3, 25, 400, "Take this", "6 Months");
-		Prescription script2 = new Prescription(drug2, "December 28, 2023", 3, 25, 400, "Take this", "6 Months");
-		Prescription script3 = new Prescription(drug3, "December 28, 2023", 3, 25, 400, "Take this", "6 Months");
-		Prescription script4 = new Prescription(drug4, "December 28, 2023", 3, 25, 400, "Take this", "6 Months");
+		Prescription script = new Prescription(drug, "December 28, 2023", 3, 25, idk, "Take this", "6 Months");
+		Prescription script2 = new Prescription(drug2, "December 28, 2023", 3, 25, idk, "Take this", "6 Months");
+		Prescription script3 = new Prescription(drug3, "December 28, 2023", 3, 25, idk, "Take this", "6 Months");
+		Prescription script4 = new Prescription(drug4, "December 28, 2023", 3, 25, idk, "Take this", "6 Months");
 		PrescriptionList scripts = new PrescriptionList();
 		scripts.insert(script);
 		scripts.insert(script2);

@@ -11,10 +11,10 @@
 package PatientManagement;
 
 import inventory.*;
-import apiInteracting.*;
 
 import java.io.IOException;
 import java.util.*;
+import utilities.*;
 
 public class Patient {
 	private String name; // patient name

@@ -10,7 +10,6 @@
 
 package PatientManagement;
 import inventory.*;
-import apiInteracting.*;
 
 public class Prescription {
 	private Drug drug; // prescribed drug
@@ -18,11 +17,11 @@ public class Prescription {
 	private String datePrescribed; // prescribed date for the drug
 	private int numRefills; // number of refills left
 	private int quantity; // number of pills if applicable
-	private int dosage; // dosage of the drug
+	private String[][] dosage; // dosage of the drug
 	private String instructions; // instructions for taking the prescription
 	private String prescribedDuration; // duration to take prescribed drug for
 	
-	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, int dosage, String instructions, String prescribedDuration) {
+	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String[][] dosage, String instructions, String prescribedDuration) {
 		this.drug = drug;
 		//this.interactions = interactions;
 		this.datePrescribed = datePrescribed;
@@ -80,11 +79,11 @@ public class Prescription {
 		this.quantity = quantity;
 	}
 
-	public int getDosage() {
+	public String[][] getDosage() {
 		return dosage;
 	}
 
-	public void setDosage(int dosage) {
+	public void setDosage(String[][] dosage) {
 		this.dosage = dosage;
 	}
 

@@ -26,11 +26,9 @@ public class drugFinder {
                 line2 = br.readLine();
                 System.out.println(DIN + " is being parsed.");
                 String drugNameBrand = line.substring(line.indexOf(" ") + 1); //Brand Name - from drugData.txt;
-                String RXCUI = line2.substring(0, line2.indexOf(" ")); //used in backend - from drugData.txt
                 String DPC = line2.substring(line2.indexOf(" ") + 1); //used in backend - from drugData.txt;
 
                 String[] therapeuticClass = getATC(DPC);
-                String ATC = therapeuticClass[0]; //used in backend - from getATC
                 String drugClass = therapeuticClass[1]; //Drug Class - HC DPD Therapeutic Class X
 
 
@@ -43,9 +41,8 @@ public class drugFinder {
                 String drugForm = getForm(DPC); //Drug Form (pill, cream, etc)
 
                 String[][] dosage = getDosage(DPC); //each column is an active ingredient, dosage, and unit
-                String[] alts = findAlternatives.findAlternative(DIN);
 
-                return new Drug(DIN, drugNameBrand, drugClass, drugSchedule, company, description, drugForm, dosage, RXCUI, DPC, ATC, alts);
+                return new Drug(DIN, drugNameBrand, drugClass, drugSchedule, company, description, drugForm, dosage);
             }
         }
         return null;

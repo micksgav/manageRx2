@@ -15,7 +15,6 @@ import utilities.getInteractions;
 
 
 public class Drug {
-	private String[] drugAlternatives; // DIN possible alternatives
 	private String drugName; // brand name of drug
 	private String drugClass; // drug class
 	private String[] sideEffects; // drug side effects // DON'T DO YET
@@ -28,11 +27,8 @@ public class Drug {
 	private final String form; // drug form
 
 	private final String[][] dosage; // dosage of drug
-	private String RXCUI; // drug RXCUI
-	private String DPC; // drug DPC
-	private String ATC; // drug ATC
 
-	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String[][] dosage, String RXCUI, String DPC, String ATC, String[] alts) {
+	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String[][] dosage) {
 		drugName = brandName;
 		drugClass = classDrug;
 		DIN = drugDIN;
@@ -41,14 +37,9 @@ public class Drug {
 		this.description = description;
 		this.form = form;
 		this.dosage = dosage;
-		this.RXCUI = RXCUI;
-		this.DPC = DPC;
-		this.ATC = ATC;
-		drugAlternatives = alts;
 	} // end Drug constructor
 
 	public Drug() {
-		drugAlternatives = null;
 		drugName = "";
 		drugClass = "";
 		sideEffects = null;
@@ -58,18 +49,7 @@ public class Drug {
 		description = "";
 		form = "";
 		dosage = null;
-		RXCUI = "";
-		DPC = "";
-		ATC = "";
 	} // end blank constructor
-
-	public String[] getAlternatives() {
-		return drugAlternatives;
-	} // end getAlternatives
-
-	public void setAlternatives(String[] alts) {
-		this.drugAlternatives = alts;
-	} // end setAlternatives
 
 	public String getDrugName() {
 		return drugName;

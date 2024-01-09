@@ -461,8 +461,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				String[][] drugDosage = new String[1][1];
 				drugDosage[0][0] = dosageField.getText().trim();
 				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(),
-						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage,
-						rxcuiField.getText().trim(), dpcField.getText().trim(), atcField.getText().trim(), null);
+						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage);
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),
 						Integer.parseInt(quantityField.getText().trim()),
@@ -494,8 +493,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				String[][] drugDosage = new String[1][1];
 				drugDosage[0][0] = dosageField.getText().trim();
 				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(),
-						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage,
-						rxcuiField.getText().trim(), dpcField.getText().trim(), atcField.getText().trim(), null);
+						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage);
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),
 						Integer.parseInt(quantityField.getText().trim()),

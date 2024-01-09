@@ -10,18 +10,17 @@
 package PatientManagement;
 
 import inventory.*;
-import apiInteracting.*;
 import java.util.*;
 import java.time.*;
 
 public class MainForPatientManagement {
 
 	public static PrescriptionList addListOfPrescriptions() {
+		String[][] idk = new String[][]{ { "h", "h" }, { "h", "h" } };
 		PrescriptionList list = new PrescriptionList();
 		String[] random = { "random", "random2" };
-		Drug drug = new Drug("ibuprofen", "Advil", null, 200, random, "01933558");
-		Prescription script = new Prescription(drug, random, "December 15, 2023", 3, 25, drug.getDrugDosage(), "lalala",
-				"6 months");
+		Drug drug = new Drug("00015", "Advil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
+		Prescription script = new Prescription(drug, "December 15, 2023", 3, 25, drug.getDosage(), "lalala","6 months");
 		list.insert(script);
 
 		return list;
@@ -33,11 +32,11 @@ public class MainForPatientManagement {
 			int birthYear, PrescriptionList activePrescriptions, PrescriptionList pastPrescriptions, int phoneNumber,
 			String email, long creditNum, int cardExp, LinkedList<String> allergiesAndDietary,
 			LinkedList<String> medicalConditions, LinkedList<String> lifestyleHabits, FamilyDoctor familyDoctor,
-			LinkedList<Insurance> insuranceInformation, PatientList patientList) {
+			LinkedList<Insurance> insuranceInformation, PatientList patientList, String healthCardNum) {
 
 		patientList.insert(new Patient(name, age, address, monthOfBirth, dayOfBirth, birthYear, activePrescriptions,
 				pastPrescriptions, phoneNumber, email, creditNum, cardExp, allergiesAndDietary, medicalConditions,
-				lifestyleHabits, familyDoctor, insuranceInformation));
+				lifestyleHabits, familyDoctor, insuranceInformation, healthCardNum);
 
 		return patientList;
 	}
