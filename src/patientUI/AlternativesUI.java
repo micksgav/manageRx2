@@ -13,19 +13,21 @@ import java.io.IOException;
 
 import javax.swing.JList;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import inventory.Drug;
 import inventory.drugFinder;
 import utilities.*;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AlternativesUI {
-	
-	public static void main(String args[]) throws IOException {
-		new AlternativesUI("02248808");
-	}
 
 	private JFrame frame;
-	static String[] display;
+	String[] display;
+	String selection;
 
 	/**
 	 * Create the application.
@@ -39,6 +41,7 @@ public class AlternativesUI {
 		}
 		
 		initialize();
+		
 	}
 
 	/**
@@ -46,7 +49,7 @@ public class AlternativesUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 695, 300);
+		frame.setBounds(100, 100, 695, 341);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -62,6 +65,37 @@ public class AlternativesUI {
 		
 		JList list = new JList(display);
 		scrollPane.setViewportView(list);
+		
+		JButton btnNewButton = new JButton("Select");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//select button action
+				frame.dispose();
+			}
+		});
+		btnNewButton.setBounds(549, 261, 120, 30);
+		frame.getContentPane().add(btnNewButton);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//cancel button action
+				frame.dispose();
+			}
+		});
+		btnCancel.setBounds(10, 261, 120, 30);
+		frame.getContentPane().add(btnCancel);
+		
+		list.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent sel) {
+                if (!sel.getValueIsAdjusting()) {
+                	String temp = list.getSelectedValue().toString();
+                  selection = temp.substring(0, temp.indexOf(" "));
+                  System.out.println(selection);
+                }
+            }
+        });
 		
 		frame.setVisible(true);
 	}
