@@ -3,7 +3,7 @@
  @Name: DrugStockLinkedList
  @Author           : Christina Wong
  @Creation Date    : December 13, 2023
- @Modified Date	   : December 27, 2023
+ @Modified Date	   : January 9, 2024
    @Description    : 
    
 ***********************************************
@@ -76,7 +76,7 @@ public class DrugStockLinkedList {
 	* @Modified December 16, 2023
 	* @Description This searches the inventory by drug name.
 	* @Parameters  String searchName, the brand or generic name of the drug to search for 
-	* @Returns boolean true if found, false if not found
+	* @Returns String of the drug DIN if found, empty string if not found
 	* Dependencies: DrugStock
 	* Throws/Exceptions: N/A
     */

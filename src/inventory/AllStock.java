@@ -3,7 +3,7 @@
  @Name: AllStock
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : December 28, 2023
+ @Modified Date	   : January 9, 2024
    @Description    : 
    
 ***********************************************
@@ -12,6 +12,7 @@ package inventory;
 
 import java.util.*;
 import java.io.IOException;
+import utilities.logErrors;
 
 public class AllStock {
 
@@ -170,19 +171,19 @@ public class AllStock {
 	* Throws/Exceptions: IOException
     */
 	public void shipmentArrival(int newStock, String arrivalDIN, String classDrug) throws IOException {
-		updateStock(newStock, arrivalDIN, classDrug);
+		updateStock(newStock, arrivalDIN, classDrug, "");
 
 	} // end shipmentArrival	
 	
 	/** Method Name: isInteger
 	* @Author Christina Wong 
 	* @Date December 29, 2023
-	* @Modified December 29, 2023
+	* @Modified January 9, 2024
 	* @Description This checks if input was an integer.
 	* @Parameters String num, the user's input
 	* @Returns boolean true if num is an integer, false if num is not an integer
 	* Dependencies: Integer
-	* Throws/Exceptions: NumberFormatException
+	* Throws/Exceptions: NumberFormatException, utilities logErrors
     */
 	public static boolean isInteger(String num)
 	{
@@ -196,6 +197,7 @@ public class AllStock {
 		} catch (NumberFormatException nfe)
 		{
 			// input was not an integer
+			logErrors.log("NumberFormatException " + String.valueOf(nfe));
 			return false;
 		} // end try catch
 		return true;
@@ -206,22 +208,25 @@ public class AllStock {
 	* @Date December 16, 2023
 	* @Modified December 17, 2023
 	* @Description When a shipment arrives, the current inventory is checked to see if the drug is in stock and either updates the stock information or adds a new stock of drug.
-	* @Parameters int newStock, the quantity of the shipment; String arrivalDIN, the DIN of the drug arriving; String nameGen, the generic name of the drug; String nameBrand, the brand name of the drug (could be ""); String classDrug, class of the drug; int dosage, dosage of drug
+	* @Parameters int newStock, the quantity of the shipment; String arrivalDIN, the DIN of the drug arriving; String nameGen, the generic name of the drug; String nameBrand, the brand name of the drug (could be ""); String classDrug, class of the drug; int dosage, dosage of drug; int newThreshold, the drug threshold
 	* @Returns void
 	* Dependencies: DrugStock, Drug, isInteger
 	* Throws/Exceptions: N/A
     */
-	public void updateStock(int newStock, String arrivalDIN, String classDrug) throws IOException{
+	public void updateStock(int newStock, String arrivalDIN, String classDrug, String newThreshold) throws IOException{
 		boolean isStocked = drugsList.checkStockDIN(arrivalDIN);
 		boolean isValid = false;
-		if(isStocked == false) { 		// if this is the inventory's first shipment of the drug
-			// update to interact with setThresholdButton in StockUI
-			System.out.println("Enter threshold:");
+		// if this is the inventory's first shipment of the drug
+		// should not run if parameter threshold is ""
+		if(isStocked == false) { 		
+			// needs to be in StockUI
+			// System.out.println("Enter threshold:");
 			// will have to be revised to work with swing
-			String newThreshold;
+
 			while(isValid == false) {
-				newThreshold = setThresholdNum.getText().trim(); // should work with input in the setThresholdNum JTextField
-				// line used for console testing:  int newThreshold = Integer.parseInt(ui.nextLine()); 
+				// will need to be moved to StockUI and revised for input in the setThresholdNum JTextField:
+				// newThreshold = setThresholdNum.getText().trim(); 
+
 				if(isInteger(newThreshold)) {
 					isValid = true;
 					DrugStock newDrugStock = new DrugStock(arrivalDIN, 0, Integer.parseInt(newThreshold));	

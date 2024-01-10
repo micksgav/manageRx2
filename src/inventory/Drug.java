@@ -3,7 +3,7 @@
  @Name: Drug
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : December 22, 2023
+ @Modified Date	   : January 9, 2024
    @Description    : 
    
 ***********************************************
@@ -26,7 +26,7 @@ public class Drug {
 
 	private final String form; // drug form
 
-	private final String[][] dosage; // dosage of drug
+	private final String[][] dosage; // dosage of drug, column 0 is dosage amount, column 1 is dosage unit
 
 	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String[][] dosage) {
 		drugName = brandName;
