@@ -41,15 +41,6 @@ import mainUI.settingsUI;
 import swingHelper.AppIcon;
 
 public class EditPatientInfoUI extends JFrame implements ActionListener, FocusListener {
-	private JButton openSettings = new JButton();
-	private JButton openPatientManager = new JButton();
-	private JButton openStock = new JButton();
-	private JButton openOrder = new JButton();
-	private loginUI login = new loginUI();
-	private settingsUI settings = new settingsUI();
-	private patientManagerUI patientManager = new patientManagerUI();
-	// private StockUI stock = new StockUI();
-	// private OrderUI order = new OrderUI();
 
 	private Patient patient;
 	private PatientList patients;
@@ -62,7 +53,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JPanel midMain;
 	private JPanel rightMain;
 	private JPanel bottomMain;
-	private JPanel additionalInfoButtons;
 	private JPanel bottomButtonsMain;
 	private JPanel insuranceGrid;
 	private JPanel headerButtons;
@@ -77,9 +67,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	// main buttons
 	private JButton cancel;
 	private JButton saveRecord;
-	private JButton allMedicalConditions;
-	private JButton allLifestyleHabits;
-	private JButton allAllergies;
 	private JButton prescriptions;
 
 	// text elements
@@ -98,7 +85,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JLabel addressLabel = new JLabel("Address");
 	private JTextField addressField = new JTextField("123 ABC St.");
 	private JButton manageInsurance;
-	private JButton removeInsurance;
 	private JLabel additionalNotesLabel = new JLabel("Additional Notes");
 	private JTextArea additionalNotesArea = new JTextArea();
 	private JScrollPane additionalNotes;
@@ -111,7 +97,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JLabel patientNameLabel = new JLabel("Name");
 	private JLabel prescriptionsLabel = new JLabel("Prescriptions");
 	private JTextField patientNameField;
-	private Insets textFieldPadding;
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock

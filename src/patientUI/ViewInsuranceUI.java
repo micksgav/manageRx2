@@ -15,15 +15,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ViewInsuranceUI extends JFrame implements ActionListener {
-	private JButton openSettings = new JButton();
-	private JButton openPatientManager = new JButton();
-	private JButton openStock = new JButton();
-	private JButton openOrder = new JButton();
-	private loginUI login = new loginUI();
-	private settingsUI settings = new settingsUI();
-	private patientManagerUI patientManager = new patientManagerUI();
-	// private StockUI stock = new StockUI();
-	// private OrderUI order = new OrderUI();
 
 	Patient patient; // patient whose prescriptions are being viewed
 	PatientList patients;

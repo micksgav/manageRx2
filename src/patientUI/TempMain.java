@@ -63,9 +63,9 @@ public class TempMain {
 //		patients.insert(patient);
 //		patients.insert(patient3);
 		patients.insert(patient2);
-		//SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients);
+		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients);
 
-		//oui.setVisible(true);
+		oui.setVisible(true);
 		
 		
 		// https://www.geeksforgeeks.org/java-database-connectivity-with-mysql/ for pulling from
@@ -79,7 +79,7 @@ public class TempMain {
             statement = connect.createStatement();
             ResultSet resultSet;
             connect.setAutoCommit(true);
-            statement.executeUpdate("UPDATE PatientInfo SET name = \"JOHN\" WHERE ID = 0");
+            statement.executeUpdate("UPDATE PatientInfo SET name = \"JO\" WHERE ID = 0");
             resultSet = statement.executeQuery(
                 "select * from PatientInfo");
 			Patient newPatient;

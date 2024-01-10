@@ -14,19 +14,11 @@ import mainUI.settingsUI;
 import swingHelper.AppIcon;
 
 public class SearchAddUI extends JFrame implements ActionListener {
-	private JButton openSettings = new JButton();
-	private JButton openPatientManager = new JButton();
-	private JButton openStock = new JButton();
-	private JButton openOrder = new JButton();
-	private loginUI login = new loginUI();
-	private settingsUI settings = new settingsUI();
-	private patientManagerUI patientManager = new patientManagerUI();
 
 	// panels
 	private JPanel buttonPanel; // header panel
 	private JPanel mainPanel; // panel containing the main buttons
 	private JPanel mainContainer; // panel containing everything but header
-	private JPanel headerButtons;
 
 	// header buttons
 	private JButton btnOpenStock; // open stock page

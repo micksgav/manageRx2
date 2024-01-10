@@ -17,15 +17,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ManagePatientInfoUI extends JFrame implements ActionListener {
-	private JButton openSettings = new JButton();
-	private JButton openPatientManager = new JButton();
-	private JButton openStock = new JButton();
-	private JButton openOrder = new JButton();
-	private loginUI login = new loginUI();
-	private settingsUI settings = new settingsUI();
-	private patientManagerUI patientManager = new patientManagerUI();
-	// private StockUI stock = new StockUI();
-	// private OrderUI order = new OrderUI();
 
 	Patient patient;
 	PatientList patients;
@@ -40,7 +31,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JPanel midMain;
 	private JPanel rightMain;
 	private JPanel bottomMain;
-	private JPanel additionalInfoButtons;
 	private JPanel bottomButtonsMain;
 	private JPanel headerButtons;
 
@@ -53,9 +43,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	// main buttons
 	private JButton cancel;
 	private JButton editRecord;
-	private JButton allMedicalConditions;
-	private JButton allLifestyleHabits;
-	private JButton allAllergies;
 	private JButton prescriptions;
 	private JButton backButton;
 
@@ -85,7 +72,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JLabel docAddressLabel = new JLabel("Address");
 	private JTextField docAddressField = new JTextField("123 ABC Rd.");
 	private JLabel patientName;
-	private Insets textFieldPadding;
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
