@@ -465,7 +465,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),
 						Integer.parseInt(quantityField.getText().trim()),
-						Integer.parseInt(dosageField.getText().trim()), instructionsArea.getText().trim(),
+						drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
 				patient.addActivePrescription(newScript);
 
@@ -497,7 +497,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),
 						Integer.parseInt(quantityField.getText().trim()),
-						Integer.parseInt(dosageField.getText().trim()), instructionsArea.getText().trim(),
+						drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
 				patient.addActivePrescription(newScript);
 

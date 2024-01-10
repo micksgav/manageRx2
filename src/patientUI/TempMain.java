@@ -1,5 +1,7 @@
 package patientUI;
 
+import java.sql.*;
+
 import PatientManagement.*;
 import inventory.*;
 
@@ -7,7 +9,7 @@ import java.util.*;
 
 public class TempMain {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		String[][] idk = { { "h", "h" }, { "h", "h" } };
 		String[] alts = { "h", "h" };
 		Drug drug = new Drug("00015", "Advil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
@@ -42,18 +44,18 @@ public class TempMain {
 		insuranceList.add(insurance2);
 		insuranceList.add(insurance3);
 
-		Patient patient = new Patient("John", 17, "413 ABC Street", 3, 3, 2006, scripts, pastScripts,
+		Patient patient = new Patient(0, "John", 17, "413 ABC Street", 3, 3, 2006, scripts, pastScripts,
 				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
 				"0000-000-000-AB");
-		Patient patient2 = new Patient("Brayden", 17, "123 CDE Road", 10, 12, 2006, scripts, pastScripts,
+		Patient patient2 = new Patient(0, "Brayden", 17, "123 CDE Road", 10, 12, 2006, scripts, pastScripts,
 				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
 				"0000-000-000-AB");
-		Patient patient3 = new Patient("John", 17, "413 123 Street", 3, 3, 2006, scripts, pastScripts,
+		Patient patient3 = new Patient(0, "John", 17, "413 123 Street", 3, 3, 2006, scripts, pastScripts,
 				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
 				"0000-000-000-AB");
 		PatientList patients = new PatientList();
 		for (int i = 0; i < 20000; i++) {
-			Patient newPatient = new Patient("John", 17, "413 ABC Street" + i, 3, 3, 2006, scripts, pastScripts,
+			Patient newPatient = new Patient(0, "John", 17, "413 ABC Street" + i, 3, 3, 2006, scripts, pastScripts,
 				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
 				"0000-000-000-AB");
 			patients.insert(newPatient);
@@ -64,5 +66,31 @@ public class TempMain {
 		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients);
 
 		oui.setVisible(true);
+		
+		
+		// https://www.geeksforgeeks.org/java-database-connectivity-with-mysql/ for pulling from
+		// https://www.geeksforgeeks.org/how-to-commit-a-query-in-jdbc/?ref=ml_lbp for pushing to
+		Connection connect = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://managerx.cxa8k0i6mls8.ca-central-1.rds.amazonaws.com:3306/manageRx", "manageRxAdmin", "manageRxSQL*!");
+			Statement statement;
+            statement = connect.createStatement();
+            ResultSet resultSet;
+            connect.setAutoCommit(true);
+            statement.executeUpdate("UPDATE PatientInfo SET name = \"JO\" WHERE ID = 0");
+            resultSet = statement.executeQuery(
+                "select * from PatientInfo");
+			Patient newPatient;
+			while (resultSet.next()) {
+				newPatient = new Patient(resultSet.getInt("ID"), resultSet.getString("name"), 0, resultSet.getString("address"), resultSet.getInt("birthMonth"), resultSet.getInt("birthDay"), resultSet.getInt("birthYear"), null, null, resultSet.getString("phoneNumber"), resultSet.getString("email"), 0L, 0, null, null, null, null, null, resultSet.getString("healthCard"));
+				System.out.println(newPatient.getName());
+				patients.insert(newPatient);
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
