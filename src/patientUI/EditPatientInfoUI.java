@@ -508,7 +508,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		if (e.getActionCommand().equals("Save Record")) {
 			if ((patientNameField.getText().length() > 0 && dateOfBirthField.getText().length() > 0
 					&& addressField.getText().length() > 0 && emailField.getText().length() > 0
-					&& phoneField.getText().length() > 0 && healthCardNumField.getText().length() > 0) && !(patientNameField.getText().equals("First last"))) {
+					&& phoneField.getText().length() > 0 && healthCardNumField.getText().length() > 0) && !(patientNameField.getText().equals("First Last"))) {
 				if (patient == null) {
 					newPatient.setName(patientNameField.getText().trim());
 					newPatient.setBirthYear(Integer.parseInt(dateOfBirthField.getText().trim()

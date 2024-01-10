@@ -463,10 +463,12 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 			setVisible(false);
 			}
 		}
+		if (insuranceCompanyArray != null) {
 		for (int i = 0; i < insuranceCompanyArray.length; i++) {
 			if (((String) insuranceCompanyField.getSelectedItem()).equals(insuranceCompanyArray[i])) {
 				insuranceNumberField.setText(insuranceNumberArray[i]);
 			}
+		}
 		}
 		
 	}
