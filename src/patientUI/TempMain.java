@@ -79,7 +79,8 @@ public class TempMain {
             statement = connect.createStatement();
             ResultSet resultSet;
             connect.setAutoCommit(true);
-            statement.executeUpdate("UPDATE PatientInfo SET name = \"gavin\" WHERE ID = 0");
+
+            statement.executeUpdate("UPDATE PatientInfo SET name = \"JOHNNN\" WHERE ID = 0");
             resultSet = statement.executeQuery(
                 "select * from PatientInfo");
 			Patient newPatient;
