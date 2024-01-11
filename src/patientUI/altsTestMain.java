@@ -7,7 +7,7 @@ public class altsTestMain {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		//Example for interactions:
-		String[] drugs = new String[]{"02248808", "00548359", "00888346", "02024810", "02132702", "02163764"}; //adderall, xanax, fentanyl, codiene cough syrup, zoloft, imitrix
+		String[] drugs = new String[]{"02248808", "00548359", "00888346", "02132702", "02163764"}; //adderall, xanax, fentanyl, zoloft, imitrix
 ;		
 		System.out.println("Opening Alt Selection UI");
 		System.out.println("Selected Alt: " + SelectAlternativeUI.getAltSelection("02248808")); //adderall
