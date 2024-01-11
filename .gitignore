@@ -28,3 +28,4 @@ replay_pid*
 /Look and Feel/
 .classpath
 .project
+data/log.txt
