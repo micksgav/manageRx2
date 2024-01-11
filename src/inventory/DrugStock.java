@@ -3,13 +3,15 @@
  @Name: DrugStock
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 9, 2024
+ @Modified Date	   : January 10, 2024
    @Description    : 
    
 ***********************************************
 */
 package inventory;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*; // just for testing purposes, will need to be replaced with UI stuff later
 import java.io.IOException;
 public class DrugStock {
@@ -140,11 +142,11 @@ public class DrugStock {
 	/** Method Name: changeInStock
 	* @Author Christina Wong 
 	* @Date December 18, 2023
-	* @Modified December 20, 2023
+	* @Modified January 10, 2024
 	* @Description This adds a stock change to the array containing the past month (31 days) of changes.
 	* @Parameters  String change, the type of stock change (prescription filled or shipment arrival); int amount, the amount of stock added or removed
 	* @Returns void
-	* Dependencies: N/A
+	* Dependencies: DateTimeFormatter, LocalDateTime
 	* Throws/Exceptions: N/A
     */
 	public void changeInStock(String change, int amount) {
@@ -161,10 +163,14 @@ public class DrugStock {
 					stockChanges[row][col] = stockChanges[row + 1][col];
 				} // end for
 			} // end for
-			// needs a text field for user to input info
-			System.out.println("Enter date:");
-			String changeDate = ui.nextLine();
-			stockChanges[stockChanges.length - 1][0] = changeDate;
+			
+            //https://www.javatpoint.com/java-get-current-date
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            String changeDate = dtf.format(now);
+
+			// update date
+			stockChanges[stockChanges.length - 1][0] = changeDate.substring(0, 10);
 			stockChanges[stockChanges.length - 1][1] = change; 
 			stockChanges[stockChanges.length - 1][2] = String.valueOf(amount);
 			

@@ -3,7 +3,7 @@
  @Name: Drug
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 9, 2024
+ @Modified Date	   : January 10, 2024
    @Description    : 
    
 ***********************************************
@@ -76,7 +76,10 @@ public class Drug {
 	} // end getSideEffects
 
 	public void setSideEffects(String[] drugSideEffects) {
-		this.sideEffects = drugSideEffects;
+		this.sideEffects = new String[drugSideEffects.length];
+		for(int i = 0; i < drugSideEffects.length; i++) {
+			this.sideEffects[i] = drugSideEffects[i];
+		} // end for
 	} // end setSideEffects
 
 	// returns formatted drug DIN

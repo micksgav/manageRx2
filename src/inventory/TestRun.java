@@ -2,22 +2,32 @@
 package inventory;
 
 import java.io.IOException;
+import java.util.*;
 
 public class TestRun {
 
 	public static void main(String[] args) throws IOException {
 		AllStock stock = new AllStock(100, 1000, 10000, 400);
+		Scanner ui = new Scanner(System.in);
 		Drug drug1 = drugFinder.getDrug("00548359");
 		Drug drug2 = drugFinder.getDrug("02248808");
+		
 
-		stock.updateStock(100, drug1.getDIN(), drug1.getDrugClass());
+		System.out.println("Enter threshold:");
+		String threshold = ui.nextLine(); 
+		stock.updateStock(100, drug1.getDIN(), drug1.getDrugClass(), threshold);
 		System.out.println("stock 1 update");
-		stock.updateStock(200, drug1.getDIN(), drug1.getDrugClass());
+		
+		System.out.println("\nEnter threshold:");
+		threshold = ui.nextLine();
+		stock.updateStock(200, drug1.getDIN(), drug1.getDrugClass(), threshold);
 		System.out.println("\nstock 2 update");
 
-		stock.updateStock(100, drug2.getDIN(), drug2.getDrugClass());
+//		System.out.println("\nEnter threshold:");
+//		threshold = ui.nextLine();
+//		stock.updateStock(100, drug2.getDIN(), drug2.getDrugClass(), threshold);
 
-		System.out.println("\nstock 3 update");
+//		System.out.println("\nstock 3 update");
 
 //		System.out.println("checking interactions");
 //		drug1.checkInteractions(drug2);
@@ -28,7 +38,7 @@ public class TestRun {
 
 //		stock.searchByDIN(drug2.getDIN());
 //		
-//		stock.viewUsage(drug1.getDIN());
+		stock.viewUsage(drug1.getDIN());
 //		
 //		stock.viewUsage(drug2.getDIN());
 //		

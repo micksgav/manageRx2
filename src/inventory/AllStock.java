@@ -3,7 +3,7 @@
  @Name: AllStock
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 9, 2024
+ @Modified Date	   : January 10, 2024
    @Description    : 
    
 ***********************************************
@@ -55,7 +55,7 @@ public class AllStock {
 	* Throws/Exceptions: N/A
     */
 	public void orderMore(String drug) {
-		// hopefully this works with the OrderUI? i just set this method up but it's not under my tasks in the trello
+		// hopefully this works with the OrderUI, not sure exactly how we were going to do this or if we need it
 		// drugToOrder, containerToorder, dosage, nuofdrug, num of container, order drug or order container 				
 				
 	} // end orderMore
@@ -206,9 +206,9 @@ public class AllStock {
 	/** Method Name: updateStock
 	* @Author Christina Wong 
 	* @Date December 16, 2023
-	* @Modified December 17, 2023
+	* @Modified January 10, 2024
 	* @Description When a shipment arrives, the current inventory is checked to see if the drug is in stock and either updates the stock information or adds a new stock of drug.
-	* @Parameters int newStock, the quantity of the shipment; String arrivalDIN, the DIN of the drug arriving; String nameGen, the generic name of the drug; String nameBrand, the brand name of the drug (could be ""); String classDrug, class of the drug; int dosage, dosage of drug; int newThreshold, the drug threshold
+	* @Parameters int newStock, the quantity of the shipment; String arrivalDIN, the DIN of the drug arriving; String classDrug, class of the drug; String newThreshold, the drug threshold (is blank if the drug has been added to inventory previously)
 	* @Returns void
 	* Dependencies: DrugStock, Drug, isInteger
 	* Throws/Exceptions: N/A
@@ -234,6 +234,9 @@ public class AllStock {
 				} // end if
 				else {
 					// JOptionPane.showMessageDialog(frame, "Threshold must be an integer","ERROR", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame	
+
+					System.out.println("Enter threshold:");
+					newThreshold = ui.nextLine();
 				} // end else
 			} // end while
 
