@@ -17,6 +17,7 @@ import java.util.*;
 import utilities.*;
 
 public class Patient {
+	private int id;
 	private String name; // patient name
 	private int age; // patient age
 	private String address; // patient address
@@ -35,9 +36,9 @@ public class Patient {
 	private LinkedList<String> lifestyleHabits; // patient lifestyle habits that could have negative health impacts
 	private FamilyDoctor familyDoctor; // patient's family doctor
 	private LinkedList<Insurance> insuranceInformation; // patient's insurance information
-	private String additionalNotes = "Medical Conditions:/n/nLifestyle Habits:\n\nAllergies/Dietary Restrictions:\n";
+	private String additionalNotes = "Medical Conditions:\n\nLifestyle Habits:\n\nAllergies/Dietary Restrictions:\n";
 
-	public Patient(String name, int age, String address, int dateOfBirthMonth, int dateOfBirthDay, int birthYear, PrescriptionList activePrescriptions,
+	public Patient(int id, String name, int age, String address, int dateOfBirthMonth, int dateOfBirthDay, int birthYear, PrescriptionList activePrescriptions,
 			PrescriptionList pastPrescriptions, String phoneNumber, String email, long creditNum, int cardExp,
 			LinkedList<String> allergiesAndDietary, LinkedList<String> medicalConditions,
 			LinkedList<String> lifestyleHabits, FamilyDoctor familyDoctor, LinkedList<Insurance> insuranceInformation, String healthCardNum) {
@@ -65,10 +66,15 @@ public class Patient {
 		this.familyDoctor = familyDoctor;
 		this.insuranceInformation = insuranceInformation;
 		this.healthCardNum = healthCardNum;
+		this.id = id;
 	}
 
 	public Patient() {
 		familyDoctor = new FamilyDoctor();
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public void setAdditionalNotes(String notes) {

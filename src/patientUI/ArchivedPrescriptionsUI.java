@@ -15,15 +15,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
-	private JButton openSettings = new JButton();
-	private JButton openPatientManager = new JButton();
-	private JButton openStock = new JButton();
-	private JButton openOrder = new JButton();
-	private loginUI login = new loginUI();
-	private settingsUI settings = new settingsUI();
-	private patientManagerUI patientManager = new patientManagerUI();
-	// private StockUI stock = new StockUI();
-	// private OrderUI order = new OrderUI();
 
 	Patient patient; // patient whose prescriptions are being viewed
 	PatientList patients;
@@ -32,7 +23,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	private JPanel buttonPanel; // header panel containing logo and buttons
 	private JPanel mainPanel; // panel cotaining all prescription information
 	private JPanel[] prescriptionPanels; // panels containing individual prescription info
-	private JPanel[] editArchive; // panel containing options to edit or archive prescription
 	private JPanel mainWithTopBar; // panel containing mainPanel and patient name, title, and add prescription button
 	private JPanel headerButtons;
 
@@ -43,7 +33,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	private JButton btnOpenPatientManager; // open patient manager page
 
 	// main buttons
-	private JButton[] editPrescription; // edit a prescription
 	private JButton viewActive; // view active prescriptions
 	private JButton backButton;
 

@@ -66,25 +66,15 @@ public class AlternativesUI {
 		JList list = new JList(display);
 		scrollPane.setViewportView(list);
 		
-		JButton btnNewButton = new JButton("Select");
+		JButton btnNewButton = new JButton("Close");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//select button action
+				// button action
 				frame.dispose();
 			}
 		});
 		btnNewButton.setBounds(549, 261, 120, 30);
 		frame.getContentPane().add(btnNewButton);
-		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//cancel button action
-				frame.dispose();
-			}
-		});
-		btnCancel.setBounds(10, 261, 120, 30);
-		frame.getContentPane().add(btnCancel);
 		
 		list.addListSelectionListener(new ListSelectionListener() {
 
