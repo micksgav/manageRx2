@@ -18,6 +18,7 @@
 *.zip
 *.tar.gz
 *.rar
+*.txt
 hs_err_pid*
 replay_pid*
 .idea/workspace.xml
@@ -28,3 +29,4 @@ replay_pid*
 /Look and Feel/
 .classpath
 .project
+data/log.txt
