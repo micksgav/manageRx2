@@ -103,7 +103,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			numRefills[i] = "Number of Refills: "
 					+ String.valueOf(patient.getActivePrescriptions().atIndex(i).getRefills());
 			quantity[i] = "Quantity: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getQuantity());
-			dosage[i] = "Dosage: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getDosage());
+			dosage[i] = "Dosage: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getDosage()[0][0]);
 			instructions[i] = "Instructions: " + patient.getActivePrescriptions().atIndex(i).getInstructions();
 			prescribedDuration[i] = "Prescribed Duration: " + patient.getActivePrescriptions().atIndex(i).getDuration();
 		}
@@ -384,14 +384,14 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 							.replaceAll("Quantity: ", "").replaceAll("Dosage: ", "").replaceAll("Dosage: ", "")
 							.replaceAll("Instructions: ", "").replaceAll("Prescribed Duration: ", "").trim();
 					String[] info = prescriptionInfoString.split("\n");
+					String[][] drugDosage = new String[1][1];
+					drugDosage [0][0] = info[4];
 					patient.getActivePrescriptions().atIndex(i).setBrandName(info[0]);
 					patient.getActivePrescriptions().atIndex(i).setDate(info[1]);
 					patient.getActivePrescriptions().atIndex(i).setRefills(Integer.parseInt(info[2]));
-					;
 					patient.getActivePrescriptions().atIndex(i).setQuantity(Integer.parseInt(info[3]));
-					patient.getActivePrescriptions().atIndex(i).setDosage(Integer.parseInt(info[4]));
+					patient.getActivePrescriptions().atIndex(i).setDosage(drugDosage);
 					patient.getActivePrescriptions().atIndex(i).setDuration(info[info.length - 1]);
-					;
 					String instructions = "";
 					for (int j = 5; j <= info.length - 2; j++) {
 						instructions += info[j] + " ";
