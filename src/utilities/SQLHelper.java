@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import PatientManagement.Patient;
+import PatientManagement.PatientList;
 
 public class SQLHelper {
 	ExecutorService service;
@@ -79,9 +80,39 @@ public class SQLHelper {
 			// TODO Auto-generated catch block
 			logErrors.log(e.getMessage() + " in addPatient in SQLHelper");
 			return -1;
+		}
+	}
+	
+	//public Patient getPatient(int ID) {
+		
+	//}
+	
+	public PatientList addAllPatients() {
+		PatientList pList = new PatientList();
+		try {
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM PatientInfo");
 
+        while (resultSet.next()) {
+        	Patient temp = new Patient();
+        	temp.setId(resultSet.getInt("ID"));
+        	temp.setName(resultSet.getString("name"));
+        	temp.setDateOfBirthDay(resultSet.getInt("birthDay"));
+        	temp.setDateOfBirthMonth(resultSet.getInt("birthMonth"));
+        	temp.setBirthYear(resultSet.getInt("birthYear"));
+        	temp.setAddress(resultSet.getString("address"));
+        	temp.setPhoneNumber(resultSet.getString("phoneNumber"));
+        	temp.setEmail(resultSet.getString("email"));
+        	temp.setHealthCardNumber(resultSet.getString("healthCard"));
+        	temp.setAdditionalNotes(resultSet.getString("additional"));
+        	temp.setFamilyDoctorName(resultSet.getString("familyDoctorName"));
+        	temp.setFamilyDoctorAddress(resultSet.getString("familyDoctorAddress"));
+        	temp.setFamilyDoctorNumber(resultSet.getString("familyDoctorPhoneNumber"));
+            pList.insert(temp);
+        }
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " for addAllPatients in SQLHelper");
 		}
 		
-		
+		return pList;
 	}
 }
