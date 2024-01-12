@@ -3,7 +3,7 @@
  @Name: DrugStock
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 10, 2024
+ @Modified Date	   : January 12, 2024
    @Description    : 
    
 ***********************************************
@@ -18,7 +18,7 @@ public class DrugStock {
 	private Drug drug; // drug
 	private int numInStock; // current stock of drug
 	private int stockThreshold; // when the drug's threshold is reached, alert is sent
-	private String[][] stockChanges = new String[31][3]; // array of the past month (31 days) of stock changes
+	private String[][] stockChanges = new String[31][4]; // array of the past month (31 days) of stock changes
 	Scanner ui = new Scanner(System.in);
 	
 	public DrugStock(String DIN, int inStock, int threshold) throws IOException {
@@ -61,7 +61,6 @@ public class DrugStock {
 		return numInStock;
 	} // end getNumInStock
 	
-	// will need to interact with Prescription class
 	/** Method Name: removeFromStock
 	* @Author Christina Wong 
 	* @Date December 12, 2023
@@ -74,7 +73,9 @@ public class DrugStock {
     */
 	public void removeFromStock(int filled) {
 		this.numInStock -= filled;
-		changeInStock("Prescription filled:", filled);
+		System.out.println("prescription of " + filled);
+		
+		changeInStock("Prescription filled:", filled, numInStock);
 		checkThreshold();		
 	} // end removeFromStock
 	
@@ -91,9 +92,11 @@ public class DrugStock {
 	public void checkThreshold() {
 		if(numInStock < stockThreshold) {
 			// JOptionPane.showMessageDialog(frame, "Stock is below threshold.\nCurrent stock: " + this.numInStock + "\nThreshold: " + this.stockThreshold,"Threshold Alert", JOptionPane.ERROR_MESSAGE); // frame is the name of the frame
+			System.out.println("\nSTOCK IS BELOW THRESHOLD\n");
 		} // end if
 		else if(numInStock == stockThreshold) {
-			// JOptionPane.showMessageDialog(frame, "Stock is at threshold.\nCurrent stock: " + this.numInStock,"Threshold Warning", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame	
+			// JOptionPane.showMessageDialog(frame, "Stock is at threshold.\nCurrent stock: " + this.numInStock,"Threshold Warning", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame
+			System.out.println("\nSTOCK IS AT THRESHOLD\n");
 		} // end else if
 	} // end checkThreshold
 	
@@ -109,7 +112,7 @@ public class DrugStock {
     */
 	public void addToStock(int added) {
 		this.numInStock += added;
-		changeInStock("Shipment arrival:", added);
+		changeInStock("Shipment arrival:", added, numInStock);
 	} // end addToStock
 	
 	public int getStockThreshold() {
@@ -142,14 +145,14 @@ public class DrugStock {
 	/** Method Name: changeInStock
 	* @Author Christina Wong 
 	* @Date December 18, 2023
-	* @Modified January 10, 2024
+	* @Modified January 11, 2024
 	* @Description This adds a stock change to the array containing the past month (31 days) of changes.
 	* @Parameters  String change, the type of stock change (prescription filled or shipment arrival); int amount, the amount of stock added or removed
 	* @Returns void
 	* Dependencies: DateTimeFormatter, LocalDateTime
 	* Throws/Exceptions: N/A
     */
-	public void changeInStock(String change, int amount) {
+	public void changeInStock(String change, int amount, int curTotal) {
 		int date = -1;
 		for(int i = 0; i < stockChanges.length; i++) {
 			if(stockChanges[i][0] == null) {
@@ -157,31 +160,31 @@ public class DrugStock {
 				break;
 			} // end if
 		} // end for
+        //https://www.javatpoint.com/java-get-current-date
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String changeDate = dtf.format(now);
+        
 		if(date == -1) {
 			for(int row = 0; row < stockChanges.length - 1; row++) {
 				for(int col = 0; col < stockChanges[row].length; col++) {
 					stockChanges[row][col] = stockChanges[row + 1][col];
 				} // end for
 			} // end for
-			
-            //https://www.javatpoint.com/java-get-current-date
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
-            String changeDate = dtf.format(now);
+
 
 			// update date
 			stockChanges[stockChanges.length - 1][0] = changeDate.substring(0, 10);
 			stockChanges[stockChanges.length - 1][1] = change; 
 			stockChanges[stockChanges.length - 1][2] = String.valueOf(amount);
+			stockChanges[stockChanges.length - 1][3] = String.valueOf(curTotal);
 			
 		} // end if
 		else {
-			// needs a text field for user to input info
-			System.out.println("enter the date:");
-			String changeDate = ui.nextLine();
 			stockChanges[date][0] = changeDate;
 			stockChanges[date][1] = change;
 			stockChanges[date][2] = String.valueOf(amount);
+			stockChanges[date][3] = String.valueOf(curTotal);
 		} // end else
 	} // end changeInStock
 	
@@ -197,13 +200,14 @@ public class DrugStock {
 	* Throws/Exceptions: N/A
     */
 	public void viewUsage() {
-		System.out.println("\nDATE:\t\tINVENTORY:\t\t\tAMOUNT");
+		System.out.println("\nDATE:\t\tINVENTORY CHANGE:\t\tAMOUNT:\t\tCURRENT STOCK:");
 		for (int row = 0; row < stockChanges.length; row++) {
 			// if the row has information to print
 			if(stockChanges[row][0].length() != 0) {
 				System.out.print(stockChanges[row][0] + ":\t");
 				System.out.print(stockChanges[row][1] + "\t\t");
-				System.out.print(stockChanges[row][2]);
+				System.out.print(stockChanges[row][2] + "\t\t");
+				System.out.print(stockChanges[row][3]);
 				System.out.println();
 			} // end if
 

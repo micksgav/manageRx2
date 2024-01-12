@@ -116,7 +116,7 @@ public class DrugStockLinkedList {
 				System.out.println("\nDrug Class: " + runner.drugStock.getDrug().getDrugClass());
 				System.out.println("Current stock: " + runner.drugStock.getNumInStock());
 				System.out.println("Current threshold: " + runner.drugStock.getStockThreshold());
-				System.out.println("\nStock is " + (runner.drugStock.getNumInStock() - runner.drugStock.getStockThreshold()) + " away from threshold.  You will receive a notification when stock hits the minimum threshold");
+				System.out.println("\nStock is " + (runner.drugStock.getNumInStock() - runner.drugStock.getStockThreshold()) + " away from threshold.");
 				
 			} // end if
 			runner = runner.next;
@@ -260,6 +260,22 @@ public class DrugStockLinkedList {
 			System.out.println("Drug not found in inventory");
 		} // end if
 	} // end viewStockUsage
+	
+	public void viewFullInventory() {
+		Node runner;
+		runner = head;
+		System.out.println("INVENTORY:");
+		System.out.println("Drug Name:\t\tDIN:\t\tCurrent Stock:");
+		while(runner != null) {
+			System.out.print(runner.drugStock.getDrugName() + "\t\t");
+			if(runner.drugStock.getDrugName().length() < 8)
+				System.out.print("\t");
+			System.out.print(runner.drugStock.getDrugDIN() + "\t");
+			System.out.print(runner.drugStock.getNumInStock());
+			System.out.println();			
+			runner = runner.next;
+		}
+	}
 	
 	// not sure if we will need this
     public DrugStock[] getElements() {

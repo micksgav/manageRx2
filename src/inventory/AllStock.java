@@ -276,4 +276,8 @@ public class AllStock {
 		drugsList.viewStockUsage(DIN);
 	} // end viewUsage
 	
+	public void viewFullInventory() {
+		drugsList.viewFullInventory();
+	}
+	
 } // end AllStock
