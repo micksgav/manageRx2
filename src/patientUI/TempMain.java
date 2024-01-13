@@ -10,7 +10,7 @@ import java.util.*;
 public class TempMain {
 
 	public static void main(String[] args) throws SQLException {
-		String[][] idk = { { "h", "h" }, { "h", "h" } };
+		String[][] idk = { { "400", "400" }, { "400", "400" } };
 		String[] alts = { "h", "h" };
 		Drug drug = new Drug("00015", "Advil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
 		Drug drug2 = new Drug("00015", "notAdvil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
@@ -65,7 +65,7 @@ public class TempMain {
 		patients.insert(patient2);
 		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients);
 
-		//oui.setVisible(true);
+		oui.setVisible(true);
 		
 		
 		// https://www.geeksforgeeks.org/java-database-connectivity-with-mysql/ for pulling from

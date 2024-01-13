@@ -19,7 +19,6 @@ import utilities.*;
 public class Patient {
 	private int id;
 	private String name; // patient name
-	private int age; // patient age
 	private String address; // patient address
 	private int birthMonth; // patient birth month
 	private int birthDay; // patient birth day
@@ -28,28 +27,17 @@ public class Patient {
 	PrescriptionList pastPrescriptions; // inactive prescriptions
 	private String phoneNumber; // patient phone number
 	private String email; // patient email
-	private String healthCardNum;
-	private LinkedList<Long> creditNum; // patient credit card number
-	private LinkedList<Integer> cardExpDate; // patient credit card expiry date
-	private LinkedList<String> allergiesAndDietary; // patient allergies/dietary restrictions
-	private LinkedList<String> medicalConditions; // patient medical conditions
-	private LinkedList<String> lifestyleHabits; // patient lifestyle habits that could have negative health impacts
+	private String healthCardNum; // health card number
 	private FamilyDoctor familyDoctor; // patient's family doctor
 	private LinkedList<Insurance> insuranceInformation; // patient's insurance information
 	private String additionalNotes = "Medical Conditions:\n\nLifestyle Habits:\n\nAllergies/Dietary Restrictions:\n";
+	private String gender; // patient gender
+	private double weight; // patient weight
 
-	public Patient(int id, String name, int age, String address, int dateOfBirthMonth, int dateOfBirthDay, int birthYear, PrescriptionList activePrescriptions,
-			PrescriptionList pastPrescriptions, String phoneNumber, String email, long creditNum, int cardExp,
-			LinkedList<String> allergiesAndDietary, LinkedList<String> medicalConditions,
-			LinkedList<String> lifestyleHabits, FamilyDoctor familyDoctor, LinkedList<Insurance> insuranceInformation, String healthCardNum) {
-		this.creditNum = new LinkedList<Long>();
-		this.cardExpDate = new LinkedList<Integer>();
-		this.allergiesAndDietary = new LinkedList<String>();
-		this.medicalConditions = new LinkedList<String>();
-		this.lifestyleHabits = new LinkedList<String>();
+	public Patient(int id, String name, String address, int dateOfBirthMonth, int dateOfBirthDay, int birthYear, PrescriptionList activePrescriptions,
+			PrescriptionList pastPrescriptions, String phoneNumber, String email, FamilyDoctor familyDoctor, LinkedList<Insurance> insuranceInformation, String healthCardNum, String gender, double weight) {
 		this.insuranceInformation = new LinkedList<Insurance>();
 		this.name = name;
-		this.age = age;
 		this.address = address;
 		this.birthMonth = dateOfBirthMonth;
 		this.birthDay = dateOfBirthDay;
@@ -58,51 +46,64 @@ public class Patient {
 		this.pastPrescriptions = pastPrescriptions;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
-		this.creditNum.addFirst(creditNum);
-		cardExpDate.addFirst(cardExp);
-		this.allergiesAndDietary = allergiesAndDietary;
-		this.medicalConditions = medicalConditions;
-		this.lifestyleHabits = lifestyleHabits;
 		this.familyDoctor = familyDoctor;
 		this.insuranceInformation = insuranceInformation;
 		this.healthCardNum = healthCardNum;
 		this.id = id;
-	}
+		this.gender = gender;
+		this.weight = weight;
+	} // end Patient
 
 	public Patient() {
 		familyDoctor = new FamilyDoctor();
-	}
+		insuranceInformation = new LinkedList<Insurance>();
+	} // end Patient
 	
+	public void setWeight(double weight) {
+		this.weight = weight;
+	} // end setWeight
+	
+	public double getWeight() {
+		return weight;
+	} // end getWeight
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+	} // end setGender
+	
+	public String getGender() {
+		return gender;
+	} // end getGender
+	
+	public void setId(int id) {
+		this.id = id;
+	} // end setId
+		
 	public int getId() {
 		return id;
-	}
+	} // end getId
 	
 	public void setAdditionalNotes(String notes) {
 		additionalNotes = notes;
-	}
+	} // end setAdditionalNotes
 	
 	public String getAdditionalNotes() {
 		return additionalNotes;
-	}
+	} // end getAdditionalNotes
 	
 	public String getHealthCardNumber() {
 		return healthCardNum;
-	}
+	} // end getHealthCardNumber
 	
 	public void setHealthCardNumber(String healthCardNum) {
 		this.healthCardNum = healthCardNum;
-	}
-	
-
-	public void printPatientInfo() {
-		System.out.println(name + "\n" + age + "\n" + creditNum.toString().replace("[", "").replace("]", "") + "\n" + address + "\n" + activePrescriptions.atIndex(0).getBrandName());
-	}
+	} // end setHealthCardNumber
 
 	public void newFamilyDoctor(String newName, String newAddress, String phoneNumber) {
 		familyDoctor.setName(newName);
 		familyDoctor.setAddress(newAddress);
 		familyDoctor.setPhoneNumber(phoneNumber);
-	}
+	} // end newFamilyDoctor
 	
 	public ArrayList<String[]> drugInteractions(Drug newDrug) throws IOException {
 
@@ -118,202 +119,137 @@ public class Patient {
 
 	public String getName() {
 		return name;
-	}
+	} // end getName
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
+	} // end setName
 
 	public String getAddress() {
 		return address;
-	}
+	} // end getAddress
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
+	} // end setAddress
 
 	public int getDateOfBirthMonth() {
 		return birthMonth;
-	}
+	} // end getDateOfBirthMonth
 	
 	public int getDateOfBirthDay() {
 		return birthDay;
-	}
+	} // end getDateOfBirthDay
 
 	public void setDateOfBirthMonth(int birthMonth) {
 		this.birthMonth = birthMonth;
-	}
+	} // end setDateOfBirthMonth
 	
 	public void setDateOfBirthDay(int day) {
 		this.birthDay = day;
-	}
+	} // end setDateOfBirthDay
 	
 	public int getBirthYear() {
 		return birthYear;
-	}
+	} // end getBirthYear
 	
 	public void setBirthYear(int birthYear) {
 		this.birthYear = birthYear;
-	}
+	} // end setBirthYear
 	
 	public String getBirthday() {
 		String birthDayString = String.valueOf(birthDay);
 		String birthMonthString = String.valueOf(birthMonth);
 		if (birthDay / 10 == 0) {
 			birthDayString = "0" + birthDay;
-		}
+		} // end if
 		if (birthMonth / 10 == 0) {
 			birthMonthString = "0" + birthMonth;
-		}
+		} // end if
 		return birthDayString + "/" + birthMonthString + "/" + birthYear;
-	}
+	} // end getBirthday
 
 	public PrescriptionList getActivePrescriptions() {
 		return activePrescriptions;
-	}
+	} // end getActivePrescriptions
 
 	public void addActivePrescription(Prescription prescription) {
 		activePrescriptions.insert(prescription);
-	}
+	} // end addActivePrescription
 
 	public void removeActivePrescription(Prescription prescription) {
 		pastPrescriptions.insert(prescription);
 		activePrescriptions.delete(prescription);
-	}
+	} // end removeActivePrescription
 
 	public PrescriptionList getAllPrescriptions() {
 		return activePrescriptions;
-	}
+	} // end getAllPrescriptions
 
 	public String getPhoneNumber() {
 		return phoneNumber;
-	}
+	} // end getPhoneNumber
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
+	} // end setPhoneNumber
 	
 	public PrescriptionList getArchivedPrescriptions() {
 		return pastPrescriptions;
-	}
+	} // end getArchivedPrescriptions
 
 	public String getEmail() {
 		return email;
-	}
+	} // end getEmail
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public LinkedList<Long> getCreditNum() {
-		return creditNum;
-	}
-
-	public void setCreditNum(long creditNum) {
-		this.creditNum.add(creditNum);
-	}
-
-	public LinkedList<Integer> getCardExpDate() {
-		return cardExpDate;
-	}
-
-	public void setCardExpDate(int cardExpDate, int whichCard) {
-		this.cardExpDate.add(cardExpDate); // make so works with multiple cards
-	}
-
-	public void removeCard(long cardNum, int creditExp) {
-		this.cardExpDate.remove(creditExp);
-		this.creditNum.remove(cardNum);
-	}
-
-	public void addNewCard(long cardNum, int cardExp) {
-		this.creditNum.add(cardNum);
-		this.cardExpDate.add(cardExp);
-	}
-
-	public LinkedList<String> getAllergiesAndDietary() {
-		return allergiesAndDietary;
-	}
-
-	public void addAllergyOrDietary(String allergyOrDietary) {
-		allergiesAndDietary.add(allergyOrDietary);
-	}
-
-	public void removeAllergyOrDietary(String allergyOrDietary) {
-		allergiesAndDietary.remove(allergyOrDietary);
-	}
-
-	public void addMedicalCondition(String medicalCondition) {
-		medicalConditions.add(medicalCondition);
-	}
-
-	public void removeMedicalCondition(String medicalCondition) {
-		medicalConditions.remove(medicalCondition);
-	}
-
-	public void addLifestyleHabit(String lifestyleHabit) {
-		lifestyleHabits.add(lifestyleHabit);
-	}
-
-	public void removeLifestyleHabit(String lifestyleHabit) {
-		lifestyleHabits.remove(lifestyleHabit);
-	}
+	} // end setEmail
 
 	public String getFamilyDoctorName() {
 		return familyDoctor.getName();
-	}
+	} // end getFamilyDoctorName
 
 	public void setFamilyDoctorName(String docName) {
 		familyDoctor.setName(docName);
-	}
+	} // end setFamilyDoctorName
 
 
 	public String getFamilyDoctorNumber() {
 		return familyDoctor.getPhoneNumber();
-	}
+	} // end getFamilyDoctorNumber
 
 	public void setFamilyDoctorNumber(String number) {
-
 		familyDoctor.setPhoneNumber(number);
-	}
+	} // end setFamilyDoctorNumber
 
 	public String getFamilyDoctorAddress() {
 		return familyDoctor.getAddress();
-	}
+	} // end getFamilyDoctorAddress
 
 	public void setFamilyDoctorAddress(String Address) {
 		familyDoctor.setAddress(address);
-	}
+	} // end setFamilyDoctorAddress
 
 	public LinkedList<Insurance> getInsuranceInformation() {
 		return insuranceInformation;
-	}
+	} // end getInsuranceInformation
 
 	public void addNewInsuranceInfo(String company, int num, String notes) {
 		insuranceInformation.add(new Insurance(company, num, notes));
-	}
-	
+	} // end addNewInsuranceInfo
 	
 	public void removeInsurance(int i) {
 				insuranceInformation.remove(i);
-	}
+	} // end removeInsurance
 	
 	public void newInsuranceList() {
 		insuranceInformation = new LinkedList<Insurance>();
-	}
+	} // end newInsuranceList
 	
 	public void newPrescriptionList() {
 		activePrescriptions = new PrescriptionList();
 		pastPrescriptions = new PrescriptionList();
+	} // end newPrescriptionList
 
-	}
-
-}
+} // end Patient
