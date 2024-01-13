@@ -16,7 +16,7 @@ public class TempMain {
 		Drug drug2 = new Drug("00015", "notAdvil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
 		Drug drug3 = new Drug("00015", "defNotAdvil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
 		Drug drug4 = new Drug("00015", "notAdvilAtAll", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
-		FamilyDoctor doc = new FamilyDoctor("Joe Mama", "123 Address Street", "5191234566");
+		FamilyDoctor doc = new FamilyDoctor("Joe Mama", "123 Address Street", "5191234566", "1");
 		Prescription script = new Prescription(drug, "December 28, 2023", 3, 25, idk, "Take this", "6 Months");
 		Prescription script2 = new Prescription(drug2, "December 28, 2023", 3, 25, idk, "Take this", "6 Months");
 		Prescription script3 = new Prescription(drug3, "December 28, 2023", 3, 25, idk, "Take this", "6 Months");
@@ -44,25 +44,25 @@ public class TempMain {
 		insuranceList.add(insurance2);
 		insuranceList.add(insurance3);
 
-		Patient patient = new Patient(0, "John", 17, "413 ABC Street", 3, 3, 2006, scripts, pastScripts,
-				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
-				"0000-000-000-AB");
-		Patient patient2 = new Patient(0, "Brayden", 17, "123 CDE Road", 10, 12, 2006, scripts, pastScripts,
-				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
-				"0000-000-000-AB");
-		Patient patient3 = new Patient(0, "John", 17, "413 123 Street", 3, 3, 2006, scripts, pastScripts,
-				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
-				"0000-000-000-AB");
+		Patient patient = new Patient(0, "John", "413 ABC Street", 3, 3, 2006, scripts, pastScripts,
+				"1234567890", "jbbbb@gmail.com", doc, insuranceList,
+				"0000-000-000-AB", "male", 150.0);
+//		Patient patient2 = new Patient(0, "Brayden", 17, "123 CDE Road", 10, 12, 2006, scripts, pastScripts,
+//				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
+//				"0000-000-000-AB");
+//		Patient patient3 = new Patient(0, "John", 17, "413 123 Street", 3, 3, 2006, scripts, pastScripts,
+//				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
+//				"0000-000-000-AB");
 		PatientList patients = new PatientList();
 		for (int i = 0; i < 20000; i++) {
-			Patient newPatient = new Patient(0, "John", 17, "413 ABC Street" + i, 3, 3, 2006, scripts, pastScripts,
-				"1234567890", "jbbbb@gmail.com", 1234567890123456L, 1224, null, null, null, doc, insuranceList,
-				"0000-000-000-AB");
+			Patient newPatient = new Patient(0, "John", "413 ABC Street" + i, 3, 3, 2006, scripts, pastScripts,
+					"1234567890", "jbbbb@gmail.com", doc, insuranceList,
+					"0000-000-000-AB", "male", 150.0);
 			patients.insert(newPatient);
 		}
 //		patients.insert(patient);
 //		patients.insert(patient3);
-		patients.insert(patient2);
+		//patients.insert(patient2);
 		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients);
 
 		oui.setVisible(true);
@@ -85,9 +85,9 @@ public class TempMain {
                 "select * from PatientInfo");
 			Patient newPatient;
 			while (resultSet.next()) {
-				newPatient = new Patient(resultSet.getInt("ID"), resultSet.getString("name"), 0, resultSet.getString("address"), resultSet.getInt("birthMonth"), resultSet.getInt("birthDay"), resultSet.getInt("birthYear"), null, null, resultSet.getString("phoneNumber"), resultSet.getString("email"), 0L, 0, null, null, null, null, null, resultSet.getString("healthCard"));
-				System.out.println(newPatient.getName());
-				patients.insert(newPatient);
+				//newPatient = new Patient(resultSet.getInt("ID"), resultSet.getString("name"), 0, resultSet.getString("address"), resultSet.getInt("birthMonth"), resultSet.getInt("birthDay"), resultSet.getInt("birthYear"), null, null, resultSet.getString("phoneNumber"), resultSet.getString("email"), 0L, 0, null, null, null, null, null, resultSet.getString("healthCard"));
+				//System.out.println(newPatient.getName());
+				//patients.insert(newPatient);
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

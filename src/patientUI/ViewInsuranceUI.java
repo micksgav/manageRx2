@@ -1,3 +1,13 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: View insurance page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import swingHelper.*;
@@ -13,6 +23,7 @@ import PatientManagement.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
 
 public class ViewInsuranceUI extends JFrame implements ActionListener {
 
@@ -310,9 +321,15 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		} // end if
 			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
-			EditPatientInfoUI openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
-			openEdit.setVisible(true);
-			setVisible(false);
+			EditPatientInfoUI openEdit;
+			try {
+				openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
+				openEdit.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} // end if
 			// open add new insurance page
 		if (e.getActionCommand().equals("Add New")) {

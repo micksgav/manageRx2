@@ -55,32 +55,10 @@ public class PatientList {
 	public void setHead(Node newHead) {
 		head = newHead;
 	} // end setHead
-
-	public Node returnHead() {
+	
+	public Node getHead() {
 		return head;
-	}
-	
-	public int findPrescription(String drugName, int patient) {
-		Node runner = head;
-		for (int i = 0; runner != null; i++, runner = runner.link) {
-			if (runner.info.getActivePrescriptions().atIndex(i).getBrandName().equals(drugName)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	// find a patient in the list by name and address
-	public int findPatientByAddress(String name, String address) {
-		Node runner = head;
-		int i = 0;
-		for (runner = head; runner != null; runner = runner.link, i++) {
-			if (runner.info.getName().equals(name) && runner.info.getAddress().equals(address)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+	} // end getHead
 	
 	// find a patient in the list by name and birthday
 	public int[] findPatientByBirthday(String name, int birthMonth, int birthDay, int birthYear) {
@@ -89,7 +67,7 @@ public class PatientList {
 		int[] indexes = new int[this.numRecs()];
 		for (int j = 0; j < indexes.length; j++) {
 			indexes[j] = -1;
-		}
+		} // end for
 		int j = 0;
 		for (runner = head; runner != null; runner = runner.link, i++) {
 
@@ -99,22 +77,10 @@ public class PatientList {
 				indexes[j] = i;
 				j++;
 
-			}
-		}
+			} // end if
+		} // end for
 		return indexes;
-	}
-	
-	// find a patient in the list by name and phone number
-	public int findPatientByPhoneNumber(String name, String phoneNumber) {
-		Node runner = head;
-		int i = 0;
-		for (runner = head; runner != null; runner = runner.link, i++) {
-			if (runner.info.getName().equals(name) && runner.info.getPhoneNumber().equals(phoneNumber)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+	} // end findPatientByBirthday
 	
 	/*
 	 * Method Name: isEmpty Author: John Brown Creation Date: November 28, 2023
@@ -151,10 +117,10 @@ public class PatientList {
 		for (int i = 0; i < position; i++, runner = runner.link) {
 		} // end for
 		return runner.info;
-		}
+		} // end if
 		else {
 			return null;
-		}
+		} // end else
 	} // end returnData
 
 	/*
@@ -172,26 +138,6 @@ public class PatientList {
 	} // end addToFront
 
 	/*
-	 * Method Name: midToFront Author: John Brown Creation Date: November 26, 2023
-	 * Modified Date: November 26, 2023 Description: Takes the element in the middle
-	 * of the list and moves it to the front
-	 *
-	 * @Parameters: none
-	 * 
-	 * @Return Value: none Data Type: void Dependencies: numRecs, delete, addToFront
-	 * Throws/Exceptions: none
-	 */
-	public void midToFront() {
-		int halfPoint = this.numRecs() / 2;
-		Node runner = head;
-		for (int i = 0; i < halfPoint; i++, runner = runner.link) {
-		} // end for
-		Patient info = runner.info;
-		this.delete(runner.info.getName(), runner.info.getPhoneNumber());
-		this.addToFront(info);
-	} // end midToFront
-
-	/*
 	 * Method Name: numRecs Author: John Brown Creation Date: November 26, 2023
 	 * Modified Date: November 26, 2023 Description: counts the number of elements
 	 * in the list
@@ -202,7 +148,7 @@ public class PatientList {
 	 * Dependencies: none Throws/Exceptions: none
 	 */
 	public int numRecs() {
-		int count = 0;
+		int count = 0; // number of records
 		if (head == null) {
 			return count;
 		} // end if
@@ -211,75 +157,6 @@ public class PatientList {
 		} // end for
 		return count;
 	} // end numRecs
-
-	/*
-	 * Method Name: printList Author: John Brown Creation Date: November 26, 2023
-	 * Modified Date: November 26, 2023 Description: prints the list
-	 *
-	 * @Parameters: none
-	 * 
-	 * @Return Value: none Data Type: void Dependencies: none Throws/Exceptions:
-	 * none
-	 */
-	public void printList() {
-		for (Node temp = head; temp != null; temp = temp.link) {
-			System.out.println(temp.info.getName());
-		} // end for
-	} // end printList
-
-	/*
-	 * Method Name: delete Author: Kyle McKay Creation Date: Unknown Modified Date:
-	 * November 28, 2023 Description: Delete a specified item from the list, if that
-	 * item is present. If multiple copies of the item are present in the list, only
-	 * the first one is deleted
-	 *
-	 * @Parameters: deleteItem: the item that is to be deleted
-	 * 
-	 * @Return Value: none Data Type: void Dependencies: none Throws/Exceptions:
-	 * none
-	 */
-	public void delete(String deleteItem, String deleteNum) {
-
-		if (head == null) {
-			// The list is empty, so it certainly doesn't contain deleteString.
-			return;
-		} // end if
-		else if (head.info.equals(deleteItem)) {
-			// The string is the first info of the list. Remove it.
-			head = head.link;
-			return;
-		} // end else if
-		else {
-			// The string, if it occurs at all, is somewhere beyond the
-			// first element of the list. Search the list.
-			Node runner; // A node for traversing the list.
-			Node previous; // Always points to the node preceding runner.
-			runner = head.link; // Start by looking at the SECOND list node.
-			previous = head;
-			while (runner != null && runner.info.getName().compareTo(deleteItem) < 0) {
-				// Move previous and runner along the list until runner
-				// falls off the end or hits a list element that is
-				// greater than or equal to deleteItem. When this
-				// loop ends, runner indicates the position where
-				// deleteItem must be, if it is in the list.
-				previous = runner;
-				runner = runner.link;
-			} // end while
-
-			if (runner != null && runner.info.getName().equals(deleteItem)
-					&& runner.info.getPhoneNumber().equals(deleteNum)) {
-
-				// Runner points to the node that is to be deleted.
-				// Remove it by changing the pointer in the previous node.
-				previous.link = runner.link;
-				return;
-			} // end if
-			else {
-				// The info does not exist in the list.
-				return;
-			} // end else
-		} // end else
-	} // end delete()
 
 	/*
 	 * Method Name: insert Author: Kyle McKay Creation Date: Unknown Modified Date:

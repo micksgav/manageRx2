@@ -1,10 +1,24 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: Search for patient page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.text.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
@@ -13,7 +27,7 @@ import mainUI.loginUI;
 import mainUI.settingsUI;
 import swingHelper.AppIcon;
 
-public class SearchForPatientUI extends JFrame implements ActionListener, FocusListener {
+public class SearchForPatientUI extends JFrame implements ActionListener{
 
 	/*
 	 * Method Name: multipleIndex Author: John Brown Creation Date: January 5, 2024
@@ -105,9 +119,10 @@ public class SearchForPatientUI extends JFrame implements ActionListener, FocusL
 	private JLabel searchTitle = new JLabel("Search for a Patient"); // search title
 	private JLabel patientNameLabel = new JLabel("Enter Patient's First and Last Name"); // patient name label
 	private JTextField patientNameField; // patient name field
-	private JLabel patientBirthdayLabel = new JLabel("Enter Patient's Birthday"); // patient birthday label
-	private JTextField patientBirthdayField; // patient birthday field
+	private JLabel patientBirthdayLabel = new JLabel("Enter Patient's Birthday (DD/MM/YYYY)"); // patient birthday label
+	//private JTextField patientBirthdayField; // patient birthday field
 	private Insets gridBagPadding; // padding for GridBagConstraints
+	JFormattedTextField patientBirthdayField;
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -115,7 +130,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener, FocusL
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public SearchForPatientUI(String title, Patient patient, PatientList patients) {
+	public SearchForPatientUI(String title, Patient patient, PatientList patients) throws ParseException {
 
 		// setup screen attributes
 		FlatLightLaf.setup();
@@ -186,7 +201,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener, FocusL
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		headerButtons.add(btnOpenSettings);
+		//headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
@@ -235,12 +250,11 @@ public class SearchForPatientUI extends JFrame implements ActionListener, FocusL
 		mainGrid.add(patientNameLabel);
 		mainGrid.add(patientNameField);
 
-		patientBirthdayField = new JTextField("DD/MM/YYYY");
+		MaskFormatter birthFormat = new MaskFormatter("##/##/####");
+		patientBirthdayField = new JFormattedTextField(birthFormat);
 		patientBirthdayField.setFont(genFont);
 		patientBirthdayLabel.setFont(genFont);
 		patientBirthdayField.setBorder(textBoxBorder);
-		patientBirthdayField.setForeground(textBoxFill);
-		patientBirthdayField.addFocusListener(this);
 		mainGrid.add(patientBirthdayLabel);
 		mainGrid.add(patientBirthdayField);
 
@@ -336,20 +350,4 @@ public class SearchForPatientUI extends JFrame implements ActionListener, FocusL
 			} // end else
 		} // end if
 	} // end actionPerformed
-
-	// https://stackoverflow.com/questions/18103839/display-disappear-default-text-in-textfield-when-user-enters-data-erase-the-text
-	// used for focus event
-	public void focusGained(FocusEvent e) {
-		// birthday box pressed
-		if (patientBirthdayField.getText().trim().equals("DD/MM/YYYY")) {
-			patientBirthdayField.setText("");
-			patientBirthdayField.setForeground(Color.black);
-		} // end if
-	} // end focusGained
-
-	@Override
-	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-
-	} // end focusLost
 } // end SearchForPatientUI

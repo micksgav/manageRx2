@@ -1,3 +1,13 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: Manage patient information page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import swingHelper.*;
@@ -15,6 +25,7 @@ import java.util.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
 
 public class ManagePatientInfoUI extends JFrame implements ActionListener {
 
@@ -285,6 +296,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		midMain.add(insuranceCompanyLabel);
 		midMain.add(insuranceCompanyField);
 
+		insuranceNumberField = new JTextField();
 		insuranceNumberField.setEditable(false);
 		insuranceNumberField.setBorder(textBoxBorder);
 		insuranceNumberLabel.setFont(genFont);
@@ -361,10 +373,9 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		mainPanel.add(rightMain, rConstraints);
 
 		// add additional notes section
-		bottomMain = new JPanel(new GridLayout(1, 1));
+		bottomMain = new JPanel(new GridLayout(2, 1));
 
-		additionalNotesArea = new JTextArea(
-				"Medical Conditions:\n" + "Lifestyle habits:\n" + "Allergies/Dietary Restrictions:\n");
+		additionalNotesArea = new JTextArea(patient.getAdditionalNotes());
 		additionalNotesArea.setBackground(getBackground());
 		additionalNotesArea.setEditable(false);
 		additionalNotesArea.setBorder(textBoxBorder);
@@ -385,7 +396,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		bConstraints.gridheight = 1;
 		bConstraints.gridwidth = 2;
 		bConstraints.anchor = GridBagConstraints.NORTH;
-		bConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, (int) (screenDims.width * 0.01));
+		bConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
 		mainPanel.add(bottomMain, bConstraints);
 
 		// add bottom buttons
@@ -448,15 +459,28 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		} // end if
 			// open search for patient
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
-			SearchForPatientUI openSearch = new SearchForPatientUI("ManageRx", patient, patients);
-			openSearch.setVisible(true);
-			setVisible(false);
+			SearchForPatientUI openSearch;
+			try {
+				openSearch = new SearchForPatientUI("ManageRx", patient, patients);
+				openSearch.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 		} // end if
 			// open edit patient record
 		if (e.getActionCommand().equals("Edit Record")) {
-			EditPatientInfoUI openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
-			openEdit.setVisible(true);
-			setVisible(false);
+			EditPatientInfoUI openEdit;
+			try {
+				openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
+				openEdit.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} // end if
 			// open current prescriptions if there are any, else show popup
 		if (e.getActionCommand().equals("View Prescriptions")) {

@@ -1,7 +1,18 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: Search for/add patient page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -88,7 +99,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		btnOpenSettings.setIcon(settingsIcon);
 		btnOpenSettings.setActionCommand("openSettings");
 		btnOpenSettings.addActionListener(this);
-		this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
+		//this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
@@ -168,15 +179,28 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		} // end if
 			// open search page
 		if (e.getActionCommand().equals("Search For Existing Patient")) {
-			SearchForPatientUI openSearch = new SearchForPatientUI("ManageRx", patient, patients);
-			openSearch.setVisible(true);
-			setVisible(false);
+			SearchForPatientUI openSearch;
+			try {
+				openSearch = new SearchForPatientUI("ManageRx", patient, patients);
+				openSearch.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		} // end if
 			// open add page
 		if (e.getActionCommand().equals("Add a New Patient")) {
-			EditPatientInfoUI openCreate = new EditPatientInfoUI("ManageRx", null, patients);
-			openCreate.setVisible(true);
-			setVisible(false);
+			EditPatientInfoUI openCreate;
+			try {
+				openCreate = new EditPatientInfoUI("ManageRx", null, patients);
+				openCreate.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} // end if
 	} // end actionPerformed
 } // end SearchAddUI

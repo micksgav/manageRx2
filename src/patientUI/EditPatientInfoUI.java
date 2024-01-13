@@ -1,3 +1,13 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: Edit patient information page/create new patient page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import java.awt.BorderLayout;
@@ -15,10 +25,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +42,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.MaskFormatter;
 
 import java.util.*;
 
@@ -41,7 +54,7 @@ import mainUI.loginUI;
 import mainUI.settingsUI;
 import swingHelper.AppIcon;
 
-public class EditPatientInfoUI extends JFrame implements ActionListener, FocusListener {
+public class EditPatientInfoUI extends JFrame implements ActionListener, FocusListener{
 
 	// patient information
 	private Patient patient; // patient used if editing a current patient
@@ -78,14 +91,14 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JLabel personalInfo = new JLabel("Personal Information"); // personal info title
 	private JLabel contactInfo = new JLabel("Contact Information"); // contact info title
 	private JLabel insuranceInfo = new JLabel("Insurance"); // insurance info title
-	private JLabel dateOfBirthLabel = new JLabel("Date of Birth"); // date of birth label
-	private JTextField dateOfBirthField; // date of birth field
+	private JLabel dateOfBirthLabel = new JLabel("Date of Birth (DD/MM/YYYY)"); // date of birth label
+	private JFormattedTextField dateOfBirthField; // date of birth field
 	private JLabel healthCardNumLabel = new JLabel("Health Card Number"); // health card number label
-	private JTextField healthCardNumField; // health card number field
+	private JFormattedTextField healthCardNumField; // health card number field
 	private JLabel emailLabel = new JLabel("Email"); // email label
 	private JTextField emailField; // email field
 	private JLabel phoneLabel = new JLabel("Phone Number"); // phone number label
-	private JTextField phoneField; // phone number field
+	private JFormattedTextField phoneField; // phone number field
 	private JLabel addressLabel = new JLabel("Address"); // address label
 	private JTextField addressField; // address field
 	private JLabel additionalNotesLabel = new JLabel("Additional Notes"); // additional notes label
@@ -94,11 +107,16 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JLabel docNameLabel = new JLabel("Name"); // doctor name label
 	private JTextField docNameField; // doctor name field
 	private JLabel docPhoneNumberLabel = new JLabel("Phone Number"); // doctor phone number label
-	private JTextField docPhoneNumberField; // doctor phone number field
+	private JFormattedTextField docPhoneNumberField; // doctor phone number field
 	private JLabel docAddressLabel = new JLabel("Address"); // doctor address label
 	private JTextField docAddressField; // doctor address field
 	private JLabel patientNameLabel = new JLabel("Name"); // patient name label
 	private JTextField patientNameField; // patient name field
+	
+	// formats
+	MaskFormatter dateOfBirthFormat;
+	MaskFormatter healthCardFormat;
+	MaskFormatter phoneFormat;
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -106,7 +124,11 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public EditPatientInfoUI(String title, Patient patient, PatientList patients) {
+	public EditPatientInfoUI(String title, Patient patient, PatientList patients) throws ParseException{
+		
+		dateOfBirthFormat = new MaskFormatter("##/##/####");
+		healthCardFormat = new MaskFormatter("#### - ### - ### - UU");
+		phoneFormat = new MaskFormatter("(###) ### - ####");
 
 		// setup screen attributes
 		FlatLightLaf.setup();
@@ -142,25 +164,25 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		// set all text boxes to default values if no patient
 		if (patient == null) {
 			patientNameField = new JTextField("First Last");
-			dateOfBirthField = new JTextField("DD/MM/YYYY");
-			healthCardNumField = new JTextField("0000-000-000-AB");
+			dateOfBirthField = new JFormattedTextField(dateOfBirthFormat);
+			healthCardNumField = new JFormattedTextField(healthCardFormat);
 			emailField = new JTextField("example@domain.com");
-			phoneField = new JTextField("(000) 000-0000");
+			phoneField = new JFormattedTextField(phoneFormat);
 			addressField = new JTextField("123 ABC Street, City");
 			additionalNotesArea = new JTextArea(
 					"Medical Conditions:\n\n" + "Lifestyle habits:\n\n" + "Allergies/Dietary Restrictions:\n");
 			docNameField = new JTextField("Dr. First Last");
-			docPhoneNumberField = new JTextField("(000) 000-0000");
+			docPhoneNumberField = new JFormattedTextField(phoneFormat);
 			docAddressField = new JTextField("123 ABC Street, City");
 
 			patientNameField.setForeground(textBoxFill);
-			dateOfBirthField.setForeground(textBoxFill);
-			healthCardNumField.setForeground(textBoxFill);
+			//dateOfBirthField.setForeground(textBoxFill);
+			//healthCardNumField.setForeground(textBoxFill);
 			emailField.setForeground(textBoxFill);
-			phoneField.setForeground(textBoxFill);
+			//phoneField.setForeground(textBoxFill);
 			addressField.setForeground(textBoxFill);
 			docNameField.setForeground(textBoxFill);
-			docPhoneNumberField.setForeground(textBoxFill);
+			//docPhoneNumberField.setForeground(textBoxFill);
 			docAddressField.setForeground(textBoxFill);
 
 			// focus listeners to get rid of default text if pressed
@@ -177,13 +199,17 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		} // end if
 		else {
 			patientNameField = new JTextField(patient.getName());
-			dateOfBirthField = new JTextField(patient.getBirthday());
-			healthCardNumField = new JTextField(patient.getHealthCardNumber());
+			dateOfBirthField = new JFormattedTextField(dateOfBirthFormat);
+			dateOfBirthField.setText(patient.getBirthday());
+			healthCardNumField = new JFormattedTextField(healthCardFormat);
+			healthCardNumField.setText(patient.getHealthCardNumber());
 			emailField = new JTextField(patient.getEmail());
-			phoneField = new JTextField(String.valueOf(patient.getPhoneNumber()));
+			phoneField = new JFormattedTextField(phoneFormat);
+			phoneField.setText(String.valueOf(patient.getPhoneNumber()));
 			addressField = new JTextField(patient.getAddress());
 			docNameField = new JTextField(patient.getFamilyDoctorName());
-			docPhoneNumberField = new JTextField(String.valueOf(patient.getFamilyDoctorNumber()));
+			docPhoneNumberField = new JFormattedTextField(phoneFormat);
+			docPhoneNumberField.setText(String.valueOf(patient.getFamilyDoctorNumber()));
 			docAddressField = new JTextField(patient.getFamilyDoctorAddress());
 			additionalNotesArea = new JTextArea(patient.getAdditionalNotes());
 		} // end else
@@ -499,7 +525,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			setVisible(false);
 		} // end if
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
-			if (patient == null) {
+			if (patient == null ) {
 				SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", null, patients);
 				openSearchAdd.setVisible(true);
 				setVisible(false);
@@ -534,9 +560,10 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					newPatient.setHealthCardNumber(healthCardNumField.getText().trim());
 					newPatient.newFamilyDoctor(docNameField.getText().trim(), docAddressField.getText().trim(),
 							docPhoneNumberField.getText().trim());
+					newPatient.setAdditionalNotes(additionalNotesArea.getText().trim());
 					newPatient.setId(patients.numRecs());
 					patients.insert(newPatient);
-					// SQLHelper.addPatient(newPatient.getName(), newPatient.getDateOfBirthDay(),
+					//SQLHelper.addPatient(newPatient.getName(), newPatient.getDateOfBirthDay(),
 					// newPatient.getDateOfBirthMonth(), newPatient.getBirthYear(),
 					// newPatient.getAddress(), newPatient.getPhoneNumber(), newPatient.getEmail(),
 					// newPatient.getHealthCardNumber(), newPatient.getAdditionalNotes());
