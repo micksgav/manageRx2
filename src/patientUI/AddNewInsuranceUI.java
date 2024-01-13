@@ -1,3 +1,13 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: Add new insurance page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import java.awt.*;
@@ -9,6 +19,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import PatientManagement.*;
+import utilities.*;
 import mainUI.loginUI;
 import mainUI.settingsUI;
 import swingHelper.AppIcon;
@@ -323,7 +334,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 			// add the new insurance to patient and open view insurance page
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
 					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-
+			//SQLHelper.addInsurance(insuranceCompanyField.getText().trim(), insuranceNumberField.getText().trim(), notesArea.getText());
 			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients);
 			openView.setVisible(true);
 			setVisible(false);
@@ -333,7 +344,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 			// add new insurance to patient and clear field
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
 					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-			
+			//SQLHelper.addInsurance(insuranceCompanyField.getText().trim(), insuranceNumberField.getText().trim(), notesArea.getText());
 			insuranceCompanyField.setText("");
 			insuranceNumberField.setText("");
 			notesArea.setText("");
