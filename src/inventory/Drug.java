@@ -24,7 +24,7 @@ public class Drug {
 
 	private final String description; // drug description
 
-	private final String form; // drug form
+	private String form; // drug form
 
 	private final String[][] dosage; // dosage of drug, column 0 is dosage amount, column 1 is dosage unit
 
@@ -58,6 +58,14 @@ public class Drug {
 	public void setDrugName(String brandName) {
 		this.drugName = brandName;
 	} // end setDrugNameBrand
+	
+	public String getForm() {
+		return form;
+	}
+	
+	public void setForm(String form) {
+		this.form = form;
+	}
 
 	public String getDrugClass() {
 		return drugClass;
