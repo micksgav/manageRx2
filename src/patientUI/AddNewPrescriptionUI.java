@@ -85,13 +85,17 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 	private Insets leftButtonPadding; // padding for left button
 	private Insets rightButtonsPadding; // padding for right button
 
+	// last page
+	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the
+					// last page was EditPatientInfoUI
+
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients) {
+	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients, boolean last) {
 		// setup display attributes
 		FlatLightLaf.setup();
 		setTitle(title);
@@ -106,6 +110,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		// initialize patient information
 		this.patient = patient;
 		this.patients = patients;
+		this.last = last;
 
 		// make header
 		stockIcon = stockIcon.setScale(0.12);
@@ -186,14 +191,15 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
 		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
 		gridBagPadding = new Insets(0, (int) (screenDims.width * 0.07), 0, (int) (screenDims.width * 0.07));
-		Insets leftPanelPadding = new Insets(0, (int) (screenDims.width * 0.07), (int) (screenDims.height * 0.4), (int) (screenDims.width * 0.07));
+		Insets leftPanelPadding = new Insets(0, (int) (screenDims.width * 0.07), (int) (screenDims.height * 0.4),
+				(int) (screenDims.width * 0.07));
 		leftButtonPadding = new Insets((int) (screenDims.height * 0.01), 0, (int) (screenDims.height * 0.01),
 				(int) (screenDims.width * 0.25));
 		rightButtonsPadding = new Insets((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
 				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
 
 		leftMain = new JPanel(new GridLayout(6, 1));
-		
+
 		// add drug title
 		GridBagConstraints drugTitleConstraints = new GridBagConstraints(); // constraints for drug title
 
@@ -281,7 +287,8 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		rightMain = new JPanel(new GridLayout(12, 1));
 
 		// add general info title
-		GridBagConstraints genInfoTitleConstraints = new GridBagConstraints(); // constraints for general information title
+		GridBagConstraints genInfoTitleConstraints = new GridBagConstraints(); // constraints for general information
+																				// title
 
 		genInfoTitleConstraints.fill = GridBagConstraints.BOTH;
 		genInfoTitleConstraints.gridx = 1;
@@ -398,7 +405,8 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		bottomMain.add(saveGoBack, saveGoBackConstraints);
 
 		// add save and add more button
-		GridBagConstraints saveAddMoreConstraints = new GridBagConstraints(); // constraints for save and add more button
+		GridBagConstraints saveAddMoreConstraints = new GridBagConstraints(); // constraints for save and add more
+																				// button
 
 		saveAddMoreConstraints.fill = GridBagConstraints.BOTH;
 		saveAddMoreConstraints.gridx = 2;
@@ -407,7 +415,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		saveAddMoreConstraints.anchor = GridBagConstraints.EAST;
 		saveAddMoreConstraints.insets = rightButtonsPadding;
 		bottomMain.add(saveAddMore, saveAddMoreConstraints);
-		
+
 		// add bottom buttons to main panel
 		GridBagConstraints buttonConstraints = new GridBagConstraints(); // constraints for bottom buttons
 
@@ -427,36 +435,36 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("openStock")) {
 			System.out.println("Stock");
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
 			System.out.println("Order");
 		} // end if
-		// open settings button pressed
+			// open settings button pressed
 		if (e.getActionCommand().equals("openSettings")) {
 			System.out.println("Settings");
 		} // end if
-		// open patient manager button pressed
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
 			// open patient manager page
 			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-		// cancel or back button pressed
+			// cancel or back button pressed
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			// open current prescriptions page
-			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients);
+			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
 			openCurrent.setVisible(true);
 			setVisible(false);
 		} // end if
-		// save and go back button pressed
+			// save and go back button pressed
 		if (e.getActionCommand().equals("Save and Go Back")) {
 			// make sure field have been filled in
-			if (dinField.getText().length() > 0
-					&& datePrescribedField.getText().length() > 0 && numRefillsField.getText().length() > 0
-					&& quantityField.getText().length() > 0 && dosageField.getText().length() > 0
-					&& instructionsArea.getText().length() > 0 && prescribedDurationField.getText().length() > 0
-					&& formField.getText().length() > 0 && drugNameField.getText().length() > 0) {
+			if (dinField.getText().length() > 0 && datePrescribedField.getText().length() > 0
+					&& numRefillsField.getText().length() > 0 && quantityField.getText().length() > 0
+					&& dosageField.getText().length() > 0 && instructionsArea.getText().length() > 0
+					&& prescribedDurationField.getText().length() > 0 && formField.getText().length() > 0
+					&& drugNameField.getText().length() > 0) {
 				// create a drug and prescription from input, then add to patient
 				String[][] drugDosage = new String[1][1];
 				drugDosage[0][0] = dosageField.getText().trim();
@@ -464,23 +472,26 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage);
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),
-						Integer.parseInt(quantityField.getText().trim()),
-						drugDosage, instructionsArea.getText().trim(),
+						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
 				patient.addActivePrescription(newScript);
-				//SQLHelper.addPrescription(Integer.parseInt(numRefillsField.getText().trim()), Integer.parseInt(quantityField.getText().trim()), drugDosage[0][0], instructionsArea.getText().trim(), prescribedDurationField.getText().trim(), datePrescribedField.getText().trim(), newDrug.getDrugName(), newDrug.getDIN(), newDrug.getForm());
+				// SQLHelper.addPrescription(Integer.parseInt(numRefillsField.getText().trim()),
+				// Integer.parseInt(quantityField.getText().trim()), drugDosage[0][0],
+				// instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
+				// datePrescribedField.getText().trim(), newDrug.getDrugName(),
+				// newDrug.getDIN(), newDrug.getForm());
 
-				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients);
+				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
 				openCurrent.setVisible(true);
 				setVisible(false);
-			}  // end if
-			// if not all fields have been filled in, open a popup
+			} // end if
+				// if not all fields have been filled in, open a popup
 			else {
 				JOptionPane.showMessageDialog(mainPanel,
 						"Please fill in all required fields in order to add prescription.");
 			} // end else
 		} // end if
-		// save and add another button pressed
+			// save and add another button pressed
 		if (e.getActionCommand().equals("Save and Add Another Prescription")) {
 			// make sure all field have been filled in
 			if (atcField.getText().length() > 0 && rxcuiField.getText().length() > 0 && dinField.getText().length() > 0
@@ -496,18 +507,21 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage);
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),
-						Integer.parseInt(quantityField.getText().trim()),
-						drugDosage, instructionsArea.getText().trim(),
+						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
 				patient.addActivePrescription(newScript);
-				//SQLHelper.addPrescription(Integer.parseInt(numRefillsField.getText().trim()), Integer.parseInt(quantityField.getText().trim()), drugDosage[0][0], instructionsArea.getText().trim(), prescribedDurationField.getText().trim(), datePrescribedField.getText().trim(), newDrug.getDrugName(), newDrug.getDIN(), newDrug.getForm());
+				// SQLHelper.addPrescription(Integer.parseInt(numRefillsField.getText().trim()),
+				// Integer.parseInt(quantityField.getText().trim()), drugDosage[0][0],
+				// instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
+				// datePrescribedField.getText().trim(), newDrug.getDrugName(),
+				// newDrug.getDIN(), newDrug.getForm());
 
 				// open a new add prescription window
-				AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients);
+				AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last);
 				openAddNew.setVisible(true);
 				setVisible(false);
-			} // end if 
-			// if not all fields have been filled in, open a popup
+			} // end if
+				// if not all fields have been filled in, open a popup
 			else {
 				JOptionPane.showMessageDialog(mainPanel,
 						"Please fill in all required fields in order to add prescription.");
