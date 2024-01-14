@@ -359,6 +359,9 @@ public class MainForPatientManagement {
 			System.out.println("Enter prescribed duration for prescription");
 			newRx.setDuration(scan.nextLine());
 			patients.returnData(index).addActivePrescription(newRx);
+			
+			stock.getDrugsList().fillPrescription(newRx.getDrug().getDIN(), quantity); // 1/08/24, assuming that one of the methods in the code above sets the DIN somewhere
+
 		} else {
 			System.out.println("Unable to find patient");
 		}
