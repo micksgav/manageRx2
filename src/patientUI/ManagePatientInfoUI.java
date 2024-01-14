@@ -489,18 +489,18 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 						"No Prescriptions", JOptionPane.INFORMATION_MESSAGE);
 			} // end if
 			else if (patient.getActivePrescriptions() == null && patient.getArchivedPrescriptions() != null) {
-				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients);
+				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients, true);
 				openArchived.setVisible(true);
 				setVisible(false);
 			} // end else if
 			else {
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, true);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end else
 		} // end if
 			// refresh insurance number based on company
-		if (insuranceCompanyArray != null) {
+		if (insuranceCompanyArray != null && patient.getInsuranceInformation().size() > 0) {
 			for (int i = 0; i < insuranceCompanyArray.length; i++) {
 				if (((String) insuranceCompanyField.getSelectedItem()).equals(insuranceCompanyArray[i])) {
 					insuranceNumberField.setText(insuranceNumberArray[i]);

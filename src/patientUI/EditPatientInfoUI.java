@@ -615,12 +615,12 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		if (e.getActionCommand().equals("Edit Prescriptions")) {
 			if (patient == null) {
 				newPatient.newPrescriptionList();
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", newPatient, patients);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", newPatient, patients, false);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end if
 			else {
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, false);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end else

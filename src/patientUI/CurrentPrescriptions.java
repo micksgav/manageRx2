@@ -24,6 +24,7 @@ import PatientManagement.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
 
 public class CurrentPrescriptions extends JFrame implements ActionListener {
 
@@ -65,13 +66,16 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	String[] instructions; // array containing all instructions belonging to patient
 	String[] prescribedDuration; // array containing all prescribed durations belonging to patient
 
+	// last page
+	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the last page was EditPatientInfoUI
+	
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public CurrentPrescriptions(String title, Patient patient, PatientList patients) {
+	public CurrentPrescriptions(String title, Patient patient, PatientList patients, boolean last) {
 
 		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
@@ -88,6 +92,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		// instantiate variables
 		this.patient = patient;
 		this.patients = patients;
+		this.last = last;
 		drugBrandName = new String[patient.getActivePrescriptions().length()];
 		drugGenName = new String[patient.getActivePrescriptions().length()];
 		datePrescribed = new String[patient.getActivePrescriptions().length()];
@@ -358,14 +363,27 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		} // end if
 		// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
+			if (last == true) {
 			ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients);
 			openManage.setVisible(true);
 			setVisible(false);
+			} // end if
+			else {
+				EditPatientInfoUI openEdit;
+				try {
+					openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
+					openEdit.setVisible(true);
+					setVisible(false);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} //end else
 		} // end if
 		// open archived prescriptions page, if patient has any
 		if (e.getActionCommand().equals("View Archived Prescriptions")) {
 			if (patient.getArchivedPrescriptions().length() > 0) {
-				ArchivedPrescriptionsUI openArchive = new ArchivedPrescriptionsUI("ManageRx", patient, patients);
+				ArchivedPrescriptionsUI openArchive = new ArchivedPrescriptionsUI("ManageRx", patient, patients, last);
 				openArchive.setVisible(true);
 				setVisible(false);
 			} // end if
@@ -375,7 +393,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		} // end if
 		// open add prescription page
 		if (e.getActionCommand().equals("Add New Prescription")) {
-			AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients);
+			AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last);
 			openAddNew.setVisible(true);
 			setVisible(false);
 		} // end if
