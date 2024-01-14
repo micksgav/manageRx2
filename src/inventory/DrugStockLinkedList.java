@@ -3,7 +3,7 @@
  @Name: DrugStockLinkedList
  @Author           : Christina Wong
  @Creation Date    : December 13, 2023
- @Modified Date	   : December 27, 2023
+ @Modified Date	   : January 9, 2024
    @Description    : 
    
 ***********************************************
@@ -76,7 +76,7 @@ public class DrugStockLinkedList {
 	* @Modified December 16, 2023
 	* @Description This searches the inventory by drug name.
 	* @Parameters  String searchName, the brand or generic name of the drug to search for 
-	* @Returns boolean true if found, false if not found
+	* @Returns String of the drug DIN if found, empty string if not found
 	* Dependencies: DrugStock
 	* Throws/Exceptions: N/A
     */
@@ -116,7 +116,7 @@ public class DrugStockLinkedList {
 				System.out.println("\nDrug Class: " + runner.drugStock.getDrug().getDrugClass());
 				System.out.println("Current stock: " + runner.drugStock.getNumInStock());
 				System.out.println("Current threshold: " + runner.drugStock.getStockThreshold());
-				System.out.println("\nStock is " + (runner.drugStock.getNumInStock() - runner.drugStock.getStockThreshold()) + " away from threshold.  You will receive a notification when stock hits the minimum threshold");
+				System.out.println("\nStock is " + (runner.drugStock.getNumInStock() - runner.drugStock.getStockThreshold()) + " away from threshold.");
 				
 			} // end if
 			runner = runner.next;
@@ -260,6 +260,32 @@ public class DrugStockLinkedList {
 			System.out.println("Drug not found in inventory");
 		} // end if
 	} // end viewStockUsage
+	
+	/** Method Name: viewFullInventory
+	* @Author Christina Wong 
+	* @Date January 12, 2024
+	* @Modified January 12, 2024
+	* @Description This prints current inventory stats for every drug in the inventory.
+	* @Parameters  N/A
+	* @Returns void
+	* Dependencies: DrugStock
+	* Throws/Exceptions: N/A
+    */
+	public void viewFullInventory() {
+		Node runner;
+		runner = head;
+		System.out.println("INVENTORY:");
+		System.out.println("Drug Name:\t\tDIN:\t\tCurrent Stock:");
+		while(runner != null) {
+			System.out.print(runner.drugStock.getDrugName() + "\t\t");
+			if(runner.drugStock.getDrugName().length() < 8)
+				System.out.print("\t");
+			System.out.print(runner.drugStock.getDrugDIN() + "\t");
+			System.out.print(runner.drugStock.getNumInStock());
+			System.out.println();			
+			runner = runner.next;
+		} // end while
+	} // end viewFullInventory
 	
 	// not sure if we will need this
     public DrugStock[] getElements() {
