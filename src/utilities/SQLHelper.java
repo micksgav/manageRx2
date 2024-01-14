@@ -10,6 +10,8 @@ import java.util.concurrent.Executors;
 
 import PatientManagement.Patient;
 import PatientManagement.PatientList;
+import PatientManagement.Prescription;
+import PatientManagement.PrescriptionList;
 
 public class SQLHelper {
 	ExecutorService service;
@@ -47,16 +49,25 @@ public class SQLHelper {
 	    });
 	}
 	
-	public void addPatientBG(String name, int birthDay, int birthMonth, int birthYear, String address, String phoneNumber, String email, String healthCard, String additional, String familyDoctorName, String familyDoctorAddress, String familyDoctorPhoneNumber) {
+	public void addPatientBG(Patient p) {
 		service.submit(new Runnable() {
 	        public void run() {
-	            IDnum = addPatient(name, birthDay, birthMonth, birthYear, address, phoneNumber, email, healthCard, additional, familyDoctorName, familyDoctorAddress, familyDoctorPhoneNumber);
+	            IDnum = addPatient(p);
 	            System.out.println("patient added: " + IDnum);
 	        }
 	    });
 	}
 	
-	//table = table name, column = column name, obj = value to update to (String or int), ID - ID of row
+	public void addPrescriptionBG(Prescription p) {
+		service.submit(new Runnable() {
+	        public void run() {
+	            IDnum = addPrescription(p);
+	            System.out.println("prescription added: " + IDnum);
+	        }
+	    });
+	}
+	
+	//table = table name, column = column name, obj = value to update to (String or int -- maybe double...), ID - ID of row
 	public boolean update(String table, String column, Object obj, int ID) {
 		// https://www.geeksforgeeks.org/java-database-connectivity-with-mysql/ for pulling from
 				// https://www.geeksforgeeks.org/how-to-commit-a-query-in-jdbc/?ref=ml_lbp for pushing to		
@@ -69,12 +80,29 @@ public class SQLHelper {
 					return false;
 				}
 	}
-	public int addPatient(String name, int birthDay, int birthMonth, int birthYear, String address, String phoneNumber, String email, String healthCard, String additional, String familyDoctorName, String familyDoctorAddress, String familyDoctorPhoneNumber) {
+	public int addPatient(Patient p) {
+		String name = p.getName();
+		int birthDay = p.getDateOfBirthDay();
+		int birthMonth = p.getDateOfBirthMonth();
+		int birthYear = p.getBirthYear();
+		String address = p.getAddress();
+		String phoneNumber = p.getPhoneNumber();
+		String email = p.getEmail();
+		String healthCard = p.getHealthCardNumber();
+		String additionalNotes = p.getAdditionalNotes();
+		String familyDoctorName = p.getFamilyDoctorName();
+		String familyDoctorAddress = p.getFamilyDoctorAddress();
+		String familyDoctorPhoneNumber = p.getFamilyDoctorNumber();
+		//fix
+		String familyDoctorFax = "test";
+		String gender = "test";
+		double weight = 100.00;
+		
 		try {
             ResultSet resultSet = statement.executeQuery("SELECT ID FROM PatientInfo WHERE ID = (SELECT MAX(ID) FROM PatientInfo)");
             resultSet.next();
             int ID = resultSet.getInt("ID") + 1;
-            statement.executeUpdate("INSERT INTO PatientInfo values ( " + ID + " , \"" + name + "\" , " + birthDay + " , " + birthMonth + " , " + birthYear + " , \"" + address + "\" , \"" + phoneNumber + "\" , \"" + email + "\" , \"" + healthCard + "\" , \"" + additional + "\" , \"" + familyDoctorName + "\" , \"" + familyDoctorAddress + "\" , \"" + familyDoctorPhoneNumber + "\")");
+            statement.executeUpdate("INSERT INTO PatientInfo values ( " + ID + " , \"" + name + "\" , " + birthDay + " , " + birthMonth + " , " + birthYear + " , \"" + address + "\" , \"" + phoneNumber + "\" , \"" + email + "\" , \"" + healthCard + "\" , \"" + additionalNotes + "\" , \"" + familyDoctorName + "\" , \"" + familyDoctorAddress + "\" , \"" + familyDoctorPhoneNumber + "\" , \"" + familyDoctorFax + "\" , \"" + gender + "\" , " + weight + " )");
             return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -83,11 +111,32 @@ public class SQLHelper {
 		}
 	}
 	
-	//public Patient getPatient(int ID) {
-		
-	//}
+	public Patient getPatient(int ID) {
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM manageRx.PatientInfo WHERE ID = " + ID);
+			Patient temp = new Patient();
+	    	temp.setId(resultSet.getInt("ID"));
+	    	temp.setName(resultSet.getString("name"));
+	    	temp.setDateOfBirthDay(resultSet.getInt("birthDay"));
+	    	temp.setDateOfBirthMonth(resultSet.getInt("birthMonth"));
+	    	temp.setBirthYear(resultSet.getInt("birthYear"));
+	    	temp.setAddress(resultSet.getString("address"));
+	    	temp.setPhoneNumber(resultSet.getString("phoneNumber"));
+	    	temp.setEmail(resultSet.getString("email"));
+	    	temp.setHealthCardNumber(resultSet.getString("healthCard"));
+	    	temp.setAdditionalNotes(resultSet.getString("addtionalNotes")); //typo in SQL column name...
+	    	temp.setFamilyDoctorName(resultSet.getString("familyDoctorName"));
+	    	temp.setFamilyDoctorAddress(resultSet.getString("familyDoctorAddress"));
+	    	temp.setFamilyDoctorNumber(resultSet.getString("familyDoctorPhoneNumber"));
+	    	//add fax, gender, weight...
+	        return temp;
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " for getPatient in SQLHelper");
+			return null;
+		}
+	}
 	
-	public PatientList addAllPatients() {
+	public PatientList getAllPatients() {
 		PatientList pList = new PatientList();
 		try {
 		ResultSet resultSet = statement.executeQuery("SELECT * FROM PatientInfo");
@@ -103,16 +152,92 @@ public class SQLHelper {
         	temp.setPhoneNumber(resultSet.getString("phoneNumber"));
         	temp.setEmail(resultSet.getString("email"));
         	temp.setHealthCardNumber(resultSet.getString("healthCard"));
-        	temp.setAdditionalNotes(resultSet.getString("additional"));
+        	temp.setAdditionalNotes(resultSet.getString("addtionalNotes")); //typo in SQL column name...
         	temp.setFamilyDoctorName(resultSet.getString("familyDoctorName"));
         	temp.setFamilyDoctorAddress(resultSet.getString("familyDoctorAddress"));
         	temp.setFamilyDoctorNumber(resultSet.getString("familyDoctorPhoneNumber"));
+        	//add fax, gender, weight...
             pList.insert(temp);
         }
 		} catch (Exception e) {
-			logErrors.log(e.getMessage() + " for addAllPatients in SQLHelper");
+			logErrors.log(e.getMessage() + " for getAllPatients in SQLHelper");
 		}
-		
 		return pList;
 	}
+	
+	public int addPrescription(Prescription p) {
+		int patientID = p.getID();
+		int numRefills = p.getRefills();
+		int quantity = p.getQuantity();
+		String dosage = p.getDosage()[0][0]; //fix array stuff
+		String instructions = p.getInstructions();
+		String prescribedDuration = p.getDuration();
+		String datePrescribed = p.getDate();
+		String drugName = p.getName();
+		String DIN = p.getDIN();
+		String form = p.getForm(); //fix
+		
+		
+		try {
+            ResultSet resultSet = statement.executeQuery("SELECT prescriptionID FROM PrescriptionInfo WHERE prescriptionID = (SELECT MAX(prescriptionID) FROM PrescriptionInfo)");
+            resultSet.next();
+            int ID = resultSet.getInt("prescriptionID") + 1;
+            statement.executeUpdate("INSERT INTO PrescriptionInfo values ( " + patientID + " , \"" + numRefills + "\" , " + quantity  + " , \"" + dosage + "\" , \"" + instructions + "\" , \"" + prescribedDuration + "\" , \"" + datePrescribed + "\" , \"" + drugName + "\" , \"" + DIN + "\" , \"" + form + "\" , " + ID + " )");
+            return ID;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logErrors.log(e.getMessage() + " in addPrescription in SQLHelper");
+			return -1;
+		}
+	}
+	
+	public Prescription getPrescription(int ID) {
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM manageRx.PrescriptionInfo WHERE prescriptionID = " + ID);
+			Prescription temp = new Prescription();
+	    	temp.setPatientID(resultSet.getInt("patientID"));
+	    	temp.setRefills(resultSet.getInt("numRefills"));
+	    	temp.setQuantity(resultSet.getInt("quantity"));
+	    	temp.setDosage(new String [][] {{resultSet.getString("dosage"), "", ""}}); //fix
+	    	temp.setInstructions(resultSet.getString("instructions"));
+	    	temp.setDuration(resultSet.getString("prescribedDuration"));
+	    	temp.setDate(resultSet.getString("datePrescribed"));
+	    	temp.setName(resultSet.getString("drugName"));
+	    	temp.setDIN(resultSet.getString("DIN"));
+	    	temp.setForm(resultSet.getString("familyDoctorAddress"));
+	    	temp.setID(resultSet.getInt("prescriptionID")); //FIX IN SQL
+	        return temp;
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " for getPrescription in SQLHelper");
+			return null;
+		}
+	}
+	
+	public PrescriptionList getAllPrescriptions() {
+		PrescriptionList pList = new PrescriptionList();
+		try {
+		ResultSet resultSet = statement.executeQuery("SELECT * FROM PrescriptionInfo");
+
+        while (resultSet.next()) {
+			Prescription temp = new Prescription();
+	    	temp.setPatientID(resultSet.getInt("patientID"));
+	    	temp.setRefills(resultSet.getInt("numRefills"));
+	    	temp.setQuantity(resultSet.getInt("quantity"));
+	    	temp.setDosage(new String [][] {{resultSet.getString("dosage"), "", ""}}); //fix
+	    	temp.setInstructions(resultSet.getString("instructions"));
+	    	temp.setDuration(resultSet.getString("prescribedDuration"));
+	    	temp.setDate(resultSet.getString("datePrescribed"));
+	    	temp.setName(resultSet.getString("drugName"));
+	    	temp.setDIN(resultSet.getString("DIN"));
+	    	temp.setForm(resultSet.getString("familyDoctorAddress"));
+	    	temp.setID(resultSet.getInt("prescriptionID")); //FIX IN SQL
+            pList.insert(temp);
+        }
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " for getAllPrescriptions in SQLHelper");
+		}
+		return pList;
+	}
+	
+	
 }

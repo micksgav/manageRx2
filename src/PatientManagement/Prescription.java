@@ -19,6 +19,8 @@ public class Prescription {
 	private String[][] dosage; // dosage of the drug
 	private String instructions; // instructions for taking the prescription
 	private String prescribedDuration; // duration to take prescribed drug for
+	private int ID;
+	private int patientID;
 	
 	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String[][] dosage, String instructions, String prescribedDuration) {
 		this.drug = drug;
@@ -44,6 +46,14 @@ public class Prescription {
 	public void setName(String genName) {
 		drug.setDrugName(genName);
 	} // end setName
+	
+	public String getDIN() {
+		return drug.getDIN();
+	}
+	
+	public void setDIN(String DIN) {
+		drug.setDIN(DIN);
+	}
 
 	public String getBrandName() {
 		return drug.getDrugName();
@@ -100,4 +110,29 @@ public class Prescription {
 	public void setDuration(String duration) {
 		prescribedDuration = duration;
 	} // end setDuration
+
+	public int getID() {
+		// TODO Auto-generated method stub
+		return ID;
+	}
+	
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+	
+	public String getForm() {
+		return drug.getForm();
+	}
+	
+	public void setForm(String form) {
+		drug.setForm(form);
+	}
+	
+	public int getPatientID() {
+		return patientID;
+	}
+	
+	public void setPatientID(int ID) {
+		patientID = ID;
+	}
 } // end Prescription
