@@ -410,6 +410,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			} // end if
 			String keyArchive = "archive" + i; // archive command key
 			if (e.getActionCommand().equals(keyArchive)) {
+				SQLHelper.updateBG("PrescriptionInfo", "current", 0, patient.getActivePrescriptions().atIndex(i).getID());
 				patient.removeActivePrescription(patient.getActivePrescriptions().atIndex(i));
 				prescriptionPanels[i].setVisible(false);
 

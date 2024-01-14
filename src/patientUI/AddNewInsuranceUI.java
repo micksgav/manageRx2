@@ -303,6 +303,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 	} // end AddNewInsuranceUI
 
 	public void actionPerformed(ActionEvent e) {
+		SQLHelper helper = new SQLHelper();
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
 			System.out.println("Stock");
@@ -334,7 +335,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 			// add the new insurance to patient and open view insurance page
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
 					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-			//SQLHelper.addInsurance(insuranceCompanyField.getText().trim(), insuranceNumberField.getText().trim(), notesArea.getText());
+			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText(), patient.getId());
 			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients);
 			openView.setVisible(true);
 			setVisible(false);
@@ -344,7 +345,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 			// add new insurance to patient and clear field
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
 					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-			//SQLHelper.addInsurance(insuranceCompanyField.getText().trim(), insuranceNumberField.getText().trim(), notesArea.getText());
+			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText(), patient.getId());
 			insuranceCompanyField.setText("");
 			insuranceNumberField.setText("");
 			notesArea.setText("");

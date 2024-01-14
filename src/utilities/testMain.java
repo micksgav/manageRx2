@@ -9,6 +9,7 @@ public class testMain {
 		SQLHelper sql = new SQLHelper();
 		
 		PatientList list = sql.getAllPatients();
+		System.out.println(list.returnData(2).getName());
 		
 		System.out.println(list.numRecs());
 	}

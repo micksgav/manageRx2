@@ -563,10 +563,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					newPatient.setAdditionalNotes(additionalNotesArea.getText().trim());
 					newPatient.setId(patients.numRecs());
 					patients.insert(newPatient);
-					//SQLHelper.addPatient(newPatient.getName(), newPatient.getDateOfBirthDay(),
-					// newPatient.getDateOfBirthMonth(), newPatient.getBirthYear(),
-					// newPatient.getAddress(), newPatient.getPhoneNumber(), newPatient.getEmail(),
-					// newPatient.getHealthCardNumber(), newPatient.getAdditionalNotes());
+					SQLHelper.addPatient(newPatient);
 					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", newPatient, patients);
 					openManage.setVisible(true);
 					setVisible(false);
