@@ -261,6 +261,16 @@ public class DrugStockLinkedList {
 		} // end if
 	} // end viewStockUsage
 	
+	/** Method Name: viewFullInventory
+	* @Author Christina Wong 
+	* @Date January 12, 2024
+	* @Modified January 12, 2024
+	* @Description This prints current inventory stats for every drug in the inventory.
+	* @Parameters  N/A
+	* @Returns void
+	* Dependencies: DrugStock
+	* Throws/Exceptions: N/A
+    */
 	public void viewFullInventory() {
 		Node runner;
 		runner = head;
@@ -274,8 +284,8 @@ public class DrugStockLinkedList {
 			System.out.print(runner.drugStock.getNumInStock());
 			System.out.println();			
 			runner = runner.next;
-		}
-	}
+		} // end while
+	} // end viewFullInventory
 	
 	// not sure if we will need this
     public DrugStock[] getElements() {

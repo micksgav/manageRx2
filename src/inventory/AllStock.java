@@ -3,7 +3,7 @@
  @Name: AllStock
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 10, 2024
+ @Modified Date	   : January 12, 2024
    @Description    : 
    
 ***********************************************
@@ -206,7 +206,7 @@ public class AllStock {
 	/** Method Name: updateStock
 	* @Author Christina Wong 
 	* @Date December 16, 2023
-	* @Modified January 10, 2024
+	* @Modified January 12, 2024
 	* @Description When a shipment arrives, the current inventory is checked to see if the drug is in stock and either updates the stock information or adds a new stock of drug.
 	* @Parameters int newStock, the quantity of the shipment; String arrivalDIN, the DIN of the drug arriving; String classDrug, class of the drug; String newThreshold, the drug threshold (is blank if the drug has been added to inventory previously)
 	* @Returns void
@@ -235,7 +235,7 @@ public class AllStock {
 				else {
 					// JOptionPane.showMessageDialog(frame, "Threshold must be an integer","ERROR", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame	
 
-					System.out.println("Enter threshold:");
+					System.out.println("Invalid threshold.  Enter threshold:");
 					newThreshold = ui.nextLine();
 				} // end else
 			} // end while
@@ -276,8 +276,18 @@ public class AllStock {
 		drugsList.viewStockUsage(DIN);
 	} // end viewUsage
 	
+	/** Method Name: viewFullInventory
+	* @Author Christina Wong 
+	* @Date January 12, 2024
+	* @Modified January 12, 2024
+	* @Description This prints current inventory stats for the full inventory.
+	* @Parameters  N/A
+	* @Returns void
+	* Dependencies: DrugStockLinkedList
+	* Throws/Exceptions: N/A
+    */
 	public void viewFullInventory() {
 		drugsList.viewFullInventory();
-	}
+	} // end viewFullInventory
 	
 } // end AllStock
