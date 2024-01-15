@@ -1,6 +1,3 @@
-package PatientManagement;
-
-
 
 /**
  ***********************************************
@@ -11,6 +8,7 @@ package PatientManagement;
  ***********************************************
  */
 
+package PatientManagement;
 
 /**
  * An object of type StringList represents a list of strings. Methods are
@@ -50,78 +48,83 @@ public class PrescriptionList {
 
 	private Node head; // A pointer to the first node in the linked list.
 						// If the list is empty, the value is null.
-	
+
+	/*
+	 * Method Name: toArray Author: John Brown Creation Date: January 3, 2024
+	 * Modified Date: January 3, 2024 Description: converts PrsecriptionList to an
+	 * array of Prescriptions
+	 *
+	 * @Parameters: none
+	 * 
+	 * @Return Value: array: contains complete list as Prescription Objects Data
+	 * Type: Prescription[] Dependencies: Prescription Throws/Exceptions: none
+	 */
 	public Prescription[] toArray() {
 		Prescription[] array = new Prescription[this.length()];
 		Node runner = head;
-		for (int i = 0; runner != null; i ++, runner = runner.link) {
+		for (int i = 0; runner != null; i++, runner = runner.link) {
 			array[i] = runner.info;
-		}
+		} // end for
 		return array;
-	}
-	
+	} // end toArray
+
+	/*
+	 * Method Name: toArray Author: John Brown Creation Date: January 3, 2024
+	 * Modified Date: January 3, 2024 Description: deletes an item from the list
+	 *
+	 * @Parameters: Prescription prescription: prescription to delete
+	 * 
+	 * @Return Value: none Data Type: void Dependencies: toArray, Prescription,
+	 * insert Throws/Exceptions: none
+	 */
 	public void delete(Prescription prescription) {
 		Prescription[] array = this.toArray();
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == prescription) {
 				array[i] = null;
-			}
-		}
+			} // end if
+		} // end for
 		head = null;
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] != null) {
-			this.insert(array[i]);
-			}
-		}
-	}
-	
-	public void delete(int index) {
-		Node runner = head;
-		if (index == 0 && head.link != null) {
-			head = head.link;
-		}
-		else if (index == 0 && head.link == null) {
-			head = null;
-		}
-		for (int i = 0; i < index-1; i ++, runner = runner.link) {
-		}
-		runner.link = runner.link.link;
-	}
+				this.insert(array[i]);
+			} // end if
+		} // end for
+	} // end delete
 
-	public String[] returnInfo() {
-		String[] all = new String[this.length()];
-		Node runner = head;
-		for (int i = 0; runner != null; runner = runner.link, i++) {
-			all[i] = "Brand name: " + runner.info.getBrandName() + "\nBranderic name: " + runner.info.getBrandName() + "\nDate prescribed: " + runner.info.getDate() + "\nNumber of refills: " + runner.info.getRefills() + "\nQuantity: " + runner.info.getQuantity() + " pills\nDosage: " + runner.info.getDosage() + "mg\nInstructions: " + runner.info.getInstructions() + "\nPrescribed duration: " + runner.info.getDuration();
-		}
-		return all;
-	}
-
-	public Prescription returnPrescription(String drugName) {
-		Node runner = head;
-		for (int i = 0; runner != null; runner = runner.link, i++) {
-			if (runner.info.getBrandName().equals(drugName)) {
-				return runner.info;
-			}
-		}
-		return null;
-	}
-	
+	/*
+	 * Method Name: atIndex Author: John Brown Creation Date: December 18, 2023
+	 * Modified Date: December 18, 2023 Description: returns the prescription at the
+	 * specified index
+	 *
+	 * @Parameters: int i: index to return at
+	 * 
+	 * @Return Value: Prescription at index i Data Type: Prescription Dependencies:
+	 * none Throws/Exceptions: none
+	 */
 	public Prescription atIndex(int i) {
 		Node runner = head;
 		for (int k = 0; k < i; runner = runner.link, k++) {
-			
-		}
+		} // end for
 		return runner.info;
-	}
-	
+	} // end atIndex
+
+	/*
+	 * Method Name: length Author: John Brown Creation Date: December 18, 2023
+	 * Modified Date: December 18, 2023 Description: returns the length of the list
+	 *
+	 * @Parameters: none
+	 * 
+	 * @Return Value: length of list Data Type: int Dependencies: none
+	 * Throws/Exceptions: none
+	 */
 	public int length() {
 		int counter = 0;
 		for (Node runner = head; runner != null; runner = runner.link) {
-			counter ++;
-		}
+			counter++;
+		} // end for
 		return counter;
-	}
+	} // end length
 
 	// set the head to a new value
 	public void setHead(Node newHead) {
@@ -160,113 +163,6 @@ public class PrescriptionList {
 	public void addToFront(Prescription info) {
 		head = new Node(info, head);
 	} // end addToFront
-
-	/*
-	 * Method Name: midToFront Author: John Brown Creation Date: November 26, 2023
-	 * Modified Date: November 26, 2023 Description: Takes the element in the middle
-	 * of the list and moves it to the front
-	 *
-	 * @Parameters: none
-	 * 
-	 * @Return Value: none Data Type: void Dependencies: numRecs, delete, addToFront
-	 * Throws/Exceptions: none
-	 */
-	public void midToFront() {
-		int halfPoint = this.numRecs() / 2;
-		Node runner = head;
-		for (int i = 0; i < halfPoint; i++, runner = runner.link) {
-		} // end for
-		Prescription info = runner.info;
-		this.delete(runner.info.getBrandName());
-		this.addToFront(info);
-	} // end midToFront
-
-	/*
-	 * Method Name: numRecs Author: John Brown Creation Date: November 26, 2023
-	 * Modified Date: November 26, 2023 Description: counts the number of elements
-	 * in the list
-	 *
-	 * @Parameters: none
-	 * 
-	 * @Return Value: count: number of items in the list Data Type: int
-	 * Dependencies: none Throws/Exceptions: none
-	 */
-	public int numRecs() {
-		int count = 0;
-		if (head == null) {
-			return count;
-		} // end if
-		for (Node runner = head; runner != null; runner = runner.link) {
-			count++;
-		} // end for
-		return count;
-	} // end numRecs
-
-	/*
-	 * Method Name: printList Author: John Brown Creation Date: November 26, 2023
-	 * Modified Date: November 26, 2023 Description: prints the list
-	 *
-	 * @Parameters: none
-	 * 
-	 * @Return Value: none Data Type: void Dependencies: none Throws/Exceptions:
-	 * none
-	 */
-	public void printList() {
-		for (Node temp = head; temp != null; temp = temp.link) {
-			System.out.println(temp.info);
-		} // end for
-	} // end printList
-
-	/*
-	 * Method Name: delete Author: Kyle McKay Creation Date: Unknown Modified Date:
-	 * November 28, 2023 Description: Delete a specified item from the list, if that
-	 * item is present. If multiple copies of the item are present in the list, only
-	 * the first one is deleted
-	 *
-	 * @Parameters: deleteItem: the item that is to be deleted
-	 * 
-	 * @Return Value: none Data Type: void Dependencies: none Throws/Exceptions:
-	 * none
-	 */
-	public void delete(String deleteItem) {
-
-		if (head == null) {
-			// The list is empty, so it certainly doesn't contain deleteString.
-			return;
-		} // end if
-		else if (head.info.getBrandName().equals(deleteItem)) {
-			// The string is the first info of the list. Remove it.
-			head = head.link;
-			return;
-		} // end else if
-		else {
-			// The string, if it occurs at all, is somewhere beyond the
-			// first element of the list. Search the list.
-			Node runner; // A node for traversing the list.
-			Node previous; // Always points to the node preceding runner.
-			runner = head.link; // Start by looking at the SECOND list node.
-			previous = head;
-			while (runner != null && runner.info.getBrandName().compareTo(deleteItem) < 0) {
-				// Move previous and runner along the list until runner
-				// falls off the end or hits a list element that is
-				// greater than or equal to deleteItem. When this
-				// loop ends, runner indicates the position where
-				// deleteItem must be, if it is in the list.
-				previous = runner;
-				runner = runner.link;
-			} // end while
-			if (runner != null && runner.info.getBrandName().equals(deleteItem)) {
-				// Runner points to the node that is to be deleted.
-				// Remove it by changing the pointer in the previous node.
-				previous.link = runner.link;
-				return;
-			} // end if
-			else {
-				// The info does not exist in the list.
-				return;
-			} // end else
-		} // end else
-	} // end delete()
 
 	/*
 	 * Method Name: insert Author: Kyle McKay Creation Date: Unknown Modified Date:
@@ -317,4 +213,3 @@ public class PrescriptionList {
 	} // end insert()
 
 } // end StringList
-

@@ -1,3 +1,13 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: Add new insurance page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import java.awt.EventQueue;

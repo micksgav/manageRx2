@@ -1,7 +1,18 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: Search for/add patient page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -29,12 +40,13 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	// main buttons
 	private JButton searchExisting; // search for an existing patient
 	private JButton addNew; // add a new patient
-	
-	Patient patient;
-	PatientList patients;
-	
+
+	// patient information
+	Patient patient; // patient to pass through to other UIs
+	PatientList patients; // list containing all patient info
+
 	// text elements
-	private JLabel pageTitle = new JLabel("Patient Manager");
+	private JLabel pageTitle = new JLabel("Patient Manager"); // patient manager title
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -43,19 +55,22 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
 	public SearchAddUI(String title, Patient patient, PatientList patients) {
+
+		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
 		setTitle(title);
-		
-		// setup screen size
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
-				.getMaximumWindowBounds(); // dimensions of screen from https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
+				.getMaximumWindowBounds(); // dimensions of screen from
+											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+
+		// instantiate variables
 		this.patient = patient;
 		this.patients = patients;
 
-		// setup header panel
+		// setup header panel, adding all buttons
 		stockIcon = stockIcon.setScale(0.12);
 		orderIcon = orderIcon.setScale(0.12);
 		settingsIcon = settingsIcon.setScale(0.12);
@@ -84,7 +99,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		btnOpenSettings.setIcon(settingsIcon);
 		btnOpenSettings.setActionCommand("openSettings");
 		btnOpenSettings.addActionListener(this);
-		this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
+		//this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
@@ -94,27 +109,35 @@ public class SearchAddUI extends JFrame implements ActionListener {
 
 		add(this.buttonPanel, BorderLayout.NORTH);
 
-		mainPanel = new JPanel(new GridLayout(1, 2, (int) (screenDims.width * 0.1), 0)); 
+		mainPanel = new JPanel(new GridLayout(1, 2, (int) (screenDims.width * 0.1), 0));
 		mainContainer = new JPanel(new GridBagLayout());
 
 		// font and borders
-		Font genFont = new Font("Arial", Font.PLAIN, 25);
-		Font nameFont = new Font("Arial", Font.PLAIN, 75);
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // outer border for buttons https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font used for most text elements
+		Font nameFont = new Font("Arial", Font.PLAIN, 75); // font used for names and titles
+		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // outer
+																													// border
+																													// for
+																													// boxes
+																													// and
+																													// buttons
+																													// https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
 		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.1), (int) (screenDims.width * 0.1),
-				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.1)); // inner border for buttons
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding); // overall border for buttons
-		
+				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.1)); // inner border for boxes and buttons
+		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding); // compounded border for
+																								// boxes and buttons
+
+		// add title
 		pageTitle.setFont(nameFont);
-		
-		GridBagConstraints titleConstraints = new GridBagConstraints();
-		
+
+		GridBagConstraints titleConstraints = new GridBagConstraints(); // constraints for page title
+
 		titleConstraints.gridx = 0;
 		titleConstraints.gridy = 0;
 		titleConstraints.insets = new Insets(0, 0, (int) (screenDims.height * 0.1), 0);
 		pageTitle.setHorizontalAlignment(JLabel.CENTER);
 		mainContainer.add(pageTitle, titleConstraints);
-		
+
 		// setup buttons and add to main panel
 		searchExisting = new JButton("Search For Existing Patient");
 		searchExisting.addActionListener(this);
@@ -124,46 +147,60 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		searchExisting.setBorder(textBoxBorder);
 		addNew.setFont(genFont);
 		addNew.setBorder(textBoxBorder);
-		
+
 		mainPanel.add(searchExisting);
 		mainPanel.add(addNew);
-		
+
 		// align buttons on screen in mainContainer
-		GridBagConstraints constraints = new GridBagConstraints();
-		
+		GridBagConstraints constraints = new GridBagConstraints(); // constraints for buttons
+
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.ipady = (int) (screenDims.height *0.1);
+		constraints.ipady = (int) (screenDims.height * 0.1);
 		constraints.anchor = GridBagConstraints.CENTER;
 		mainContainer.add(mainPanel, constraints);
-	
 
 		add(mainContainer, BorderLayout.CENTER);
 
 	} // end SearchAddUI
 
 	public void actionPerformed(ActionEvent e) {
+		// open stock page
 		if (e.getActionCommand().equals("openStock")) {
 			System.out.println("Stock");
-		}
+		} // end if
+			// open order page
 		if (e.getActionCommand().equals("openOrder")) {
 			System.out.println("Order");
-		}
-		if (e.getActionCommand().equals("openSettings")) {
-			System.out.println("Settings");
-		}
+		} // end if
+			// open patient management page
 		if (e.getActionCommand().equals("openPatientManager")) {
 			System.out.println("Patients");
-		}
-		if(e.getActionCommand().equals("Search For Existing Patient")) {
-			SearchForPatientUI openSearch = new SearchForPatientUI("ManageRx", patient, patients);
-			openSearch.setVisible(true);
-			setVisible(false);
-		}
+		} // end if
+			// open search page
+		if (e.getActionCommand().equals("Search For Existing Patient")) {
+			SearchForPatientUI openSearch;
+			try {
+				openSearch = new SearchForPatientUI("ManageRx", patient, patients);
+				openSearch.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		} // end if
+			// open add page
 		if (e.getActionCommand().equals("Add a New Patient")) {
-			EditPatientInfoUI openCreate = new EditPatientInfoUI("ManageRx", null, patients);
-			openCreate.setVisible(true);
-			setVisible(false);
-		}
-	}
+			EditPatientInfoUI openCreate;
+			try {
+				openCreate = new EditPatientInfoUI("ManageRx", null, patients);
+				openCreate.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} // end if
+	} // end actionPerformed
 } // end SearchAddUI
