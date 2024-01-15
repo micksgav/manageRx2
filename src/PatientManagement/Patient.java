@@ -57,7 +57,13 @@ public class Patient {
 	public Patient() {
 		familyDoctor = new FamilyDoctor();
 		insuranceInformation = new LinkedList<Insurance>();
+		activePrescriptions = new PrescriptionList();
+		pastPrescriptions = new PrescriptionList();
 	} // end Patient
+	
+	public void addArchivedPrescription(Prescription prescription) {
+		pastPrescriptions.insert(prescription);
+	}
 	
 	public void setWeight(double weight) {
 		this.weight = weight;
@@ -239,6 +245,10 @@ public class Patient {
 		insuranceInformation.add(new Insurance(company, num, notes));
 	} // end addNewInsuranceInfo
 	
+	public void addNewInsuranceInfo(Insurance insurance) {
+		insuranceInformation.add(insurance);
+	}
+	
 	public void removeInsurance(int i) {
 				insuranceInformation.remove(i);
 	} // end removeInsurance
@@ -251,5 +261,6 @@ public class Patient {
 		activePrescriptions = new PrescriptionList();
 		pastPrescriptions = new PrescriptionList();
 	} // end newPrescriptionList
+
 
 } // end Patient

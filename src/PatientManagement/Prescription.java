@@ -21,6 +21,7 @@ public class Prescription {
 	private String prescribedDuration; // duration to take prescribed drug for
 	private int ID;
 	private int patientID;
+	private boolean current;
 	
 	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String[][] dosage, String instructions, String prescribedDuration) {
 		this.drug = drug;
@@ -32,7 +33,9 @@ public class Prescription {
 		this.prescribedDuration = prescribedDuration;
 	} // end Prescription
 	
-	public Prescription(){} // end Prescription
+	public Prescription(){
+		drug = new Drug();
+	} // end Prescription
 	
 	public Drug getDrug() {
 		return drug;
@@ -135,4 +138,18 @@ public class Prescription {
 	public void setPatientID(int ID) {
 		patientID = ID;
 	}
+
+	public void setCurrent(int current) {
+		if (current == 1) {
+			this.current = true;
+		}
+		else {
+			this.current = false;
+		}
+	}
+	
+	public boolean getCurrent() {
+		return current;
+	}
+	
 } // end Prescription

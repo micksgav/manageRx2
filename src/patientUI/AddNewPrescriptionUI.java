@@ -431,6 +431,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 	} // end AddNewPrescriptionUI
 
 	public void actionPerformed(ActionEvent e) {
+		SQLHelper helper = new SQLHelper();
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
 			System.out.println("Stock");
@@ -474,12 +475,9 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 						Integer.parseInt(numRefillsField.getText().trim()),
 						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
+				newScript.setPatientID(patient.getId());
 				patient.addActivePrescription(newScript);
-				// SQLHelper.addPrescription(Integer.parseInt(numRefillsField.getText().trim()),
-				// Integer.parseInt(quantityField.getText().trim()), drugDosage[0][0],
-				// instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
-				// datePrescribedField.getText().trim(), newDrug.getDrugName(),
-				// newDrug.getDIN(), newDrug.getForm());
+				helper.addPrescriptionBG(newScript);
 
 				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
 				openCurrent.setVisible(true);
@@ -509,12 +507,9 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 						Integer.parseInt(numRefillsField.getText().trim()),
 						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
+				newScript.setID(patient.getId());
 				patient.addActivePrescription(newScript);
-				// SQLHelper.addPrescription(Integer.parseInt(numRefillsField.getText().trim()),
-				// Integer.parseInt(quantityField.getText().trim()), drugDosage[0][0],
-				// instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
-				// datePrescribedField.getText().trim(), newDrug.getDrugName(),
-				// newDrug.getDIN(), newDrug.getForm());
+				helper.addPrescriptionBG(newScript);
 
 				// open a new add prescription window
 				AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last);

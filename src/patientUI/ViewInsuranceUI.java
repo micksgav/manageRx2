@@ -11,6 +11,7 @@
 package patientUI;
 
 import swingHelper.*;
+import utilities.SQLHelper;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -301,6 +302,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		SQLHelper helper = new SQLHelper();
 		// open stock page
 		if (e.getActionCommand().equals("openStock")) {
 			System.out.println("Stock");
@@ -348,6 +350,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 				deleteInsurance[i].setActionCommand("save" + i);
 			} // end if
 			if (e.getActionCommand().equals("delete" + i)) {
+				helper.removeInsurance(i); // may not work
 				patient.removeInsurance(i);
 				insurancePanels[i].setVisible(false);
 			} // end if
@@ -365,6 +368,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 						notes += info[j] + " ";
 					} // end for
 					patient.getInsuranceInformation().get(i).setNotes(notes.trim());
+					helper.addInsurance(patient.getInsuranceInformation().get(i).getCompany(), patient.getInsuranceInformation().get(i).getNumber(), patient.getInsuranceInformation().get(i).getNotes(), patient.getId());
 
 					editInsurance[i].setText("Edit");
 					editInsurance[i].setActionCommand("edit" + i);

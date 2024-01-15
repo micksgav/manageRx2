@@ -1,13 +1,15 @@
-package utilities;
+	package utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import PatientManagement.Insurance;
 import PatientManagement.Patient;
 import PatientManagement.PatientList;
 import PatientManagement.Prescription;
@@ -195,14 +197,16 @@ public class SQLHelper {
 		try {
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM manageRx.PrescriptionInfo WHERE prescriptionID = " + ID);
 			Prescription temp = new Prescription();
+			String[][] dosage = new String[1][1];
 	    	temp.setPatientID(resultSet.getInt("patientID"));
 	    	temp.setRefills(resultSet.getInt("numRefills"));
 	    	temp.setQuantity(resultSet.getInt("quantity"));
-	    	temp.setDosage(new String [][] {{resultSet.getString("dosage"), "", ""}}); //fix
+	    	dosage[0][0] = resultSet.getString("dosage");
+	    	temp.setDosage(dosage); //fix
 	    	temp.setInstructions(resultSet.getString("instructions"));
 	    	temp.setDuration(resultSet.getString("prescribedDuration"));
 	    	temp.setDate(resultSet.getString("datePrescribed"));
-	    	temp.setName(resultSet.getString("drugName"));
+	    	temp.setBrandName(resultSet.getString("drugName"));
 	    	temp.setDIN(resultSet.getString("DIN"));
 	    	temp.setForm(resultSet.getString("familyDoctorAddress"));
 	    	temp.setID(resultSet.getInt("prescriptionID")); //FIX IN SQL
@@ -217,26 +221,69 @@ public class SQLHelper {
 		PrescriptionList pList = new PrescriptionList();
 		try {
 		ResultSet resultSet = statement.executeQuery("SELECT * FROM PrescriptionInfo");
-
+		String[][] dosage = new String[1][1];
         while (resultSet.next()) {
 			Prescription temp = new Prescription();
 	    	temp.setPatientID(resultSet.getInt("patientID"));
 	    	temp.setRefills(resultSet.getInt("numRefills"));
 	    	temp.setQuantity(resultSet.getInt("quantity"));
-	    	temp.setDosage(new String [][] {{resultSet.getString("dosage"), "", ""}}); //fix
+	    	dosage[0][0] = resultSet.getString("dosage");
+	    	temp.setDosage(dosage);
 	    	temp.setInstructions(resultSet.getString("instructions"));
 	    	temp.setDuration(resultSet.getString("prescribedDuration"));
 	    	temp.setDate(resultSet.getString("datePrescribed"));
-	    	temp.setName(resultSet.getString("drugName"));
+	    	temp.setBrandName(resultSet.getString("drugName"));
 	    	temp.setDIN(resultSet.getString("DIN"));
-	    	temp.setForm(resultSet.getString("familyDoctorAddress"));
-	    	temp.setID(resultSet.getInt("prescriptionID")); //FIX IN SQL
+	    	temp.setForm(resultSet.getString("form"));
+	    	temp.setID(resultSet.getInt("prescriptionID"));
+	    	temp.setCurrent(resultSet.getInt("current"));
             pList.insert(temp);
         }
 		} catch (Exception e) {
 			logErrors.log(e.getMessage() + " for getAllPrescriptions in SQLHelper");
 		}
 		return pList;
+	}
+	
+	public LinkedList<Insurance> getAllInsurance(){
+		LinkedList<Insurance> insuranceList = new LinkedList<Insurance>();
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM InsuranceInfo");
+	        while (resultSet.next()) {
+				Insurance temp = new Insurance();
+				temp.setPatientID(resultSet.getInt("patientID"));
+				temp.setCompany(resultSet.getString("company"));
+				temp.setNumber(resultSet.getInt("number"));
+				temp.setNotes(resultSet.getString("notes"));
+				temp.setID(resultSet.getInt("insuranceID"));
+	        }
+			} catch (Exception e) {
+				logErrors.log(e.getMessage() + " for getAllInsurance in SQLHelper");
+			}
+		return insuranceList;
+	}
+	
+	public int addInsurance(String company, int number, String notes, int patientID) {
+		try {
+            ResultSet resultSet = statement.executeQuery("SELECT insuranceID FROM InsuranceInfo WHERE insuranceID = (SELECT MAX(insuranceID) FROM InsuranceInfo)");
+            resultSet.next();
+            int ID = resultSet.getInt("insuranceID") + 1;
+            statement.executeUpdate("INSERT INTO insuranceInfo values ( " + patientID + " , \"" + company + "\" , " + number  + " , \"" + notes + "\" , " + ID + " )");
+            return ID;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logErrors.log(e.getMessage() + " in addPrescription in SQLHelper");
+			return -1;
+		}
+	}
+	
+	public void removeInsurance(int ID) {
+		try {
+			statement.executeUpdate("DELETE FROM InsuranceInfo WHERE insuranceID = \"" + ID + "\"");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logErrors.log(e.getMessage() + " in addPrescription in SQLHelper");
+		}
 	}
 	
 	

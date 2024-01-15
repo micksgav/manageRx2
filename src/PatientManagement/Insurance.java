@@ -14,6 +14,8 @@ public class Insurance {
 	private String company; // insurance company
 	private int insuranceNumber; // insurance number
 	private String notes; // notes about insurance
+	private int ID;
+	private int patientID;
 	
 	public Insurance(String company, int insuranceNumber, String notes) {
 		this.company = company;
@@ -49,5 +51,21 @@ public class Insurance {
 	public String getNotes() {
 		return notes;
 	} // end getNotes
+
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+	
+	public int getID() {
+		return ID;
+	}
+
+	public void setPatientID(int ID) {
+		patientID = ID;
+	}
+	
+	public int getPatientID() {
+		return patientID;
+	}
 	
 } // end Insurance
