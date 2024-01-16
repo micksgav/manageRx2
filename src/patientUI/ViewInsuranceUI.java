@@ -368,7 +368,11 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 						notes += info[j] + " ";
 					} // end for
 					patient.getInsuranceInformation().get(i).setNotes(notes.trim());
-					helper.addInsurance(patient.getInsuranceInformation().get(i).getCompany(), patient.getInsuranceInformation().get(i).getNumber(), patient.getInsuranceInformation().get(i).getNotes(), patient.getId());
+					
+					System.out.println(patient.getInsuranceInformation().get(i).getID());
+					helper.updateInsuranceBG("InsuranceInfo", "company", patient.getInsuranceInformation().get(i).getCompany(), patient.getInsuranceInformation().get(i).getID());
+					helper.updateInsuranceBG("InsuranceInfo", "number", patient.getInsuranceInformation().get(i).getNumber(), patient.getInsuranceInformation().get(i).getID());
+					helper.updateInsuranceBG("InsuranceInfo", "notes", patient.getInsuranceInformation().get(i).getNotes(), patient.getInsuranceInformation().get(i).getID());
 
 					editInsurance[i].setText("Edit");
 					editInsurance[i].setActionCommand("edit" + i);
