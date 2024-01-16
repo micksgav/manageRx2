@@ -70,6 +70,7 @@ public class TempMain {
 		PatientList patients = helper.getAllPatients();
 		PrescriptionList allScripts = helper.getAllPrescriptions();
 		LinkedList<Insurance> allInsurance = helper.getAllInsurance();
+		allScripts.atIndex(3).setCurrent(0);
 
 		for (int i = 0; i < allScripts.length(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
@@ -83,7 +84,6 @@ public class TempMain {
 				}
 			}
 		}
-		
 		for (int i = 0; i < allInsurance.size(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
 				if (patients.returnData(j).getId() == allInsurance.get(i).getPatientID()) {

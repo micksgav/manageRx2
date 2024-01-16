@@ -410,7 +410,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			} // end if
 			String keyArchive = "archive" + i; // archive command key
 			if (e.getActionCommand().equals(keyArchive)) {
-				SQLHelper.updateBG("PrescriptionInfo", "current", 0, patient.getActivePrescriptions().atIndex(i).getID());
+				SQLHelper.updatePrescriptionBG("PrescriptionInfo", "current", 0, patient.getActivePrescriptions().atIndex(i).getID());
 				patient.removeActivePrescription(patient.getActivePrescriptions().atIndex(i));
 				prescriptionPanels[i].setVisible(false);
 
@@ -426,29 +426,29 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 					String[][] drugDosage = new String[1][1]; // drug dosage
 					drugDosage[0][0] = info[4];
 					patient.getActivePrescriptions().atIndex(i).setBrandName(info[0]);
-					SQLHelper.updateBG("PrescriptionInfo", "drugName",
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "drugName",
 							patient.getActivePrescriptions().atIndex(i).getBrandName(), patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setDate(info[1]);
-					SQLHelper.updateBG("PrescriptionInfo", "datePrescribed",
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "datePrescribed",
 							patient.getActivePrescriptions().atIndex(i).getDate(), patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setRefills(Integer.parseInt(info[2]));
-					SQLHelper.updateBG("PrescriptionInfo", "numRefills",
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "numRefills",
 							patient.getActivePrescriptions().atIndex(i).getRefills(), patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setQuantity(Integer.parseInt(info[3]));
-					SQLHelper.updateBG("PrescriptionInfo", "quantity",
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "quantity",
 							patient.getActivePrescriptions().atIndex(i).getQuantity(), patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setDosage(drugDosage);
-					SQLHelper.updateBG("PrescriptionInfo", "dosage",
-							patient.getActivePrescriptions().atIndex(i).getDosage(), patient.getId());
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "dosage",
+							patient.getActivePrescriptions().atIndex(i).getDosage()[0][0], patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setDuration(info[info.length - 1]);
-					SQLHelper.updateBG("PrescriptionInfo", "prescribedDuration",
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "prescribedDuration",
 							patient.getActivePrescriptions().atIndex(i).getDuration(), patient.getId());
 					String instructions = ""; // new prescriptions
 					for (int j = 5; j <= info.length - 2; j++) {
 						instructions += info[j] + " ";
 					} // end for
 					patient.getActivePrescriptions().atIndex(i).setInstructions(instructions.trim());
-					SQLHelper.updateBG("PrescriptionInfo", "instructions",
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "instructions",
 							patient.getActivePrescriptions().atIndex(i).getInstructions(), patient.getId());
 
 					editPrescription[i].setText("Edit Prescription");

@@ -17,10 +17,11 @@ public class Insurance {
 	private int ID;
 	private int patientID;
 	
-	public Insurance(String company, int insuranceNumber, String notes) {
+	public Insurance(String company, int insuranceNumber, String notes, int id) {
 		this.company = company;
 		this.insuranceNumber = insuranceNumber;
 		this.notes = notes;
+		this.patientID = id;
 	} // end Insurance
 	
 	public Insurance() {

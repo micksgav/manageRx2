@@ -242,7 +242,7 @@ public class Patient {
 	} // end getInsuranceInformation
 
 	public void addNewInsuranceInfo(String company, int num, String notes) {
-		insuranceInformation.add(new Insurance(company, num, notes));
+		insuranceInformation.add(new Insurance(company, num, notes, id));
 	} // end addNewInsuranceInfo
 	
 	public void addNewInsuranceInfo(Insurance insurance) {
@@ -261,6 +261,10 @@ public class Patient {
 		activePrescriptions = new PrescriptionList();
 		pastPrescriptions = new PrescriptionList();
 	} // end newPrescriptionList
+	
+	public FamilyDoctor getFamilyDoctor() {
+		return familyDoctor;
+	}
 
 
 } // end Patient
