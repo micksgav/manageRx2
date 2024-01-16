@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import inventory.*;
+import utilities.logErrors;
 
 public class stockUI extends JFrame implements ActionListener {
 
@@ -30,8 +32,6 @@ public class stockUI extends JFrame implements ActionListener {
 	private JButton setThresholdButton = new JButton("Set Threshold");
 	private JButton incomingShipmentsButton = new JButton("Incoming Shipments");
 	private JButton viewInventoryButton = new JButton("View All Inventory");
-	
-	
 	
 	AllStock stock;
 	
@@ -127,7 +127,11 @@ public class stockUI extends JFrame implements ActionListener {
 			viewStock(viewStockDrugField.getText());
 		}
 		if(e.getActionCommand().equals("viewInventory")) {
-			viewInventory();
+			try {
+				viewInventory();
+			} catch (IOException e1) {
+				logErrors.log("IOException " + String.valueOf(e1));
+			}
 		}
 	}
 	
@@ -145,7 +149,8 @@ public class stockUI extends JFrame implements ActionListener {
 		System.out.println("View Incoming: ");
 	}
 	
-	private void viewInventory() {
+	private void viewInventory() throws IOException {
 		stock.viewFullInventory();
+		inventoryUI inventory = new inventoryUI(stock);
 	}
 }

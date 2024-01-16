@@ -289,8 +289,9 @@ public class AllStock {
 	* Dependencies: DrugStockLinkedList
 	* Throws/Exceptions: N/A
     */
-	public void viewFullInventory() {
-		drugsList.viewFullInventory();
+	public String[][] viewFullInventory() {
+		String[][] fullInventory = drugsList.viewFullInventory();
+		return fullInventory;
 	} // end viewFullInventory
 	
 	public void changeThreshold(String DIN, int newThreshold) {
