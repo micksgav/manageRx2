@@ -261,6 +261,31 @@ public class DrugStockLinkedList {
 		} // end if
 	} // end viewStockUsage
 	
+	public String getDINForName(String name) {
+		String drugDIN = "";
+		Node runner;
+		runner = head;
+		while(runner != null) {
+			if(runner.drugStock.getDrugName().toLowerCase().equals(name.toLowerCase())) {
+				drugDIN = runner.drugStock.getDrugDIN();
+			}
+			runner = runner.next;
+		}
+		return drugDIN;
+	}
+	
+	public void setNewThreshold(String DIN, int newThreshold) {
+		Node runner;
+		runner = head;
+		while(runner != null) {
+			if(runner.drugStock.getDrugDIN().equals(DIN)) {
+				runner.drugStock.setStockThreshold(newThreshold);
+				System.out.println("new threshold for " + runner.drugStock.getDrugName() + " (" + runner.drugStock.getDrugDIN() + ")");
+			}
+			runner = runner.next;
+		}
+	}
+	
 	/** Method Name: viewFullInventory
 	* @Author Christina Wong 
 	* @Date January 12, 2024

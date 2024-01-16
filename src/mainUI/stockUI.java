@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import inventory.*;
 
 public class stockUI extends JFrame implements ActionListener {
 
@@ -28,8 +29,13 @@ public class stockUI extends JFrame implements ActionListener {
 	private JButton viewStockButton = new JButton("View Stock");
 	private JButton setThresholdButton = new JButton("Set Threshold");
 	private JButton incomingShipmentsButton = new JButton("Incoming Shipments");
+	private JButton viewInventoryButton = new JButton("View All Inventory");
 	
-	public stockUI() {
+	
+	
+	AllStock stock;
+	
+	public stockUI(AllStock newStock) {
 		/*start*/
 		super("Stock - ManageRx");
 		setLayout(new BorderLayout());
@@ -38,7 +44,7 @@ public class stockUI extends JFrame implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();//start gridbagconstraints
 		gbc.insets = new Insets(10, 10, 10, 10);//set insets 
 		
-		
+		this.stock = newStock;
 		
 		/*content*/
 		
@@ -86,6 +92,14 @@ public class stockUI extends JFrame implements ActionListener {
 		setThresholdButton.setActionCommand("setThreshold");
 		stockPanel.add(setThresholdButton, gbc);
 		
+		// new
+		gbc.gridx = 3;
+		gbc.gridy = 0;
+		viewInventoryButton.addActionListener(this);
+		viewInventoryButton.setActionCommand("viewInventory");
+		stockPanel.add(viewInventoryButton, gbc);
+		
+		
 		//view incoming drugs
 		gbc.gridx = 5;
 		gbc.gridy = 0;
@@ -112,11 +126,26 @@ public class stockUI extends JFrame implements ActionListener {
 		if(e.getActionCommand().equals("viewStock")) {
 			viewStock(viewStockDrugField.getText());
 		}
+		if(e.getActionCommand().equals("viewInventory")) {
+			viewInventory();
+		}
 	}
 	
-	private void viewStock(String drug) {System.out.println("View Stock: " + drug);}
+	private void viewStock(String drug) {
+		System.out.println("View Stock: " + drug);
+		stock.viewUsage(drug);
+	}
+
+	private void setThreshold(String drug, int threshold) {
+		System.out.println("Set Threshold: " + drug + threshold);
+		stock.changeThreshold(drug, threshold);
+	}
+
+	private void viewIncoming() {
+		System.out.println("View Incoming: ");
+	}
 	
-	private void setThreshold(String drug, int threshold) {System.out.println("Set Threshold: " + drug + threshold);}
-	
-	private void viewIncoming() {System.out.println("View Incoming: ");}
+	private void viewInventory() {
+		stock.viewFullInventory();
+	}
 }

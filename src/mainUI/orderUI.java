@@ -20,6 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import inventory.*;
 
 public class orderUI extends JFrame implements ActionListener {
 

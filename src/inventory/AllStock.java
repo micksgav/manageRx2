@@ -273,6 +273,9 @@ public class AllStock {
 	* Throws/Exceptions: N/A
     */
 	public void viewUsage(String DIN) {
+		if(isInteger(DIN) == false) {
+			DIN = drugsList.getDINForName(DIN);
+		}
 		drugsList.viewStockUsage(DIN);
 	} // end viewUsage
 	
@@ -289,5 +292,12 @@ public class AllStock {
 	public void viewFullInventory() {
 		drugsList.viewFullInventory();
 	} // end viewFullInventory
+	
+	public void changeThreshold(String DIN, int newThreshold) {
+		if(isInteger(DIN) == false) {
+			DIN = drugsList.getDINForName(DIN);
+		}
+		drugsList.setNewThreshold(DIN, newThreshold);
+	}
 	
 } // end AllStock
