@@ -5,6 +5,8 @@ import swingHelper.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +15,14 @@ public class mainUI extends JFrame implements ActionListener {
 
 	//panels
 	private JPanel headerPanel = new JPanel(new FlowLayout());
-	private JPanel buttonPanel = new JPanel(new GridBagLayout());
+	private JPanel bPanel = new JPanel(new GridBagLayout());
+	
 	
 	//buttons
     private JButton btnOpenStock;
     private JButton btnOpenOrder;
     private JButton btnOpenPatientManager;
+    private JButton backButton; // go back to previous page
     
     //icons
     public AppIcon stockIcon = new AppIcon("icons/box.png");//icon for stock
@@ -28,10 +32,16 @@ public class mainUI extends JFrame implements ActionListener {
     
     
     public mainUI() {
-        super("ManageRx");
-        setSize(600, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+    	FlatLightLaf.setup();
+		setTitle("ManageRx");
+		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds(); // dimensions of screen from
+											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
+		// screenDims.width /= 1.5;
+		// screenDims.height /= 1.5;
+		this.setSize(new Dimension(screenDims.width, screenDims.height));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new BorderLayout());
 
         stockIcon = stockIcon.setScale(0.12);
         orderIcon = orderIcon.setScale(0.12);
@@ -54,7 +64,7 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenStock.setActionCommand("openStock");
         btnOpenStock.addActionListener(this);
         btnOpenStock.setPreferredSize(new Dimension(180, 100));
-        this.buttonPanel.add(btnOpenStock, gbc);
+        this.bPanel.add(btnOpenStock, gbc);
         
         
         gbc.gridx = 1;
@@ -64,7 +74,7 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenOrder.setActionCommand("openOrder");
         btnOpenOrder.addActionListener(this);
         btnOpenOrder.setPreferredSize(new Dimension(180, 100));
-        this.buttonPanel.add(btnOpenOrder, gbc);
+        this.bPanel.add(btnOpenOrder, gbc);
         
         
         gbc.gridx = 2;
@@ -74,10 +84,10 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenPatientManager.setActionCommand("openPatientManager");
         btnOpenPatientManager.addActionListener(this);
         btnOpenPatientManager.setPreferredSize(new Dimension(180, 100));
-        this.buttonPanel.add(btnOpenPatientManager, gbc);
+        this.bPanel.add(btnOpenPatientManager, gbc);
         
         add(this.headerPanel, BorderLayout.NORTH);
-        add(this.buttonPanel, BorderLayout.CENTER);
+        add(this.bPanel, BorderLayout.CENTER);
         
     }
 
