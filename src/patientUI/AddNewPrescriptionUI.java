@@ -470,7 +470,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				String[][] drugDosage = new String[1][1];
 				drugDosage[0][0] = dosageField.getText().trim();
 				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(),
-						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage);
+						null, null, null, null, formField.getText().trim(), drugDosage);
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),
 						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
@@ -492,19 +492,18 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 			// save and add another button pressed
 		if (e.getActionCommand().equals("Save and Add Another Prescription")) {
 			// make sure all field have been filled in
-			if (atcField.getText().length() > 0 && rxcuiField.getText().length() > 0 && dinField.getText().length() > 0
+			if (dinField.getText().length() > 0
 					&& datePrescribedField.getText().length() > 0 && numRefillsField.getText().length() > 0
 					&& quantityField.getText().length() > 0 && dosageField.getText().length() > 0
 					&& instructionsArea.getText().length() > 0 && prescribedDurationField.getText().length() > 0
-					&& formField.getText().length() > 0 && classDrugField.getText().length() > 0
-					&& dpcField.getText().length() > 0) {
+					&& formField.getText().length() > 0) {
 				// create a drug and a prescription, then add to patient
 				String[][] drugDosage = new String[1][1];
 				drugDosage[0][0] = dosageField.getText().trim();
 				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(),
 						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage);
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
-						Integer.parseInt(numRefillsField.getText().trim()),
+						Integer.parseInt(numRefillsField.getText().trim()),	
 						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
 				newScript.setID(patient.getId());

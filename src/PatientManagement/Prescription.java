@@ -31,10 +31,12 @@ public class Prescription {
 		this.dosage = dosage;
 		this.instructions = instructions;
 		this.prescribedDuration = prescribedDuration;
+		current = true;
 	} // end Prescription
 	
 	public Prescription(){
 		drug = new Drug();
+		current = true;
 	} // end Prescription
 	
 	public Drug getDrug() {

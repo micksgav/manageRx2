@@ -334,7 +334,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		familyDoc.setFont(nameFont);
 		mainPanel.add(familyDoc, familyDocTitleConstraints);
 
-		docNameField = new JTextField(patient.getFamilyDoctorName());
+		docNameField = new JTextField(patient.getFamilyDoctor().getName());
 		docNameField.setEditable(false);
 		docNameField.setBorder(textBoxBorder);
 		docNameLabel.setFont(genFont);
@@ -343,7 +343,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		rightMain.add(docNameLabel);
 		rightMain.add(docNameField);
 
-		docPhoneNumberField = new JTextField(String.valueOf(patient.getFamilyDoctorNumber()));
+		docPhoneNumberField = new JTextField(String.valueOf(patient.getFamilyDoctor().getPhoneNumber()));
 		docPhoneNumberField.setEditable(false);
 		docPhoneNumberField.setBorder(textBoxBorder);
 		docPhoneNumberLabel.setFont(genFont);
@@ -352,7 +352,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		rightMain.add(docPhoneNumberLabel);
 		rightMain.add(docPhoneNumberField);
 
-		docAddressField = new JTextField(patient.getFamilyDoctorAddress());
+		docAddressField = new JTextField(patient.getFamilyDoctor().getAddress());
 		docAddressField.setEditable(false);
 		docAddressField.setBorder(textBoxBorder);
 		docAddressLabel.setFont(genFont);
