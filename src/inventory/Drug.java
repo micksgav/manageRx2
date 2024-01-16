@@ -3,7 +3,7 @@
  @Name: Drug
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : December 22, 2023
+ @Modified Date	   : January 10, 2024
    @Description    : 
    
 ***********************************************
@@ -24,9 +24,9 @@ public class Drug {
 
 	private final String description; // drug description
 
-	private final String form; // drug form
+	private String form; // drug form
 
-	private final String[][] dosage; // dosage of drug
+	private final String[][] dosage; // dosage of drug, column 0 is dosage amount, column 1 is dosage unit
 
 	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String[][] dosage) {
 		drugName = brandName;
@@ -58,6 +58,14 @@ public class Drug {
 	public void setDrugName(String brandName) {
 		this.drugName = brandName;
 	} // end setDrugNameBrand
+	
+	public String getForm() {
+		return form;
+	}
+	
+	public void setForm(String form) {
+		this.form = form;
+	}
 
 	public String getDrugClass() {
 		return drugClass;
@@ -76,7 +84,10 @@ public class Drug {
 	} // end getSideEffects
 
 	public void setSideEffects(String[] drugSideEffects) {
-		this.sideEffects = drugSideEffects;
+		this.sideEffects = new String[drugSideEffects.length];
+		for(int i = 0; i < drugSideEffects.length; i++) {
+			this.sideEffects[i] = drugSideEffects[i];
+		} // end for
 	} // end setSideEffects
 
 	// returns formatted drug DIN

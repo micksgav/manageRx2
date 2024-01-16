@@ -1,3 +1,13 @@
+
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : December 23, 2023
+ * @Last Modified: December 16, 2023
+ * @Description: View archived prescriptions page in the patient management section of ManageRx
+ ***********************************************
+ */
+
 package patientUI;
 
 import swingHelper.*;
@@ -15,26 +25,18 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
-	private JButton openSettings = new JButton();
-	private JButton openPatientManager = new JButton();
-	private JButton openStock = new JButton();
-	private JButton openOrder = new JButton();
-	private loginUI login = new loginUI();
-	private settingsUI settings = new settingsUI();
-	private patientManagerUI patientManager = new patientManagerUI();
-	// private StockUI stock = new StockUI();
-	// private OrderUI order = new OrderUI();
 
+	// patient information
 	Patient patient; // patient whose prescriptions are being viewed
-	PatientList patients;
+	PatientList patients; // list of all patients
 
 	// panels
 	private JPanel buttonPanel; // header panel containing logo and buttons
 	private JPanel mainPanel; // panel cotaining all prescription information
 	private JPanel[] prescriptionPanels; // panels containing individual prescription info
-	private JPanel[] editArchive; // panel containing options to edit or archive prescription
-	private JPanel mainWithTopBar; // panel containing mainPanel and patient name, title, and add prescription button
-	private JPanel headerButtons;
+	private JPanel mainWithTopBar; // panel containing mainPanel and patient name, title, and add prescription
+									// button
+	private JPanel headerButtons; // buttons other than back for header
 
 	// header buttons
 	private JButton btnOpenStock; // open stock page
@@ -43,22 +45,25 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	private JButton btnOpenPatientManager; // open patient manager page
 
 	// main buttons
-	private JButton[] editPrescription; // edit a prescription
 	private JButton viewActive; // view active prescriptions
-	private JButton backButton;
+	private JButton backButton; // back button
 
 	// text elements
 	private JLabel patientName; // patient name
 	private JTextArea[] prescriptionInfo; // prescription information
 	private JLabel archivedPrescriptions = new JLabel("Archived Prescriptions"); // title label
-	String[] drugBrandName;
+	String[] drugBrandName; // array containing all archived drug names
 	String[] drugGenName;
-	String[] datePrescribed;
-	String[] numRefills;
-	String[] quantity;
-	String[] dosage;
-	String[] instructions;
-	String[] prescribedDuration;
+	String[] datePrescribed; // array containing all archived dates prescribed
+	String[] numRefills; // array containing all archived number of refills
+	String[] quantity; // array containing all archived quantities
+	String[] dosage; // array containing all archived dosages
+	String[] instructions; // array contaiing all archived instructions
+	String[] prescribedDuration; // array containing all archived prescribed durations
+
+	// last page
+	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the
+					// last page was EditPatientInfoUI
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -66,21 +71,22 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public ArchivedPrescriptionsUI(String title, Patient patient, PatientList patients) {
+	public ArchivedPrescriptionsUI(String title, Patient patient, PatientList patients, boolean last) {
+
+		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
 		setTitle(title);
-		
-		// set size of window
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
-				.getMaximumWindowBounds(); // dimensions of screen from https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
-		// Rectangle screenDims = new Rectangle(1366, 768);
+				.getMaximumWindowBounds(); // dimensions of screen from
+											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		
+
 		// instantiate variables
 		this.patient = patient;
 		this.patients = patients;
+		this.last = last;
 		drugBrandName = new String[patient.getArchivedPrescriptions().length()];
 		drugGenName = new String[patient.getArchivedPrescriptions().length()];
 		datePrescribed = new String[patient.getArchivedPrescriptions().length()];
@@ -90,19 +96,18 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		instructions = new String[patient.getArchivedPrescriptions().length()];
 		prescribedDuration = new String[patient.getArchivedPrescriptions().length()];
 		prescriptionPanels = new JPanel[patient.getArchivedPrescriptions().length()];
-		
+
 		for (int i = 0; i < drugBrandName.length; i++) {
 			drugBrandName[i] = "Brand Name: " + patient.getArchivedPrescriptions().atIndex(i).getBrandName();
-			// drugGenName[i] = new JLabel("Generic Name: " +
-			// patient.getArchivedPrescriptions().atIndex(i).getGenName());
 			datePrescribed[i] = "Date Prescribed: " + patient.getArchivedPrescriptions().atIndex(i).getDate();
 			numRefills[i] = "Number of Refills: "
 					+ String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getRefills());
 			quantity[i] = "Quantity: " + String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getQuantity());
-			dosage[i] = "Dosage: " + String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getDosage());
+			dosage[i] = "Dosage: " + String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getDosage()[0][0]);
 			instructions[i] = "Instructions: " + patient.getArchivedPrescriptions().atIndex(i).getInstructions();
-			prescribedDuration[i] = "Prescribed Duration: " + patient.getArchivedPrescriptions().atIndex(i).getDuration();
-		}
+			prescribedDuration[i] = "Prescribed Duration: "
+					+ patient.getArchivedPrescriptions().atIndex(i).getDuration();
+		} // end for
 
 		// setup all buttons for the header
 		stockIcon = stockIcon.setScale(0.12);
@@ -136,11 +141,12 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
 		btnOpenPatientManager.addActionListener(this);
-		
+
+		// add back button to header
 		backButton = new JButton("Back");
 		backButton.addActionListener(this);
 
-		GridBagConstraints backConstraints = new GridBagConstraints();
+		GridBagConstraints backConstraints = new GridBagConstraints(); // constraints for back button
 
 		backConstraints.gridx = 0;
 		backConstraints.gridy = 0;
@@ -150,17 +156,19 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		backConstraints.weightx = 0.45;
 		backConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, 0);
 		this.buttonPanel.add(backButton, backConstraints);
-		
+
+		// add all buttons other than back to header
 		headerButtons = new JPanel(new FlowLayout());
-		
+
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
 		headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
-		
-		GridBagConstraints overallButtonConstraints = new GridBagConstraints();
-		
+
+		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
+																				// back
+
 		overallButtonConstraints.gridx = 2;
 		overallButtonConstraints.gridy = 0;
 		overallButtonConstraints.gridwidth = 1;
@@ -176,17 +184,31 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		// fonts and borders
 		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font, used for most elements
 		Font nameFont = new Font("Arial", Font.PLAIN, 35); // larger font, mostly used for names and titles
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // outer border for text boxes and buttons https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // outer
+																													// border
+																													// for
+																													// text
+																													// boxes
+																													// and
+																													// buttons
+																													// https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
 		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
-				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01)); // inner border for text boxes and buttons
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding); // overall border for text boxes and buttons
-		Border simpleLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // simple line border used for mainPanel
+				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01)); // inner border for text boxes and
+																					// buttons
+		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding); // overall border for
+																								// text boxes and
+																								// buttons
+		Border simpleLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // simple
+																											// line
+																											// border
+																											// used for
+																											// mainPanel
 
-		// panel to hold name, create button, and all prescriptions
+		// panel containing everything below header
 		mainWithTopBar = new JPanel(new GridBagLayout());
 
 		// add patient name to screen
-		GridBagConstraints nameConstraints = new GridBagConstraints();
+		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient name
 
 		nameConstraints.fill = GridBagConstraints.BOTH;
 		nameConstraints.gridx = 0;
@@ -199,7 +221,7 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		mainWithTopBar.add(patientName, nameConstraints);
 
 		// add page title to screen
-		GridBagConstraints titleConstraints = new GridBagConstraints();
+		GridBagConstraints titleConstraints = new GridBagConstraints(); // constraints for page title
 
 		titleConstraints.fill = GridBagConstraints.BOTH;
 		titleConstraints.gridx = 0;
@@ -211,14 +233,14 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		archivedPrescriptions.setHorizontalAlignment(JLabel.LEFT);
 		mainWithTopBar.add(archivedPrescriptions, titleConstraints);
 
+		// add archived prescription panels
 
 		// generate inner panels
 		for (int i = 0; i < prescriptionPanels.length; i++) {
 			prescriptionPanels[i] = new JPanel(new GridLayout(1, 1));
-		}
+		} // end for
 
 		prescriptionInfo = new JTextArea[drugBrandName.length];
-		
 
 		for (int i = 0; i < drugBrandName.length; i++) {
 			prescriptionInfo[i] = new JTextArea();
@@ -228,28 +250,30 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 			prescriptionPanels[i].setBorder(simpleLine);
 			prescriptionInfo[i].setEditable(false);
 			prescriptionPanels[i].add(prescriptionInfo[i]);
-		}
+		} // end for
 
 		// set height of mainPanel grid
 		if ((double) drugBrandName.length / 2 - (int) drugBrandName.length / 2 < 0.5) {
 			mainPanel = new JPanel(new GridLayout((int) Math.floor((double) drugBrandName.length / 2), 2,
 					(int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01)));
-		} else {
+		} // end if
+		else {
 			mainPanel = new JPanel(new GridLayout((int) Math.ceil((double) drugBrandName.length / 2), 2,
 					(int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01)));
-		}
+		} // end else
 
 		// add inner elements to main panel
 		for (int i = 0; i < prescriptionPanels.length; i++) {
 			mainPanel.add(prescriptionPanels[i]);
-		}
+		} // end for
 
 		mainPanel.setBorder(textBoxBorder);
-		
-		JScrollPane mainScroll = new JScrollPane(mainPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		GridBagConstraints prescriptionConstraints = new GridBagConstraints();
+		JScrollPane mainScroll = new JScrollPane(mainPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // scroll bar for main panel
+
+		GridBagConstraints prescriptionConstraints = new GridBagConstraints(); // constraints for prescription info
+																				// panels
 
 		prescriptionConstraints.fill = GridBagConstraints.BOTH;
 		prescriptionConstraints.gridx = 0;
@@ -258,51 +282,60 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		prescriptionConstraints.anchor = GridBagConstraints.NORTH;
 		prescriptionConstraints.ipady = (int) (screenDims.height * 0.7);
 		mainWithTopBar.add(mainScroll, prescriptionConstraints);
-		
+
 		viewActive = new JButton("View Active Prescriptions");
 		viewActive.addActionListener(this);
 		viewActive.setBorder(textBoxBorder);
 		viewActive.setFont(genFont);
-		
-		GridBagConstraints viewActivePrescriptionsConstraints = new GridBagConstraints();
-		
+
+		GridBagConstraints viewActivePrescriptionsConstraints = new GridBagConstraints(); // constraints for view active
+																							// button
+
 		viewActivePrescriptionsConstraints.fill = GridBagConstraints.BOTH;
 		viewActivePrescriptionsConstraints.gridx = 0;
 		viewActivePrescriptionsConstraints.gridy = 3;
 		viewActivePrescriptionsConstraints.gridwidth = 1;
 		viewActivePrescriptionsConstraints.anchor = GridBagConstraints.WEST;
-		viewActivePrescriptionsConstraints.insets = new Insets((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01), 0, (int) (screenDims.width *0.5));
+		viewActivePrescriptionsConstraints.insets = new Insets((int) (screenDims.height * 0.01),
+				(int) (screenDims.width * 0.01), 0, (int) (screenDims.width * 0.5));
 		mainWithTopBar.add(viewActive, viewActivePrescriptionsConstraints);
 
 		add(mainWithTopBar);
-	}
+	} // end ArchivedPrescriptionsUI
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// open stock page
 		if (e.getActionCommand().equals("openStock")) {
 			System.out.println("Stock");
-		}
+		} // end if
+			// open order page
 		if (e.getActionCommand().equals("openOrder")) {
 			System.out.println("Order");
-		}
+		} // end if
+			// open settings page
 		if (e.getActionCommand().equals("openSettings")) {
 			System.out.println("Settings");
-		}
+		} // end if
+			// open patient management page
 		if (e.getActionCommand().equals("openPatientManager")) {
 			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
-		}
+		} // end if
+			// open active prescriptions page
 		if (e.getActionCommand().equals("View Active Prescriptions")) {
-			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients);
+			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
 			openCurrent.setVisible(true);
 			setVisible(false);
-		}
+		} // end if
+			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
-			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients);
+			if (last) {
+			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
 			openCurrent.setVisible(true);
 			setVisible(false);
-		}
-
-	}
-}
+			}
+		} // end if
+	} // end actionPerformed
+} // end ArchivedPrescriptions
