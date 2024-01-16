@@ -82,13 +82,15 @@ public class SQLHelper {
 		});
 	}
 
-	public void addPrescriptionBG(Prescription p) {
+	public int addPrescriptionBG(Prescription p) {
 		service.submit(new Runnable() {
 			public void run() {
 				IDnum = addPrescription(p);
-				System.out.println("prescription added: " + IDnum);
+				p.setID(IDnum);
+				System.out.println("prescription added: " + IDnum);			
 			}
 		});
+		return p.getID();
 	}
 
 	// table = table name, column = column name, obj = value to update to (String or
@@ -164,12 +166,9 @@ public class SQLHelper {
 		String familyDoctorFax = "test";
 		String gender = "test";
 		double weight = 100.00;
+		int ID = p.getId();
 
 		try {
-			ResultSet resultSet = statement
-					.executeQuery("SELECT ID FROM PatientInfo WHERE ID = (SELECT MAX(ID) FROM PatientInfo)");
-			resultSet.next();
-			int ID = resultSet.getInt("ID") + 1;
 			statement.executeUpdate("INSERT INTO PatientInfo values ( " + ID + " , \"" + name + "\" , " + birthDay
 					+ " , " + birthMonth + " , " + birthYear + " , \"" + address + "\" , \"" + phoneNumber + "\" , \""
 					+ email + "\" , \"" + healthCard + "\" , \"" + additionalNotes + "\" , \"" + familyDoctorName
@@ -240,7 +239,7 @@ public class SQLHelper {
 	}
 
 	public int addPrescription(Prescription p) {
-		int patientID = p.getID();
+		int patientID = p.getPatientID();
 		int numRefills = p.getRefills();
 		int quantity = p.getQuantity();
 		String dosage = p.getDosage()[0][0]; // fix array stuff
