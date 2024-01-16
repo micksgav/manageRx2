@@ -501,14 +501,14 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				String[][] drugDosage = new String[1][1];
 				drugDosage[0][0] = dosageField.getText().trim();
 				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(),
-						classDrugField.getText().trim(), null, null, null, formField.getText().trim(), drugDosage);
+						null, null, null, null, formField.getText().trim(), drugDosage);
 				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 						Integer.parseInt(numRefillsField.getText().trim()),	
 						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
 						prescribedDurationField.getText().trim());
-				newScript.setID(patient.getId());
+				newScript.setPatientID(patient.getId());
 				patient.addActivePrescription(newScript);
-				helper.addPrescriptionBG(newScript);
+				newScript.setID(helper.addPrescriptionBG(newScript));
 
 				// open a new add prescription window
 				AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last);
