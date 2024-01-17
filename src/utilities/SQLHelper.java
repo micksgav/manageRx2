@@ -249,6 +249,10 @@ public class SQLHelper {
 		String drugName = p.getName();
 		String DIN = p.getDIN();
 		String form = p.getForm(); // fix
+		String docName = p.getDocName();
+		String docAddress = p.getDocAddress();
+		String docPhone = p.getDocPhone();
+		String docFax = p.getDocFax();
 		boolean current = p.getCurrent();
 		int curr;
 		if (current) {
@@ -266,7 +270,7 @@ public class SQLHelper {
 			statement.executeUpdate("INSERT INTO PrescriptionInfo values ( " + patientID + " , \"" + numRefills
 					+ "\" , " + quantity + " , \"" + dosage + "\" , \"" + instructions + "\" , \"" + prescribedDuration
 					+ "\" , \"" + datePrescribed + "\" , \"" + drugName + "\" , \"" + DIN + "\" , \"" + form + "\" , "
-					+ ID + " , " + curr + " )");
+					+ ID + " , " + curr + " , \"" + docName + "\" , \"" + docAddress + "\" , \"" + docPhone + "\" , \"" + docFax + "\")");
 			return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -365,7 +369,7 @@ public class SQLHelper {
 
 	public void removeInsurance(int ID) {
 		try {
-			statement.executeUpdate("DELETE FROM InsuranceInfo WHERE insuranceID = \"" + ID + "\"");
+			statement.executeUpdate("DELETE FROM InsuranceInfo WHERE insuranceID = " + ID);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logErrors.log(e.getMessage() + " in addPrescription in SQLHelper");
