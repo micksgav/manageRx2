@@ -85,6 +85,14 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JLabel docAddressLabel = new JLabel("Address"); // family doc address label
 	private JTextField docAddressField; // family doc address field
 	private JLabel patientName; // patient name
+	private JLabel weightLabel = new JLabel("Weight");
+	private JTextField weightField;
+	private JLabel genderLabel = new JLabel("Gender");
+	private JTextField genderField;
+	private JLabel docFaxLabel = new JLabel("Fax Number");
+	private JTextField docFaxField;
+	
+	
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -211,7 +219,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		mainPanel.add(patientName, nameConstraints);
 
 		// add left elements
-		leftMain = new JPanel(new GridLayout(8, 1));
+		leftMain = new JPanel(new GridLayout(9, 1, 0, (int) (screenDims.height * 0.01)));
 
 		dateOfBirthField = new JTextField(patient.getBirthday());
 		dateOfBirthField.setEditable(false);
@@ -248,6 +256,38 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		phoneField.setBackground(textBoxFill);
 		leftMain.add(phoneLabel);
 		leftMain.add(phoneField);
+		
+		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
+
+		genderField = new JTextField(patient.getGender());
+		genderField.setEditable(false);
+		genderField.setBorder(textBoxBorder);
+		genderLabel.setFont(genFont);
+		genderField.setFont(genFont);
+		genderField.setBackground(textBoxFill);
+		genderLabel.setHorizontalAlignment(JLabel.RIGHT);
+		weightGenderGrid.add(genderLabel);
+		weightGenderGrid.add(genderField);
+
+		weightField = new JTextField(String.valueOf(patient.getWeight()));
+		weightField.setEditable(false);
+		weightField.setBorder(textBoxBorder);
+		weightLabel.setFont(genFont);
+		weightField.setFont(genFont);
+		weightField.setBackground(textBoxFill);
+		weightLabel.setHorizontalAlignment(JLabel.RIGHT);
+		weightGenderGrid.add(weightLabel);
+		weightGenderGrid.add(weightField);
+
+		leftMain.add(weightGenderGrid);
+
+		// fix sizing glitch from
+		// https://stackoverflow.com/questions/4061010/setmaximumsize-not-working-in-java
+		leftMain.setMaximumSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.57)));
+		leftMain.setPreferredSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.57)));
+		leftMain.setMinimumSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.57)));
+		leftMain.setSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.57)));
+		leftMain.revalidate();
 
 		GridBagConstraints lConstraints = new GridBagConstraints(); // constraints for left panel
 
@@ -321,7 +361,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		mainPanel.add(midMain, mConstraints);
 
 		// add right panel elements
-		rightMain = new JPanel(new GridLayout(6, 1));
+		rightMain = new JPanel(new GridLayout(8, 1));
 
 		GridBagConstraints familyDocTitleConstraints = new GridBagConstraints(); // constraints for family doctor title
 
@@ -343,7 +383,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		rightMain.add(docNameLabel);
 		rightMain.add(docNameField);
 
-		docPhoneNumberField = new JTextField(String.valueOf(patient.getFamilyDoctor().getPhoneNumber()));
+		docPhoneNumberField = new JTextField(patient.getFamilyDoctor().getPhoneNumber());
 		docPhoneNumberField.setEditable(false);
 		docPhoneNumberField.setBorder(textBoxBorder);
 		docPhoneNumberLabel.setFont(genFont);
@@ -351,6 +391,15 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		docPhoneNumberField.setBackground(textBoxFill);
 		rightMain.add(docPhoneNumberLabel);
 		rightMain.add(docPhoneNumberField);
+		
+		docFaxField = new JTextField(patient.getFamilyDoctor().getFax());
+		docFaxField.setBackground(textBoxFill);
+		docFaxField.setEditable(false);
+		docFaxField.setBorder(textBoxBorder);
+		docFaxLabel.setFont(genFont);
+		docFaxField.setFont(genFont);
+		rightMain.add(docFaxLabel);
+		rightMain.add(docFaxField);
 
 		docAddressField = new JTextField(patient.getFamilyDoctor().getAddress());
 		docAddressField.setEditable(false);
@@ -360,6 +409,8 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		docAddressField.setBackground(textBoxFill);
 		rightMain.add(docAddressLabel);
 		rightMain.add(docAddressField);
+		
+		rightMain.setBorder(textBoxBorder);
 
 		GridBagConstraints rConstraints = new GridBagConstraints(); // constraints for right panel
 

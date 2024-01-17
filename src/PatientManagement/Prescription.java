@@ -26,6 +26,7 @@ public class Prescription {
 	private String docPrescribedAddress;
 	private String docPrescribedPhone;
 	private String docPrescribedFax;
+	private boolean delete;
 	
 	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String[][] dosage, String instructions, String prescribedDuration, String docPrescribedName, String docPrescribedAddress, String docPrescribedPhone, String docPrescribedFax) {
 		this.drug = drug;
@@ -192,6 +193,14 @@ public class Prescription {
 	
 	public boolean getCurrent() {
 		return current;
+	}
+	
+	public boolean getDelete() {
+		return delete;
+	}
+	
+	public void setDelete(boolean delete) {
+		this.delete = delete;
 	}
 	
 } // end Prescription
