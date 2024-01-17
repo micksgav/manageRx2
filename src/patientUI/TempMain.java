@@ -68,6 +68,7 @@ public class TempMain {
 		SQLHelper helper = new SQLHelper();
 
 		PatientList patients = helper.getAllPatients();
+		AllStock stock = new AllStock();
 		PrescriptionList allScripts = helper.getAllPrescriptions();
 		LinkedList<Insurance> allInsurance = helper.getAllInsurance();
 

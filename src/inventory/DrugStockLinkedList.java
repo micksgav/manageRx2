@@ -261,6 +261,31 @@ public class DrugStockLinkedList {
 		} // end if
 	} // end viewStockUsage
 	
+	public String getDINForName(String name) {
+		String drugDIN = "";
+		Node runner;
+		runner = head;
+		while(runner != null) {
+			if(runner.drugStock.getDrugName().toLowerCase().equals(name.toLowerCase())) {
+				drugDIN = runner.drugStock.getDrugDIN();
+			}
+			runner = runner.next;
+		}
+		return drugDIN;
+	}
+	
+	public void setNewThreshold(String DIN, int newThreshold) {
+		Node runner;
+		runner = head;
+		while(runner != null) {
+			if(runner.drugStock.getDrugDIN().equals(DIN)) {
+				runner.drugStock.setStockThreshold(newThreshold);
+				System.out.println("new threshold for " + runner.drugStock.getDrugName() + " (" + runner.drugStock.getDrugDIN() + ")");
+			}
+			runner = runner.next;
+		}
+	}
+	
 	/** Method Name: viewFullInventory
 	* @Author Christina Wong 
 	* @Date January 12, 2024
@@ -271,21 +296,47 @@ public class DrugStockLinkedList {
 	* Dependencies: DrugStock
 	* Throws/Exceptions: N/A
     */
-	public void viewFullInventory() {
+	public String[][] viewFullInventory() {
+		int nodeCount = countNodes();
+		String[][] allInventory = new String[nodeCount][3];
+		//allInventory[0][0] = "Drug Name:\t\tDIN:\t\tCurrent Stock:";
+		int lineCount = 0;
 		Node runner;
 		runner = head;
 		System.out.println("INVENTORY:");
 		System.out.println("Drug Name:\t\tDIN:\t\tCurrent Stock:");
 		while(runner != null) {
+			allInventory[lineCount][0] = runner.drugStock.getDrugName();
 			System.out.print(runner.drugStock.getDrugName() + "\t\t");
-			if(runner.drugStock.getDrugName().length() < 8)
+			if(runner.drugStock.getDrugName().length() < 8) {
 				System.out.print("\t");
+			}
+			allInventory[lineCount][1] = runner.drugStock.getDrugDIN();
+			allInventory[lineCount][2] = String.valueOf(runner.drugStock.getNumInStock());
 			System.out.print(runner.drugStock.getDrugDIN() + "\t");
 			System.out.print(runner.drugStock.getNumInStock());
 			System.out.println();			
+			
+			lineCount++;
 			runner = runner.next;
 		} // end while
+		
+		return allInventory;
 	} // end viewFullInventory
+	
+	
+	public int countNodes() {
+		int count = 0;;
+		Node runner;
+		runner = head;
+		while(runner != null) {
+			count++;
+			runner = runner.next;
+		}
+		
+		
+		return count;
+	}
 	
 	// not sure if we will need this
     public DrugStock[] getElements() {
