@@ -16,6 +16,7 @@ public class Insurance {
 	private String notes; // notes about insurance
 	private int ID;
 	private int patientID;
+	private boolean delete;
 	
 	public Insurance(String company, int insuranceNumber, String notes, int id) {
 		this.company = company;
@@ -67,6 +68,14 @@ public class Insurance {
 	
 	public int getPatientID() {
 		return patientID;
+	}
+	
+	public boolean getDelete() {
+		return delete;
+	}
+	
+	public void setDelete(boolean delete) {
+		this.delete = delete;
 	}
 	
 } // end Insurance

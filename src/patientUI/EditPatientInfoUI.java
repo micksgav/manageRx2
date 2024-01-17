@@ -54,7 +54,7 @@ import mainUI.loginUI;
 import mainUI.settingsUI;
 import swingHelper.AppIcon;
 
-public class EditPatientInfoUI extends JFrame implements ActionListener, FocusListener{
+public class EditPatientInfoUI extends JFrame implements ActionListener, FocusListener {
 
 	// patient information
 	private Patient patient; // patient used if editing a current patient
@@ -108,11 +108,17 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JTextField docNameField; // doctor name field
 	private JLabel docPhoneNumberLabel = new JLabel("Phone Number"); // doctor phone number label
 	private JFormattedTextField docPhoneNumberField; // doctor phone number field
+	private JLabel docFaxLabel = new JLabel("Fax Number");
+	private JTextField docFaxField;
 	private JLabel docAddressLabel = new JLabel("Address"); // doctor address label
 	private JTextField docAddressField; // doctor address field
 	private JLabel patientNameLabel = new JLabel("Name"); // patient name label
 	private JTextField patientNameField; // patient name field
-	
+	private JLabel weightLabel = new JLabel("Weight (kg)");
+	private JTextField weightField;
+	private JLabel genderLabel = new JLabel("Gender");
+	private JTextField genderField;
+
 	// formats
 	MaskFormatter dateOfBirthFormat;
 	MaskFormatter healthCardFormat;
@@ -124,8 +130,8 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public EditPatientInfoUI(String title, Patient patient, PatientList patients) throws ParseException{
-		
+	public EditPatientInfoUI(String title, Patient patient, PatientList patients) throws ParseException {
+
 		dateOfBirthFormat = new MaskFormatter("##/##/####");
 		healthCardFormat = new MaskFormatter("#### - ### - ### - UU");
 		phoneFormat = new MaskFormatter("(###) ### - ####");
@@ -174,26 +180,21 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			docNameField = new JTextField("Dr. First Last");
 			docPhoneNumberField = new JFormattedTextField(phoneFormat);
 			docAddressField = new JTextField("123 ABC Street, City");
+			genderField = new JTextField("");
+			weightField = new JTextField("");
+			docFaxField = new JFormattedTextField(phoneFormat);
 
 			patientNameField.setForeground(textBoxFill);
-			//dateOfBirthField.setForeground(textBoxFill);
-			//healthCardNumField.setForeground(textBoxFill);
 			emailField.setForeground(textBoxFill);
-			//phoneField.setForeground(textBoxFill);
 			addressField.setForeground(textBoxFill);
 			docNameField.setForeground(textBoxFill);
-			//docPhoneNumberField.setForeground(textBoxFill);
 			docAddressField.setForeground(textBoxFill);
 
 			// focus listeners to get rid of default text if pressed
 			patientNameField.addFocusListener(this);
-			dateOfBirthField.addFocusListener(this);
-			healthCardNumField.addFocusListener(this);
 			emailField.addFocusListener(this);
-			phoneField.addFocusListener(this);
 			addressField.addFocusListener(this);
 			docNameField.addFocusListener(this);
-			docPhoneNumberField.addFocusListener(this);
 			docAddressField.addFocusListener(this);
 			// set values to patient values if there is a patient
 		} // end if
@@ -212,6 +213,9 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			docPhoneNumberField.setText(String.valueOf(patient.getFamilyDoctorNumber()));
 			docAddressField = new JTextField(patient.getFamilyDoctorAddress());
 			additionalNotesArea = new JTextArea(patient.getAdditionalNotes());
+			genderField = new JTextField(patient.getGender());
+			weightField = new JTextField(String.valueOf(patient.getWeight()));
+			docFaxField = new JTextField(patient.getFamilyDoctor().getFax());
 		} // end else
 
 		// add buttons and title to header
@@ -318,7 +322,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		mainPanel.add(familyDoc, familyDocTitleConstraints);
 
 		// add left main elements
-		leftMain = new JPanel(new GridLayout(6, 1));
+		leftMain = new JPanel(new GridLayout(7, 1, 0, (int) (screenDims.height * 0.005)));
 
 		patientNameField.setBorder(textBoxBorder);
 		patientNameLabel.setFont(genFont);
@@ -337,6 +341,32 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		healthCardNumField.setFont(genFont);
 		leftMain.add(healthCardNumLabel);
 		leftMain.add(healthCardNumField);
+
+		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
+
+		genderField.setBorder(textBoxBorder);
+		genderLabel.setFont(genFont);
+		genderField.setFont(genFont);
+		genderLabel.setHorizontalAlignment(JLabel.RIGHT);
+		weightGenderGrid.add(genderLabel);
+		weightGenderGrid.add(genderField);
+
+		weightField.setBorder(textBoxBorder);
+		weightLabel.setFont(genFont);
+		weightField.setFont(genFont);
+		weightLabel.setHorizontalAlignment(JLabel.RIGHT);
+		weightGenderGrid.add(weightLabel);
+		weightGenderGrid.add(weightField);
+
+		leftMain.add(weightGenderGrid);
+
+		// fix sizing glitch from
+		// https://stackoverflow.com/questions/4061010/setmaximumsize-not-working-in-java
+		leftMain.setMaximumSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		leftMain.setPreferredSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		leftMain.setMinimumSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		leftMain.setSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		leftMain.revalidate();
 
 		GridBagConstraints lConstraints = new GridBagConstraints(); // constraints for left panel
 
@@ -357,7 +387,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		manageInsurance.setBorder(textBoxBorder);
 		manageInsurance.setFont(genFont);
 
-		insuranceGrid = new JPanel(new GridLayout(2, 1, 0, (int) (screenDims.height * 0.01)));
+		insuranceGrid = new JPanel(new GridLayout(2, 1));
 
 		insuranceInfo.setHorizontalAlignment(JLabel.CENTER);
 		insuranceGrid.add(insuranceInfo);
@@ -411,7 +441,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 
 		// add right panel elements
 
-		rightMain = new JPanel(new GridLayout(6, 1));
+		rightMain = new JPanel(new GridLayout(8, 1));
 
 		docNameField.setBorder(textBoxBorder);
 		docNameLabel.setFont(genFont);
@@ -425,11 +455,25 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		rightMain.add(docPhoneNumberLabel);
 		rightMain.add(docPhoneNumberField);
 
+		docFaxField.setBorder(textBoxBorder);
+		docFaxLabel.setFont(genFont);
+		docFaxField.setFont(genFont);
+		rightMain.add(docFaxLabel);
+		rightMain.add(docFaxField);
+
 		docAddressField.setBorder(textBoxBorder);
 		docAddressLabel.setFont(genFont);
 		docAddressField.setFont(genFont);
 		rightMain.add(docAddressLabel);
 		rightMain.add(docAddressField);
+
+		// fix sizing glitch from
+		// https://stackoverflow.com/questions/4061010/setmaximumsize-not-working-in-java
+		rightMain.setMaximumSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		rightMain.setPreferredSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		rightMain.setMinimumSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		rightMain.setSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.4)));
+		rightMain.revalidate();
 
 		GridBagConstraints rConstraints = new GridBagConstraints(); // constraints for right panel
 
@@ -489,7 +533,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		buttonConstraints.gridy = 4;
 		buttonConstraints.gridheight = 1;
 		buttonConstraints.anchor = GridBagConstraints.NORTH;
-		buttonConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, (int) (screenDims.width * 0.01));
+		buttonConstraints.insets = new Insets(0, 0, 0, (int) (screenDims.width * 0.01));
 		mainPanel.add(bottomButtonsMain, buttonConstraints);
 
 		add(mainPanel, BorderLayout.CENTER);
@@ -507,7 +551,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		prescriptionsConstraints.gridx = 0;
 		prescriptionsConstraints.gridy = 4;
 		prescriptionsConstraints.ipadx = screenDims.width / 7;
-		prescriptionsConstraints.anchor = GridBagConstraints.SOUTH;
+		prescriptionsConstraints.anchor = GridBagConstraints.NORTH;
 		mainPanel.add(prescriptions, prescriptionsConstraints);
 
 	} // end EditPatientInfoUI
@@ -525,7 +569,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			setVisible(false);
 		} // end if
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
-			if (patient == null ) {
+			if (patient == null) {
 				SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", null, patients);
 				openSearchAdd.setVisible(true);
 				setVisible(false);
@@ -612,7 +656,8 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		if (e.getActionCommand().equals("Edit Prescriptions")) {
 			if (patient == null) {
 				newPatient.newPrescriptionList();
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", newPatient, patients, false);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", newPatient, patients,
+						false);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end if
@@ -647,28 +692,10 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 				patientNameField.setForeground(Color.black);
 			} // end if
 		} // end if
-		if (e.getComponent().equals(dateOfBirthField)) {
-			if (dateOfBirthField.getText().trim().equals("DD/MM/YYYY")) {
-				dateOfBirthField.setText("");
-				dateOfBirthField.setForeground(Color.black);
-			} // end if
-		} // end if
-		if (e.getComponent().equals(healthCardNumField)) {
-			if (healthCardNumField.getText().trim().equals("0000-000-000-AB")) {
-				healthCardNumField.setText("");
-				healthCardNumField.setForeground(Color.black);
-			} // end if
-		} // end if
 		if (e.getComponent().equals(emailField)) {
 			if (emailField.getText().trim().equals("example@domain.com")) {
 				emailField.setText("");
 				emailField.setForeground(Color.black);
-			} // end if
-		} // end if
-		if (e.getComponent().equals(phoneField)) {
-			if (phoneField.getText().trim().equals("(000) 000-0000")) {
-				phoneField.setText("");
-				phoneField.setForeground(Color.black);
 			} // end if
 		} // end if
 		if (e.getComponent().equals(addressField)) {
@@ -681,12 +708,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			if (docNameField.getText().trim().equals("Dr. First Last")) {
 				docNameField.setText("");
 				docNameField.setForeground(Color.black);
-			} // end if
-		} // end if
-		if (e.getComponent().equals(docPhoneNumberField)) {
-			if (docPhoneNumberField.getText().trim().equals("(000) 000-0000")) {
-				docPhoneNumberField.setText("");
-				docPhoneNumberField.setForeground(Color.black);
 			} // end if
 		} // end if
 		if (e.getComponent().equals(docAddressField)) {
