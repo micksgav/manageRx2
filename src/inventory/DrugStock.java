@@ -18,7 +18,7 @@ public class DrugStock {
 	private Drug drug; // drug
 	private int numInStock; // current stock of drug
 	private int stockThreshold; // when the drug's threshold is reached, alert is sent
-	private String[][] stockChanges = new String[31][4]; // array of the past month (31 days) of stock changes
+	private String[][] stockChanges = new String[32][4]; // array of the past month (31 days) of stock changes
 	Scanner ui = new Scanner(System.in);
 	
 	public DrugStock(String DIN, int inStock, int threshold) throws IOException {
@@ -123,6 +123,10 @@ public class DrugStock {
 		this.stockThreshold = threshold;
 	} // end setStockThreshold
 	
+	public String[][] getStockChanges(){
+		return stockChanges;
+	}
+	
 	/** Method Name: fillStockChanges
 	* @Author Christina Wong 
 	* @Date December 23, 2023
@@ -134,7 +138,9 @@ public class DrugStock {
 	* Throws/Exceptions: N/A
     */
 	public void fillStockChanges() {
-		for(int row = 0; row < stockChanges.length; row++) {
+		stockChanges[0][0] = this.getDrugName();
+		stockChanges[0][1] = this.getDrugDIN();
+		for(int row = 1; row < stockChanges.length; row++) {
 			for(int col = 0; col < stockChanges[row].length; col++) {
 				stockChanges[row][col] = "";
 			} // end for
@@ -154,7 +160,7 @@ public class DrugStock {
     */
 	public void changeInStock(String change, int amount, int curTotal) {
 		int date = -1;
-		for(int i = 0; i < stockChanges.length; i++) {
+		for(int i = 1; i < stockChanges.length; i++) {
 			if(stockChanges[i][0] == null) {
 				date = i;
 				break;
@@ -166,7 +172,7 @@ public class DrugStock {
         String changeDate = dtf.format(now);
         
 		if(date == -1) {
-			for(int row = 0; row < stockChanges.length - 1; row++) {
+			for(int row = 1; row < stockChanges.length - 1; row++) {
 				for(int col = 0; col < stockChanges[row].length; col++) {
 					stockChanges[row][col] = stockChanges[row + 1][col];
 				} // end for
@@ -201,7 +207,7 @@ public class DrugStock {
     */
 	public void viewUsage() {
 		System.out.println("\nDATE:\t\tINVENTORY CHANGE:\t\tAMOUNT:\t\tCURRENT STOCK:");
-		for (int row = 0; row < stockChanges.length; row++) {
+		for (int row = 1; row < stockChanges.length; row++) {
 			// if the row has information to print
 			if(stockChanges[row][0].length() != 0) {
 				System.out.print(stockChanges[row][0] + ":\t");
