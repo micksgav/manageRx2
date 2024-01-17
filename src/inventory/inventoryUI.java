@@ -22,7 +22,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class inventoryUI {
+public class InventoryUI {
 
 	private JFrame frame;
 	String[] display;
@@ -37,9 +37,12 @@ public class inventoryUI {
 	 
 	private AllStock stock;
 
-	public inventoryUI(AllStock fullStock) throws IOException {
+	public InventoryUI(AllStock fullStock) throws IOException {
 		stock = fullStock;
 		String[][] fullInventory = stock.viewFullInventory();
+		drugName.setText("");
+		drugDIN.setText("");
+		drugStock.setText("");
 		drugName.setEditable(false);
 		drugDIN.setEditable(false);
 		drugStock.setEditable(false);

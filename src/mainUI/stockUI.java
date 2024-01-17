@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -227,20 +228,30 @@ public class stockUI extends JFrame implements ActionListener {
 			setThreshold(setThresholdDrug.getText(), Integer.parseInt(setThresholdNum.getText()));
 		}
 		if(e.getActionCommand().equals("viewStock")) {
-			viewStock(viewStockDrugField.getText());
+			try {
+				viewStock(viewStockDrugField.getText());
+			} catch (IOException e1) {
+				logErrors.log("View stock IOException " + String.valueOf(e1));
+			}
 		}
 		if(e.getActionCommand().equals("viewInventory")) {
 			try {
 				viewInventory();
 			} catch (IOException e1) {
-				logErrors.log("IOException " + String.valueOf(e1));
+				logErrors.log("View inventory IOException " + String.valueOf(e1));
 			}
 		}
 	}
 	
-	private void viewStock(String drug) {
+	private void viewStock(String drug) throws IOException {
 		System.out.println("View Stock: " + drug);
-		stock.viewUsage(drug);
+		boolean drugFound = stock.viewUsage(drug);
+		if(drugFound == false) {
+			JOptionPane.showMessageDialog(stockPanel, "Drug not found in inventory.","ERROR", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame	
+		}
+		else {
+			DrugStockUI viewStock = new DrugStockUI(stock, drug);
+		}
 	}
 
 	private void setThreshold(String drug, int threshold) {
@@ -253,7 +264,7 @@ public class stockUI extends JFrame implements ActionListener {
 	}
 	
 	private void viewInventory() throws IOException {
-		stock.viewFullInventory();
-		inventoryUI inventory = new inventoryUI(stock);
+		//stock.viewFullInventory();
+		InventoryUI inventory = new InventoryUI(stock);
 	}
 }

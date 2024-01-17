@@ -242,7 +242,7 @@ public class DrugStockLinkedList {
 	* Dependencies: DrugStock
 	* Throws/Exceptions: error message, if DIN is not found
     */
-	public void viewStockUsage(String DIN) {
+	public boolean viewStockUsage(String DIN) {
 		System.out.println("Viewing stock usage");
 		Node runner;
 		runner = head;
@@ -251,15 +251,31 @@ public class DrugStockLinkedList {
 			if(runner.drugStock.getDrugDIN().equals(DIN)) {
 				runner.drugStock.viewUsage();
 				found = true;
-				break;
+				return true;
 			} // end if
 			runner = runner.next;
 		} // end while
 		if(found == false) {
 			// keep this statement, could be a DialogueBox or something else in GUI?
 			System.out.println("Drug not found in inventory");
+			return false;
 		} // end if
+		
+		return found;
 	} // end viewStockUsage
+	
+	public String[][] getStockUsage(String DIN){
+		Node runner;
+		runner = head;
+		String[][] stockUsage = null;
+		while(runner != null) {
+			if(runner.drugStock.getDrugDIN().equals(DIN)) {
+				stockUsage = runner.drugStock.getStockChanges();
+			}
+			runner = runner.next;
+		}
+		return stockUsage;
+	}
 	
 	public String getDINForName(String name) {
 		String drugDIN = "";
