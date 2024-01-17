@@ -7,7 +7,6 @@
  ***********************************************
  */
 
-
 package PatientManagement;
 
 import inventory.*;
@@ -34,8 +33,10 @@ public class Patient {
 	private String gender; // patient gender
 	private double weight; // patient weight
 
-	public Patient(int id, String name, String address, int dateOfBirthMonth, int dateOfBirthDay, int birthYear, PrescriptionList activePrescriptions,
-			PrescriptionList pastPrescriptions, String phoneNumber, String email, FamilyDoctor familyDoctor, LinkedList<Insurance> insuranceInformation, String healthCardNum, String gender, double weight) {
+	public Patient(int id, String name, String address, int dateOfBirthMonth, int dateOfBirthDay, int birthYear,
+			PrescriptionList activePrescriptions, PrescriptionList pastPrescriptions, String phoneNumber, String email,
+			FamilyDoctor familyDoctor, LinkedList<Insurance> insuranceInformation, String healthCardNum, String gender,
+			double weight) {
 		this.insuranceInformation = new LinkedList<Insurance>();
 		this.name = name;
 		this.address = address;
@@ -60,47 +61,47 @@ public class Patient {
 		activePrescriptions = new PrescriptionList();
 		pastPrescriptions = new PrescriptionList();
 	} // end Patient
-	
+
 	public void addArchivedPrescription(Prescription prescription) {
 		pastPrescriptions.insert(prescription);
 	}
-	
+
 	public void setWeight(double weight) {
 		this.weight = weight;
 	} // end setWeight
-	
+
 	public double getWeight() {
 		return weight;
 	} // end getWeight
-	
+
 	public void setGender(String gender) {
 		this.gender = gender;
 	} // end setGender
-	
+
 	public String getGender() {
 		return gender;
 	} // end getGender
-	
+
 	public void setId(int id) {
 		this.id = id;
 	} // end setId
-		
+
 	public int getId() {
 		return id;
 	} // end getId
-	
+
 	public void setAdditionalNotes(String notes) {
 		additionalNotes = notes;
 	} // end setAdditionalNotes
-	
+
 	public String getAdditionalNotes() {
 		return additionalNotes;
 	} // end getAdditionalNotes
-	
+
 	public String getHealthCardNumber() {
 		return healthCardNum;
 	} // end getHealthCardNumber
-	
+
 	public void setHealthCardNumber(String healthCardNum) {
 		this.healthCardNum = healthCardNum;
 	} // end setHealthCardNumber
@@ -110,16 +111,18 @@ public class Patient {
 		familyDoctor.setAddress(newAddress);
 		familyDoctor.setPhoneNumber(phoneNumber);
 	} // end newFamilyDoctor
-	
+
 	public ArrayList<String[]> drugInteractions(Drug newDrug) throws IOException {
 
-		ArrayList<String[]> allInteractions = new ArrayList<String[]>(); // list containing all interaction data for the two drugs
-		String[] interactions; // list containing interactions between the current drug in the list and the new drug
+		ArrayList<String[]> allInteractions = new ArrayList<String[]>(); // list containing all interaction data for the
+																			// two drugs
+		String[] interactions; // list containing interactions between the current drug in the list and the new
+								// drug
 		for (int i = 0; i < activePrescriptions.length(); i++) {
 			String currentDIN = activePrescriptions.atIndex(i).getDrug().getDIN();
 			interactions = getInteractions.search(currentDIN, newDrug.getDIN());
 			allInteractions.add(interactions);
-		} 
+		}
 		return allInteractions;
 	}
 
@@ -142,7 +145,7 @@ public class Patient {
 	public int getDateOfBirthMonth() {
 		return birthMonth;
 	} // end getDateOfBirthMonth
-	
+
 	public int getDateOfBirthDay() {
 		return birthDay;
 	} // end getDateOfBirthDay
@@ -150,19 +153,19 @@ public class Patient {
 	public void setDateOfBirthMonth(int birthMonth) {
 		this.birthMonth = birthMonth;
 	} // end setDateOfBirthMonth
-	
+
 	public void setDateOfBirthDay(int day) {
 		this.birthDay = day;
 	} // end setDateOfBirthDay
-	
+
 	public int getBirthYear() {
 		return birthYear;
 	} // end getBirthYear
-	
+
 	public void setBirthYear(int birthYear) {
 		this.birthYear = birthYear;
 	} // end setBirthYear
-	
+
 	public String getBirthday() {
 		String birthDayString = String.valueOf(birthDay);
 		String birthMonthString = String.valueOf(birthMonth);
@@ -199,7 +202,7 @@ public class Patient {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	} // end setPhoneNumber
-	
+
 	public PrescriptionList getArchivedPrescriptions() {
 		return pastPrescriptions;
 	} // end getArchivedPrescriptions
@@ -219,7 +222,6 @@ public class Patient {
 	public void setFamilyDoctorName(String docName) {
 		familyDoctor.setName(docName);
 	} // end setFamilyDoctorName
-
 
 	public String getFamilyDoctorNumber() {
 		return familyDoctor.getPhoneNumber();
@@ -244,27 +246,26 @@ public class Patient {
 	public void addNewInsuranceInfo(String company, int num, String notes) {
 		insuranceInformation.add(new Insurance(company, num, notes, id));
 	} // end addNewInsuranceInfo
-	
+
 	public void addNewInsuranceInfo(Insurance insurance) {
 		insuranceInformation.add(insurance);
 	}
-	
+
 	public void removeInsurance(int i) {
-				insuranceInformation.remove(i);
+		insuranceInformation.remove(i);
 	} // end removeInsurance
-	
+
 	public void newInsuranceList() {
 		insuranceInformation = new LinkedList<Insurance>();
 	} // end newInsuranceList
-	
+
 	public void newPrescriptionList() {
 		activePrescriptions = new PrescriptionList();
 		pastPrescriptions = new PrescriptionList();
 	} // end newPrescriptionList
-	
+
 	public FamilyDoctor getFamilyDoctor() {
 		return familyDoctor;
 	}
-
 
 } // end Patient
