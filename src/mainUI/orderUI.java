@@ -13,6 +13,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,6 +25,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -156,38 +160,54 @@ public class orderUI extends JFrame implements ActionListener {
 
 		GridBagConstraints gbc = new GridBagConstraints();// start gridbagconstraints
 		gbc.insets = new Insets(10, 10, 10, 10);// set insets
+		
+		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
+		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
+		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
+				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
+		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
 
 		/* content */
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		bigOrderLabel.setFont(new Font("Vardana", Font.PLAIN, 24));
+		bigOrderLabel.setFont(nameFont);
 		gbc.anchor = GridBagConstraints.WEST;
 		orderPanel.add(bigOrderLabel, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.WEST;
+		drugToOrderLabel.setFont(genFont);
 		orderPanel.add(drugToOrderLabel, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 2;
+		drugToOrder.setBorder(textBoxBorder);
+		drugToOrder.setFont(genFont);
 		orderPanel.add(drugToOrder, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 3;
+		dosageOfDrugLabel.setFont(genFont);
 		orderPanel.add(dosageOfDrugLabel, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 4;
+		dosageOfDrug.setBorder(textBoxBorder);
+		dosageOfDrug.setFont(genFont);
 		orderPanel.add(dosageOfDrug, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 5;
+		numOfDrugLabel.setFont(genFont);
 		orderPanel.add(numOfDrugLabel, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 6;
+		numOfDrug.setBorder(textBoxBorder);
+		numOfDrug.setFont(genFont);
 		orderPanel.add(numOfDrug, gbc);
 
 		containerSizeGroup.add(orderSmallContainer);
@@ -202,6 +222,7 @@ public class orderUI extends JFrame implements ActionListener {
 
 		gbc.gridx = 1;
 		gbc.gridy = 1;
+		containerSizeLabel.setFont(genFont);
 		orderPanel.add(containerSizeLabel, gbc);
 
 		gbc.gridx = 1;
@@ -210,10 +231,13 @@ public class orderUI extends JFrame implements ActionListener {
 
 		gbc.gridx = 1;
 		gbc.gridy = 3;
+		numOfContainerLabel.setFont(genFont);
 		orderPanel.add(numOfContainerLabel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 4;
+		numOfContainer.setBorder(textBoxBorder);
+		numOfContainer.setFont(genFont);
 		orderPanel.add(numOfContainer, gbc);
 
 		gbc.gridx = 1;
