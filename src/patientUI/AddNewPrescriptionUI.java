@@ -23,6 +23,7 @@ import inventory.*;
 import mainUI.loginUI;
 import mainUI.settingsUI;
 import swingHelper.AppIcon;
+import utilities.DrugSelection;
 import utilities.SQLHelper;
 
 public class AddNewPrescriptionUI extends JFrame implements ActionListener {
@@ -105,6 +106,8 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
+	private JPanel panel;
+	private JButton btnNewButton;
 
 	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients, boolean last) {
 		// setup display attributes
@@ -116,7 +119,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		// Rectangle screenDims = new Rectangle(1366, 768);
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 
 		// initialize patient information
 		this.patient = patient;
@@ -134,7 +137,6 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 
 		JLabel label = new JLabel("ManageRx"); // header title
 		label.setFont(new Font("Arial", Font.BOLD, 20));
-		this.buttonPanel.add(label);
 
 		btnOpenStock = new JButton("Stock");
 		btnOpenStock.setIcon(stockIcon);
@@ -190,7 +192,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		this.buttonPanel.add(headerButtons, overallButtonConstraints);
 
 		// add header to screen
-		add(this.buttonPanel, BorderLayout.NORTH);
+		getContentPane().add(this.buttonPanel, BorderLayout.NORTH);
 
 		mainPanel = new JPanel(new GridBagLayout()); // information about GridBagLayout from
 		// https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
@@ -232,15 +234,19 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		drugTitleConstraints.insets = gridBagPadding;
 		drugTitle.setFont(nameFont);
 		drugTitle.setHorizontalAlignment(JLabel.LEFT);
+		drugNameLabel.setFont(genFont);
+		innerLeftMain.add(drugNameLabel);
+		
+		panel = new JPanel();
+		innerLeftMain.add(panel);
+		panel.setLayout(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
 		// mainPanel.add(drugTitle, drugTitleConstraints);
 
 // add drug name label and field
 		drugNameField = new JTextField();
+		panel.add(drugNameField);
 		drugNameField.setBorder(textBoxBorder);
-		drugNameLabel.setFont(genFont);
 		drugNameField.setFont(genFont);
-		innerLeftMain.add(drugNameLabel);
-		innerLeftMain.add(drugNameField);
 
 // add atc label and field
 //atcField = new JTextField();
@@ -263,6 +269,18 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		dinField.setBorder(textBoxBorder);
 		dinLabel.setFont(genFont);
 		dinField.setFont(genFont);
+		
+		btnNewButton = new JButton("Search");
+		innerLeftMain.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String[] selection = DrugSelection.getDrugSelection(drugNameField.getText());
+				System.out.println(selection[0] + selection[1] + selection[2]);
+				dinField.setText(selection[0]);
+				drugNameField.setText(selection[1]);
+				dosageField.setText(selection[2]);
+			}
+		});
 		innerLeftMain.add(dinLabel);
 		innerLeftMain.add(dinField);
 
@@ -486,7 +504,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		buttonConstraints.anchor = GridBagConstraints.SOUTH;
 		mainPanel.add(bottomMain, buttonConstraints);
 
-		add(mainPanel, BorderLayout.CENTER);
+		getContentPane().add(mainPanel, BorderLayout.CENTER);
 
 	} // end AddNewPrescriptionUI
 
