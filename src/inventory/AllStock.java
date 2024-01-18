@@ -119,7 +119,8 @@ public class AllStock {
 			drugSearch(drugDIN);			
 		} // end if
 		else {
-			System.out.println("Drug is not found in inventory.");
+			System.out.println("All stock DIN - Drug is not found in inventory.");
+			
 		} // end else
 	} // end searchByDIN
 	
@@ -137,7 +138,7 @@ public class AllStock {
 		String searchDIN = "";
 		searchDIN = drugsList.checkStockName(drugName);		
 		if(searchDIN.equals("")) {
-			System.out.println("Drug is not found in inventory.");
+			System.out.println("All stock name - Drug is not found in inventory.");
 		} // end if
 		else {
 			drugSearch(searchDIN);
@@ -272,8 +273,12 @@ public class AllStock {
 	* Dependencies: DrugStockLinkedList
 	* Throws/Exceptions: N/A
     */
-	public void viewUsage(String DIN) {
-		drugsList.viewStockUsage(DIN);
+	public boolean viewUsage(String DIN) {
+		if(isInteger(DIN) == false) {
+			DIN = drugsList.getDINForName(DIN);
+		}
+		boolean found = drugsList.viewStockUsage(DIN);
+		return found;
 	} // end viewUsage
 	
 	/** Method Name: viewFullInventory
@@ -286,8 +291,24 @@ public class AllStock {
 	* Dependencies: DrugStockLinkedList
 	* Throws/Exceptions: N/A
     */
-	public void viewFullInventory() {
-		drugsList.viewFullInventory();
+	public String[][] viewFullInventory() {
+		String[][] fullInventory = drugsList.viewFullInventory();
+		return fullInventory;
 	} // end viewFullInventory
+	
+	public String[][] viewDrugInventory(String DIN){
+		if(isInteger(DIN) == false) {
+			DIN = drugsList.getDINForName(DIN);
+		}
+		String[][] stockInventory = drugsList.getStockUsage(DIN);
+		return stockInventory;
+	}
+	
+	public void changeThreshold(String DIN, int newThreshold) {
+		if(isInteger(DIN) == false) {
+			DIN = drugsList.getDINForName(DIN);
+		}
+		drugsList.setNewThreshold(DIN, newThreshold);
+	}
 	
 } // end AllStock

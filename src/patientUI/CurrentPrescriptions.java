@@ -27,6 +27,14 @@ import java.awt.event.*;
 import java.text.ParseException;
 
 public class CurrentPrescriptions extends JFrame implements ActionListener {
+	
+	public static void archivePrescription(Patient patient) {
+		for (int i = 0; i < patient.getActivePrescriptions().length(); i++) {
+			if (patient.getActivePrescriptions().atIndex(i).getDelete() == true) {
+				patient.removeActivePrescription(patient.getActivePrescriptions().atIndex(i));
+			}
+		}
+	}
 
 	Patient patient; // patient whose prescriptions are being viewed
 	PatientList patients; // list containing all patient information
@@ -56,7 +64,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	// text elements
 	private JLabel patientName; // patient name
 	private JTextArea[] prescriptionInfo; // prescription information
-	private JLabel currentPrescriptions = new JLabel("Current Prescriptions"); // current prescriptions title
+	private JLabel currentPrescriptions = new JLabel("Active Prescriptions"); // current prescriptions title
 	String[] drugBrandName; // array containing all drug names belonging to patient
 	String[] drugGenName;
 	String[] datePrescribed; // array containing all dates prescribed belonging to patient
@@ -65,6 +73,10 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	String[] dosage; // array containing all dosages belonging to patient
 	String[] instructions; // array containing all instructions belonging to patient
 	String[] prescribedDuration; // array containing all prescribed durations belonging to patient
+	String[] docName; // array containing all doctor names belonging to patient
+	String[] docPhone; // array containing all doctor phone numbers belonging to patient
+	String[] docFax; // array containing all doctor fax numbers belonging to patient
+	String[] docAddress; // array containing all doctor addresses belonging to patient
 
 	// last page
 	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the last page was EditPatientInfoUI
@@ -100,6 +112,10 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		quantity = new String[patient.getActivePrescriptions().length()];
 		dosage = new String[patient.getActivePrescriptions().length()];
 		instructions = new String[patient.getActivePrescriptions().length()];
+		docName = new String[patient.getActivePrescriptions().length()];
+		docPhone = new String[patient.getActivePrescriptions().length()];
+		docFax = new String[patient.getActivePrescriptions().length()];
+		docAddress = new String[patient.getActivePrescriptions().length()];
 		prescribedDuration = new String[patient.getActivePrescriptions().length()];
 		prescriptionPanels = new JPanel[patient.getActivePrescriptions().length()];
 
@@ -113,6 +129,10 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			dosage[i] = "Dosage: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getDosage()[0][0]);
 			instructions[i] = "Instructions: " + patient.getActivePrescriptions().atIndex(i).getInstructions();
 			prescribedDuration[i] = "Prescribed Duration: " + patient.getActivePrescriptions().atIndex(i).getDuration();
+			docName[i] = "Doctor's Name: " + patient.getActivePrescriptions().atIndex(i).getDocName();
+			docPhone[i] = "Doctor's Phone Number: " + patient.getActivePrescriptions().atIndex(i).getDocPhone();
+			docFax[i] = "Doctor's Fax Number: " + patient.getActivePrescriptions().atIndex(i).getDocFax();
+			docAddress[i] = "Doctor's Address: " + patient.getActivePrescriptions().atIndex(i).getDocAddress();
 		} // end for
 
 		// setup all buttons for the header
@@ -282,22 +302,16 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			editArchive[i].add(editPrescription[i]);
 			editArchive[i].add(archivePrescription[i]);
 			prescriptionInfo[i].setText(drugBrandName[i] + "\n" + datePrescribed[i] + "\n" + numRefills[i] + "\n"
-					+ quantity[i] + "\n" + dosage[i] + "\n" + instructions[i] + "\n" + prescribedDuration[i]);
+					+ quantity[i] + "\n" + dosage[i] + "\n" + docName[i] + "\n" + docPhone[i] + "\n" + docFax[i] + "\n" + docAddress[i] + "\n"+ instructions[i] + "\n" + prescribedDuration[i]);
 			prescriptionPanels[i].setBorder(simpleLine);
 			prescriptionInfo[i].setEditable(false);
 			prescriptionPanels[i].add(prescriptionInfo[i]);
 			prescriptionPanels[i].add(editArchive[i]);
 		} // end for
 
-		// set height of mainPanel grid ****** redundant?
-		if ((double) drugBrandName.length / 2 - (int) drugBrandName.length / 2 < 0.5) {
-			mainPanel = new JPanel(new GridLayout((int) Math.floor((double) drugBrandName.length / 2), 2,
+		// set height of mainPanel grid
+		mainPanel = new JPanel(new GridLayout((int) Math.ceil((double) drugBrandName.length / 2), 2,
 					(int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01)));
-		} // end if
-		else {
-			mainPanel = new JPanel(new GridLayout((int) Math.ceil((double) drugBrandName.length / 2), 2,
-					(int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01)));
-		} // end else
 
 		// add inner elements to main panel
 		for (int i = 0; i < prescriptionPanels.length; i++) {
@@ -363,11 +377,13 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		} // end if
 		// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
+			archivePrescription(patient);
 			if (last == true) {
 			ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients);
 			openManage.setVisible(true);
 			setVisible(false);
 			} // end if
+				
 			else {
 				EditPatientInfoUI openEdit;
 				try {
@@ -382,6 +398,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		} // end if
 		// open archived prescriptions page, if patient has any
 		if (e.getActionCommand().equals("View Archived Prescriptions")) {
+			archivePrescription(patient);
 			if (patient.getArchivedPrescriptions().length() > 0) {
 				ArchivedPrescriptionsUI openArchive = new ArchivedPrescriptionsUI("ManageRx", patient, patients, last);
 				openArchive.setVisible(true);
@@ -411,7 +428,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			String keyArchive = "archive" + i; // archive command key
 			if (e.getActionCommand().equals(keyArchive)) {
 				SQLHelper.updatePrescriptionBG("PrescriptionInfo", "current", 0, patient.getActivePrescriptions().atIndex(i).getID());
-				patient.removeActivePrescription(patient.getActivePrescriptions().atIndex(i));
+				patient.getActivePrescriptions().atIndex(i).setDelete(true);
 				prescriptionPanels[i].setVisible(false);
 
 			} // end if
@@ -421,7 +438,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 					String prescriptionInfoString = prescriptionInfo[i].getText().replaceAll("Brand Name: ", "")
 							.replaceAll("Date Prescribed: ", "").replaceAll("Number of Refills: ", "")
 							.replaceAll("Quantity: ", "").replaceAll("Dosage: ", "").replaceAll("Dosage: ", "")
-							.replaceAll("Instructions: ", "").replaceAll("Prescribed Duration: ", "").trim(); // all info in prescription area
+							.replaceAll("Instructions: ", "").replaceAll("Prescribed Duration: ", "").replaceAll("Doctor's Name: ", "").replaceAll("Doctor's Phone Number: ", "").replaceAll("Doctor's Fax Number ", "").replaceAll("Doctor's Address ", "").trim(); // all info in prescription area
 					String[] info = prescriptionInfoString.split("\n"); // info in prescription area broken up by line
 					String[][] drugDosage = new String[1][1]; // drug dosage
 					drugDosage[0][0] = info[4];
@@ -440,11 +457,23 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 					patient.getActivePrescriptions().atIndex(i).setDosage(drugDosage);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "dosage",
 							patient.getActivePrescriptions().atIndex(i).getDosage()[0][0], patient.getId());
+					patient.getActivePrescriptions().atIndex(i).setDocName(info[5]);
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedName",
+							patient.getActivePrescriptions().atIndex(i).getDocName(), patient.getId());
+					patient.getActivePrescriptions().atIndex(i).setDocPhone(info[6]);
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedPhone",
+							patient.getActivePrescriptions().atIndex(i).getDocPhone(), patient.getId());
+					patient.getActivePrescriptions().atIndex(i).setDocFax(info[7]);
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedFax",
+							patient.getActivePrescriptions().atIndex(i).getDocFax(), patient.getId());
+					patient.getActivePrescriptions().atIndex(i).setDocAddress(info[8]);
+					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedAddress",
+							patient.getActivePrescriptions().atIndex(i).getDocAddress(), patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setDuration(info[info.length - 1]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "prescribedDuration",
 							patient.getActivePrescriptions().atIndex(i).getDuration(), patient.getActivePrescriptions().atIndex(i).getID());
 					String instructions = ""; // new prescriptions
-					for (int j = 5; j <= info.length - 2; j++) {
+					for (int j = 9; j <= info.length - 2; j++) {
 						instructions += info[j] + " ";
 					} // end for
 					System.out.println(patient.getActivePrescriptions().atIndex(i).getID());

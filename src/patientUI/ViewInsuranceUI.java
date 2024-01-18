@@ -27,6 +27,14 @@ import java.awt.event.*;
 import java.text.ParseException;
 
 public class ViewInsuranceUI extends JFrame implements ActionListener {
+	
+	public static void deleteInsurance(Patient patient) {
+		for (int i = 0; i < patient.getInsuranceInformation().size(); i++) {
+			if (patient.getInsuranceInformation().get(i).getDelete() == true) {
+				patient.removeActivePrescription(patient.getActivePrescriptions().atIndex(i));
+			}
+		}
+	}
 
 	// patient information
 	Patient patient; // patient whose insurance is being viewed
@@ -226,7 +234,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		createConstraints.gridy = 1;
 		createConstraints.gridwidth = 1;
 		createConstraints.anchor = GridBagConstraints.SOUTHEAST;
-		createNewInsurance = new JButton("Add New");
+		createNewInsurance = new JButton("Add New Insurance");
 		createNewInsurance.addActionListener(this);
 		createNewInsurance.setFont(genFont);
 		createNewInsurance.setHorizontalAlignment(JButton.RIGHT);
@@ -323,6 +331,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		} // end if
 			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
+			deleteInsurance(patient);
 			EditPatientInfoUI openEdit;
 			try {
 				openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
@@ -335,13 +344,14 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		} // end if
 			// open add new insurance page
 		if (e.getActionCommand().equals("Add New")) {
+			deleteInsurance(patient);
 			AddNewInsuranceUI openAddNew = new AddNewInsuranceUI("ManageRx", patient, patients);
 			openAddNew.setVisible(true);
 			setVisible(false);
 		} // end if
 			// edit/delete insurance plan, then change the text on buttons to cancel/save
 			// while in edit menu. If edit is saved, update insurance info
-		for (int i = 0; i < insurancePanels.length; i++) {
+		for (int i = 0; i < patient.getInsuranceInformation().size(); i++) {
 			if (e.getActionCommand().equals("edit" + i)) {
 				insuranceInfo[i].setEditable(true);
 				editInsurance[i].setText("Cancel");
@@ -350,8 +360,9 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 				deleteInsurance[i].setActionCommand("save" + i);
 			} // end if
 			if (e.getActionCommand().equals("delete" + i)) {
-				helper.removeInsurance(i); // may not work
-				patient.removeInsurance(i);
+				System.out.println(patient.getInsuranceInformation().get(i).getID());
+				helper.removeInsurance(patient.getInsuranceInformation().get(i).getID()); // may not work
+				patient.getInsuranceInformation().get(i).setDelete(true);
 				insurancePanels[i].setVisible(false);
 			} // end if
 			if (deleteInsurance[i].getText().equals("Save")) {

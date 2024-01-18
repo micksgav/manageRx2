@@ -22,28 +22,28 @@ public class TestRun {
 		threshold = ui.nextLine();
 		stock.updateStock(200, drug1.getDIN(), drug1.getDrugClass(), threshold);
 		
-		Drug drug2 = drugFinder.getDrug("02248808");
-		System.out.println("\nEnter threshold:");
-		threshold = ui.nextLine();
-		stock.updateStock(50, drug2.getDIN(), drug2.getDrugClass(), threshold);
-		
-		Drug drug3 = drugFinder.getDrug("02532042");
-		System.out.println("\nEnter threshold:");
-		threshold = ui.nextLine();
-		stock.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), threshold);
-		
-		System.out.println("\n\n\n");
-		stock.searchByName(drug1.getDrugName()); 
-		
-		
-		System.out.println("\n\n");
-		stock.viewUsage(drug1.getDIN());
-		
-		System.out.println("\n\n");
-		stock.viewUsage(drug2.getDIN());
-		
-		System.out.println("\n\n");
-		stock.viewUsage(drug3.getDIN());
+//		Drug drug2 = drugFinder.getDrug("02248808");
+//		System.out.println("\nEnter threshold:");
+//		threshold = ui.nextLine();
+//		stock.updateStock(50, drug2.getDIN(), drug2.getDrugClass(), threshold);
+//		
+//		Drug drug3 = drugFinder.getDrug("02532042");
+//		System.out.println("\nEnter threshold:");
+//		threshold = ui.nextLine();
+//		stock.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), threshold);
+//		
+//		System.out.println("\n\n\n");
+//		stock.searchByName(drug1.getDrugName()); 
+//		
+//		
+//		System.out.println("\n\n");
+//		stock.viewUsage(drug1.getDIN());
+//		
+//		System.out.println("\n\n");
+//		stock.viewUsage(drug2.getDIN());
+//		
+//		System.out.println("\n\n");
+//		stock.viewUsage(drug3.getDIN());
 		
 		
 		stock.viewFullInventory();

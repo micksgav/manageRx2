@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,14 +20,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+
+
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
 import swingHelper.AppIcon;
+
+import inventory.*;
+import utilities.logErrors;
 
 public class stockUI extends JFrame implements ActionListener {
 
@@ -45,7 +53,7 @@ public class stockUI extends JFrame implements ActionListener {
 	private JButton viewStockButton = new JButton("View Stock");
 	private JButton setThresholdButton = new JButton("Set Threshold");
 	private JButton incomingShipmentsButton = new JButton("Incoming Shipments");
-	
+	private JButton viewInventoryButton = new JButton("View All Inventory");
 
 	private JButton backButton;
 	
@@ -61,7 +69,11 @@ public class stockUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public stockUI() {
+  AllStock stock;
+	
+	public stockUI(AllStock newStock) {
+    this.stock = newStock;
+
 		// setup screen attributes
 		FlatLightLaf.setup();
 		setTitle("ManageRx");
@@ -145,12 +157,14 @@ public class stockUI extends JFrame implements ActionListener {
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		
+
 		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
 		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
 		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
 		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
 				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
 		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+
 		
 		/*content*/
 		
@@ -211,6 +225,14 @@ public class stockUI extends JFrame implements ActionListener {
 		setThresholdButton.setFont(genFont);
 		stockPanel.add(setThresholdButton, gbc);
 		
+		// new
+		gbc.gridx = 3;
+		gbc.gridy = 0;
+		viewInventoryButton.addActionListener(this);
+		viewInventoryButton.setActionCommand("viewInventory");
+		stockPanel.add(viewInventoryButton, gbc);
+		
+		
 		//view incoming drugs
 		gbc.gridx = 5;
 		gbc.gridy = 0;
@@ -235,13 +257,43 @@ public class stockUI extends JFrame implements ActionListener {
 			setThreshold(setThresholdDrug.getText(), Integer.parseInt(setThresholdNum.getText()));
 		}
 		if(e.getActionCommand().equals("viewStock")) {
-			viewStock(viewStockDrugField.getText());
+			try {
+				viewStock(viewStockDrugField.getText());
+			} catch (IOException e1) {
+				logErrors.log("View stock IOException " + String.valueOf(e1));
+			}
+		}
+		if(e.getActionCommand().equals("viewInventory")) {
+			try {
+				viewInventory();
+			} catch (IOException e1) {
+				logErrors.log("View inventory IOException " + String.valueOf(e1));
+			}
 		}
 	}
 	
-	private void viewStock(String drug) {System.out.println("View Stock: " + drug);}
+	private void viewStock(String drug) throws IOException {
+		System.out.println("View Stock: " + drug);
+		boolean drugFound = stock.viewUsage(drug);
+		if(drugFound == false) {
+			JOptionPane.showMessageDialog(stockPanel, "Drug not found in inventory.","ERROR", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame	
+		}
+		else {
+			DrugStockUI viewStock = new DrugStockUI(stock, drug);
+		}
+	}
+
+	private void setThreshold(String drug, int threshold) {
+		System.out.println("Set Threshold: " + drug + threshold);
+		stock.changeThreshold(drug, threshold);
+	}
+
+	private void viewIncoming() {
+		System.out.println("View Incoming: ");
+	}
 	
-	private void setThreshold(String drug, int threshold) {System.out.println("Set Threshold: " + drug + threshold);}
-	
-	private void viewIncoming() {System.out.println("View Incoming: ");}
+	private void viewInventory() throws IOException {
+		//stock.viewFullInventory();
+		InventoryUI inventory = new InventoryUI(stock);
+	}
 }

@@ -102,6 +102,7 @@ public class mainUI extends JFrame implements ActionListener {
         }
         if (e.getActionCommand().equals("openPatientManager")) {
         	System.out.println("Patients");
+        	
         }
     }
     

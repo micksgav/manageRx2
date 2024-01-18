@@ -249,6 +249,10 @@ public class SQLHelper {
 		String drugName = p.getName();
 		String DIN = p.getDIN();
 		String form = p.getForm(); // fix
+		String docName = p.getDocName();
+		String docAddress = p.getDocAddress();
+		String docPhone = p.getDocPhone();
+		String docFax = p.getDocFax();
 		boolean current = p.getCurrent();
 		int curr;
 		if (current) {
@@ -266,7 +270,7 @@ public class SQLHelper {
 			statement.executeUpdate("INSERT INTO PrescriptionInfo values ( " + patientID + " , \"" + numRefills
 					+ "\" , " + quantity + " , \"" + dosage + "\" , \"" + instructions + "\" , \"" + prescribedDuration
 					+ "\" , \"" + datePrescribed + "\" , \"" + drugName + "\" , \"" + DIN + "\" , \"" + form + "\" , "
-					+ ID + " , " + curr + " )");
+					+ ID + " , " + curr + " , \"" + docName + "\" , \"" + docAddress + "\" , \"" + docPhone + "\" , \"" + docFax + "\")");
 			return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -275,30 +279,30 @@ public class SQLHelper {
 		}
 	}
 
-	public Prescription getPrescription(int ID) {
-		try {
-			ResultSet resultSet = statement
-					.executeQuery("SELECT * FROM manageRx.PrescriptionInfo WHERE prescriptionID = " + ID);
-			Prescription temp = new Prescription();
-			String[][] dosage = new String[1][1];
-			temp.setPatientID(resultSet.getInt("patientID"));
-			temp.setRefills(resultSet.getInt("numRefills"));
-			temp.setQuantity(resultSet.getInt("quantity"));
-			dosage[0][0] = resultSet.getString("dosage");
-			temp.setDosage(dosage); // fix
-			temp.setInstructions(resultSet.getString("instructions"));
-			temp.setDuration(resultSet.getString("prescribedDuration"));
-			temp.setDate(resultSet.getString("datePrescribed"));
-			temp.setBrandName(resultSet.getString("drugName"));
-			temp.setDIN(resultSet.getString("DIN"));
-			temp.setForm(resultSet.getString("form"));
-			temp.setID(resultSet.getInt("prescriptionID")); // FIX IN SQL
-			return temp;
-		} catch (Exception e) {
-			logErrors.log(e.getMessage() + " for getPrescription in SQLHelper");
-			return null;
-		}
-	}
+//	public Prescription getPrescription(int ID) {
+//		try {
+//			ResultSet resultSet = statement
+//					.executeQuery("SELECT * FROM manageRx.PrescriptionInfo WHERE prescriptionID = " + ID);
+//			Prescription temp = new Prescription();
+//			String[][] dosage = new String[1][1];
+//			temp.setPatientID(resultSet.getInt("patientID"));
+//			temp.setRefills(resultSet.getInt("numRefills"));
+//			temp.setQuantity(resultSet.getInt("quantity"));
+//			dosage[0][0] = resultSet.getString("dosage");
+//			temp.setDosage(dosage); // fix
+//			temp.setInstructions(resultSet.getString("instructions"));
+//			temp.setDuration(resultSet.getString("prescribedDuration"));
+//			temp.setDate(resultSet.getString("datePrescribed"));
+//			temp.setBrandName(resultSet.getString("drugName"));
+//			temp.setDIN(resultSet.getString("DIN"));
+//			temp.setForm(resultSet.getString("form"));
+//			temp.setID(resultSet.getInt("prescriptionID")); // FIX IN SQL
+//			return temp;
+//		} catch (Exception e) {
+//			logErrors.log(e.getMessage() + " for getPrescription in SQLHelper");
+//			return null;
+//		}
+//	}
 
 	public PrescriptionList getAllPrescriptions() {
 		PrescriptionList pList = new PrescriptionList();
@@ -320,6 +324,10 @@ public class SQLHelper {
 				temp.setForm(resultSet.getString("form"));
 				temp.setID(resultSet.getInt("prescriptionID"));
 				temp.setCurrent(resultSet.getInt("current"));
+				temp.setDocName(resultSet.getString("docPrescribedName"));
+				temp.setDocPhone(resultSet.getString("docPrescribedPhone"));
+				temp.setDocFax(resultSet.getString("docPrescribedFax"));
+				temp.setDocAddress(resultSet.getString("docPrescribedAddress"));
 				pList.insert(temp);
 			}
 		} catch (Exception e) {
@@ -365,7 +373,7 @@ public class SQLHelper {
 
 	public void removeInsurance(int ID) {
 		try {
-			statement.executeUpdate("DELETE FROM InsuranceInfo WHERE insuranceID = \"" + ID + "\"");
+			statement.executeUpdate("DELETE FROM InsuranceInfo WHERE insuranceID = " + ID);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logErrors.log(e.getMessage() + " in addPrescription in SQLHelper");

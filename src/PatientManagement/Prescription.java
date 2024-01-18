@@ -22,8 +22,13 @@ public class Prescription {
 	private int ID;
 	private int patientID;
 	private boolean current;
+	private String docPrescribedName;
+	private String docPrescribedAddress;
+	private String docPrescribedPhone;
+	private String docPrescribedFax;
+	private boolean delete;
 	
-	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String[][] dosage, String instructions, String prescribedDuration) {
+	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String[][] dosage, String instructions, String prescribedDuration, String docPrescribedName, String docPrescribedAddress, String docPrescribedPhone, String docPrescribedFax) {
 		this.drug = drug;
 		this.datePrescribed = datePrescribed;
 		this.numRefills = numRefills;
@@ -31,6 +36,10 @@ public class Prescription {
 		this.dosage = dosage;
 		this.instructions = instructions;
 		this.prescribedDuration = prescribedDuration;
+		this.docPrescribedName = docPrescribedName;
+		this.docPrescribedAddress = docPrescribedAddress;
+		this.docPrescribedPhone = docPrescribedPhone;
+		this.docPrescribedFax = docPrescribedFax;
 		current = true;
 	} // end Prescription
 	
@@ -38,6 +47,38 @@ public class Prescription {
 		drug = new Drug();
 		current = true;
 	} // end Prescription
+	
+	public void setDocName(String docName) {
+		docPrescribedName = docName;
+	}
+	
+	public String getDocName() {
+		return docPrescribedName;
+	}
+	
+	public void setDocAddress(String address) {
+		docPrescribedAddress = address;
+	}
+	
+	public String getDocAddress() {
+		return docPrescribedAddress;
+	}
+	
+	public void setDocPhone(String phone) {
+		docPrescribedPhone = phone;
+	}
+	
+	public String getDocPhone() {
+		return docPrescribedPhone;
+	}
+	
+	public void setDocFax(String fax) {
+		docPrescribedFax = fax;
+	}
+	
+	public String getDocFax() {
+		return docPrescribedFax;
+	}
 	
 	public Drug getDrug() {
 		return drug;
@@ -152,6 +193,14 @@ public class Prescription {
 	
 	public boolean getCurrent() {
 		return current;
+	}
+	
+	public boolean getDelete() {
+		return delete;
+	}
+	
+	public void setDelete(boolean delete) {
+		this.delete = delete;
 	}
 	
 } // end Prescription
