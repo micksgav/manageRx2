@@ -34,9 +34,8 @@ public class mainUI extends JFrame implements ActionListener {
     public mainUI() {
     	FlatLightLaf.setup();
 		setTitle("ManageRx");
-		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
-				.getMaximumWindowBounds(); // dimensions of screen from
-											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
+		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment().getMaximumWindowBounds(); // dimensions of screen from
+		// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
 		// screenDims.width /= 1.5;
 		// screenDims.height /= 1.5;
 		this.setSize(new Dimension(screenDims.width, screenDims.height));
