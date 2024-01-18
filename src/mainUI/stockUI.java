@@ -42,8 +42,14 @@ public class stockUI extends JFrame implements ActionListener {
 	private JPanel buttonPanel; // header panel
 	private JPanel headerButtons; // buttons other than back in header
 	
+	private JPanel checkStockPane = new JPanel(new GridBagLayout());//view stock components
+	private JPanel setThresholdPane = new JPanel(new GridBagLayout());//set threshold components
+	private JPanel buttonOrganizerPane = new JPanel(new GridBagLayout());//panel to hold 2 buttons
+	
 	private JLabel drugStockLabel = new JLabel("Check Stock");//drug for threshold 
+	private JLabel drugSetThresholdLabel = new JLabel("Set Threshold");//drug for threshold 
 	private JLabel drugThresholdLabel = new JLabel("Drug");//drug for threshold 
+	private JLabel drugNameStockLabel = new JLabel("Drug");//drug for threshold 
 	private JLabel thresholdNumLabel = new JLabel("Threshold");//threshold for drug
 	
 	private JTextField viewStockDrugField = new JTextField(15);
@@ -156,7 +162,7 @@ public class stockUI extends JFrame implements ActionListener {
 
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		
+		gbc.insets = new Insets(25, 25, 25, 25);
 
 		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
 		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
@@ -169,77 +175,135 @@ public class stockUI extends JFrame implements ActionListener {
 		/*content*/
 		
 		//get drug stock
+		checkStockPane.setBorder(textBoxBorder);
+		GridBagConstraints stockgbc = new GridBagConstraints();
+		stockgbc.insets = new Insets(25, 25, 25, 25);
+		
+		
+		
+		
+		
+		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.WEST;
 		drugStockLabel.setFont(genFont);
 		stockPanel.add(drugStockLabel, gbc);
 		
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.gridwidth = 2;
+		
+		
+		
+		
+		
+		stockgbc.gridx = 0;
+		stockgbc.gridy = 0;
+		drugNameStockLabel.setFont(genFont);
+		checkStockPane.add(drugNameStockLabel, stockgbc);
+		
+		stockgbc.gridx = 0;
+		stockgbc.gridy = 1;
+		stockgbc.gridwidth = 3;
 		viewStockDrugField.setBorder(textBoxBorder);
 		viewStockDrugField.setFont(genFont);
-		stockPanel.add(viewStockDrugField, gbc);
+		checkStockPane.add(viewStockDrugField, stockgbc);
 		
-		gbc.gridx = 3;
-		gbc.gridy = 1;
+		stockgbc.gridx = 3;
+		stockgbc.gridy = 1;
 		viewStockButton.addActionListener(this);
 		viewStockButton.setActionCommand("viewStock");
 		viewStockButton.setBorder(textBoxBorder);
 		viewStockButton.setFont(genFont);
-		stockPanel.add(viewStockButton, gbc);
+		checkStockPane.add(viewStockButton, stockgbc);
+
 		
+		
+		
+		
+		
+		
+		//add checkStock to UI
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.gridheight = 2;
+		gbc.gridwidth = 4;
+		stockPanel.add(checkStockPane, gbc);
+
 		//set drug threshold
 		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.anchor = GridBagConstraints.WEST;
-		drugThresholdLabel.setFont(genFont);
-		stockPanel.add(drugThresholdLabel, gbc);
-		
-		gbc.gridx = 3;
-		gbc.gridy = 2;
-		gbc.anchor = GridBagConstraints.WEST;
-		thresholdNumLabel.setFont(genFont);
-		stockPanel.add(thresholdNumLabel, gbc);
-		
-		gbc.gridx = 0;
 		gbc.gridy = 3;
-		gbc.gridwidth = 2;
+		gbc.anchor = GridBagConstraints.WEST;
+		drugSetThresholdLabel.setFont(genFont);
+		stockPanel.add(drugSetThresholdLabel, gbc);
+
+		setThresholdPane.setBorder(textBoxBorder);
+		GridBagConstraints thresholdgbc = new GridBagConstraints();
+		thresholdgbc.insets = new Insets(25, 25, 25, 25);
+		
+		thresholdgbc.gridx = 0;
+		thresholdgbc.gridy = 0;
+		drugThresholdLabel.setFont(genFont);
+		setThresholdPane.add(drugThresholdLabel, thresholdgbc);
+		
+		thresholdgbc.gridx = 3;
+		thresholdgbc.gridy = 0;
+		thresholdNumLabel.setFont(genFont);
+		setThresholdPane.add(thresholdNumLabel, thresholdgbc);
+		
+		thresholdgbc.gridx = 0;
+		thresholdgbc.gridy = 1;
+		thresholdgbc.gridwidth = 3;
 		setThresholdDrug.setBorder(textBoxBorder);
 		setThresholdDrug.setFont(genFont);
-		stockPanel.add(setThresholdDrug, gbc);
+		setThresholdPane.add(setThresholdDrug, thresholdgbc);
 		
-		gbc.gridx = 3;
-		gbc.gridy = 3;
-		gbc.gridwidth = 2;
+		thresholdgbc.gridx = 3;
+		thresholdgbc.gridy = 1;
+		thresholdgbc.gridwidth = 2;
 		setThresholdNum.setBorder(textBoxBorder);
 		setThresholdNum.setFont(genFont);
-		stockPanel.add(setThresholdNum, gbc);
+		setThresholdPane.add(setThresholdNum, thresholdgbc);
 		
-		gbc.gridx = 5;
-		gbc.gridy = 3;
+		thresholdgbc.gridx = 5;
+		thresholdgbc.gridy = 1;
 		setThresholdButton.addActionListener(this);
 		setThresholdButton.setActionCommand("setThreshold");
 		setThresholdButton.setBorder(textBoxBorder);
 		setThresholdButton.setFont(genFont);
-		stockPanel.add(setThresholdButton, gbc);
+		setThresholdPane.add(setThresholdButton, thresholdgbc);
+		
+		//add setThreshold to UI
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		gbc.gridheight = 2;
+		gbc.gridwidth = 7;
+		stockPanel.add(setThresholdPane, gbc);
+
+		GridBagConstraints buttonOrganizergbc = new GridBagConstraints();
+		buttonOrganizergbc.insets = new Insets(25, 25, 25, 25);
+		buttonOrganizerPane.setBorder(textBoxBorderLine);
 		
 		// new
-		gbc.gridx = 3;
-		gbc.gridy = 0;
+		buttonOrganizergbc.gridx = 0;
+		buttonOrganizergbc.gridy = 0;
 		viewInventoryButton.addActionListener(this);
 		viewInventoryButton.setActionCommand("viewInventory");
-		stockPanel.add(viewInventoryButton, gbc);
+		viewInventoryButton.setBorder(textBoxBorder);
+		viewInventoryButton.setFont(genFont);
+		buttonOrganizerPane.add(viewInventoryButton, buttonOrganizergbc);
 		
 		
 		//view incoming drugs
-		gbc.gridx = 5;
-		gbc.gridy = 0;
+		buttonOrganizergbc.gridx = 0;
+		buttonOrganizergbc.gridy = 1;
 		incomingShipmentsButton.addActionListener(this);
 		incomingShipmentsButton.setActionCommand("viewIncoming");
-		stockPanel.add(incomingShipmentsButton, gbc);
+		incomingShipmentsButton.setBorder(textBoxBorder);
+		incomingShipmentsButton.setFont(genFont);
+		buttonOrganizerPane.add(incomingShipmentsButton, buttonOrganizergbc);
 		
+		gbc.gridx = 5;
+		gbc.gridy = 2;
+		gbc.gridheight = 2;
+		stockPanel.add(buttonOrganizerPane, gbc);
 		
 		add(stockPanel);
 		

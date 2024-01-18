@@ -17,7 +17,6 @@ public class mainUI extends JFrame implements ActionListener {
 	private JPanel headerPanel = new JPanel(new FlowLayout());
 	private JPanel bPanel = new JPanel(new GridBagLayout());
 	
-	
 	//buttons
     private JButton btnOpenStock;
     private JButton btnOpenOrder;
@@ -54,7 +53,7 @@ public class mainUI extends JFrame implements ActionListener {
         
         GridBagConstraints gbc = new GridBagConstraints();
         
-        
+        gbc.insets = new Insets(20, 20, 20, 20);
         
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -62,7 +61,7 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenStock.setIcon(stockIcon);
         btnOpenStock.setActionCommand("openStock");
         btnOpenStock.addActionListener(this);
-        btnOpenStock.setPreferredSize(new Dimension(180, 100));
+        btnOpenStock.setPreferredSize(new Dimension(180*2, 100*2));
         this.bPanel.add(btnOpenStock, gbc);
         
         
@@ -72,7 +71,7 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenOrder.setIcon(orderIcon);
         btnOpenOrder.setActionCommand("openOrder");
         btnOpenOrder.addActionListener(this);
-        btnOpenOrder.setPreferredSize(new Dimension(180, 100));
+        btnOpenOrder.setPreferredSize(new Dimension(180*2, 100*2));
         this.bPanel.add(btnOpenOrder, gbc);
         
         
@@ -82,7 +81,7 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenPatientManager.setIcon(patientsIcon);
         btnOpenPatientManager.setActionCommand("openPatientManager");
         btnOpenPatientManager.addActionListener(this);
-        btnOpenPatientManager.setPreferredSize(new Dimension(180, 100));
+        btnOpenPatientManager.setPreferredSize(new Dimension(180*2, 100*2));
         this.bPanel.add(btnOpenPatientManager, gbc);
         
         add(this.headerPanel, BorderLayout.NORTH);
