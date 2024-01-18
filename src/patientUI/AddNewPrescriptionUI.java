@@ -237,7 +237,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		drugTitle.setHorizontalAlignment(JLabel.LEFT);
 		drugNameLabel.setFont(genFont);
 		innerLeftMain.add(drugNameLabel);
-		
+
 		panel = new JPanel();
 		innerLeftMain.add(panel);
 		panel.setLayout(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
@@ -270,7 +270,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		dinField.setBorder(textBoxBorder);
 		dinLabel.setFont(genFont);
 		dinField.setFont(genFont);
-		
+
 		btnNewButton = new JButton("Search");
 		innerLeftMain.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
@@ -548,28 +548,32 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 					&& docPrescribedAddressField.getText().length() > 0
 					&& docPrescribedPhoneField.getText().length() > 0 && docPrescribedFaxField.getText().length() > 0) {
 				// create a drug and prescription from input, then add to patient
-				String[][] drugDosage = new String[1][1];
-				drugDosage[0][0] = dosageField.getText().trim();
-				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
-						null, formField.getText().trim(), drugDosage);
-				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
-						Integer.parseInt(numRefillsField.getText().trim()),
-						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
-						prescribedDurationField.getText().trim(), docPrescribedNameField.getText().trim(),
-						docPrescribedAddressField.getText().trim(), docPrescribedPhoneField.getText().trim(),
-						docPrescribedFaxField.getText().trim());
-				newScript.setPatientID(patient.getId());
-				patient.addActivePrescription(newScript);
-				helper.addPrescriptionBG(newScript);
 
-				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
-				openCurrent.setVisible(true);
-				String[] allDins = new String[patient.getActivePrescriptions().length()];
-				for (int i = 0; i < allDins.length; i++) {
+				String[] allDins = new String[patient.getActivePrescriptions().length() + 1];
+				for (int i = 0; i < allDins.length - 1; i++) {
 					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
 				}
-				altDisplay.showInteractions(allDins);
-				setVisible(false);
+				allDins[allDins.length - 1] = dinField.getText();
+				if (altDisplay.showInteractions(allDins)) {
+					String[][] drugDosage = new String[1][1];
+					drugDosage[0][0] = dosageField.getText().trim();
+					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
+							null, formField.getText().trim(), drugDosage);
+					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
+							Integer.parseInt(numRefillsField.getText().trim()),
+							Integer.parseInt(quantityField.getText().trim()), drugDosage,
+							instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
+							docPrescribedNameField.getText().trim(), docPrescribedAddressField.getText().trim(),
+							docPrescribedPhoneField.getText().trim(), docPrescribedFaxField.getText().trim());
+					newScript.setPatientID(patient.getId());
+					patient.addActivePrescription(newScript);
+					helper.addPrescriptionBG(newScript);
+
+					CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
+					openCurrent.setVisible(true);
+
+					setVisible(false);
+				}
 			} // end if
 				// if not all fields have been filled in, open a popup
 			else {

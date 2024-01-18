@@ -44,6 +44,7 @@ public class altDisplay extends JDialog {
 		}
 
 		boolean temp = selection;
+		selection = false;
 		return temp;
 	}
 
@@ -79,6 +80,7 @@ public class altDisplay extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selection = true;
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -90,6 +92,7 @@ public class altDisplay extends JDialog {
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						selection = false;
+						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
