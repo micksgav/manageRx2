@@ -25,6 +25,7 @@ import mainUI.settingsUI;
 import swingHelper.AppIcon;
 import utilities.DrugSelection;
 import utilities.SQLHelper;
+import utilities.altDisplay;
 
 public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 
@@ -563,6 +564,11 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 
 				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
 				openCurrent.setVisible(true);
+				String[] allDins = new String[patient.getActivePrescriptions().length()];
+				for (int i = 0; i < allDins.length; i++) {
+					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+				}
+				altDisplay.showInteractions(allDins);
 				setVisible(false);
 			} // end if
 				// if not all fields have been filled in, open a popup
