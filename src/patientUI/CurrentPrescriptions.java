@@ -12,6 +12,7 @@ package patientUI;
 
 import swingHelper.*;
 import utilities.SQLHelper;
+import utilities.altDisplay;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -90,6 +91,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
+	private JButton btnNewButton;
 
 	public CurrentPrescriptions(String title, Patient patient, PatientList patients, boolean last, AllStock stock) {
 
@@ -103,7 +105,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 
 		// instantiate variables
 		this.patient = patient;
@@ -151,7 +153,6 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		JLabel label = new JLabel("ManageRx");
 		label.setFont(new Font("Arial", Font.BOLD, 20));
-		this.buttonPanel.add(label);
 
 		btnOpenStock = new JButton("Stock");
 		btnOpenStock.setIcon(stockIcon);
@@ -207,7 +208,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		overallButtonConstraints.anchor = GridBagConstraints.WEST;
 		this.buttonPanel.add(headerButtons, overallButtonConstraints);
 
-		add(this.buttonPanel, BorderLayout.NORTH);
+		getContentPane().add(this.buttonPanel, BorderLayout.NORTH);
 
 		mainPanel = new JPanel(new GridBagLayout()); // information about GridBagLayout from
 														// https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
@@ -240,6 +241,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// add patient name to screen
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient namae
+		nameConstraints.insets = new Insets(0, 0, 5, 0);
 
 		nameConstraints.fill = GridBagConstraints.BOTH;
 		nameConstraints.gridx = 0;
@@ -253,6 +255,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// add page title to screen
 		GridBagConstraints titleConstraints = new GridBagConstraints(); // constraints for page title
+		titleConstraints.insets = new Insets(0, 0, 5, 5);
 
 		titleConstraints.fill = GridBagConstraints.BOTH;
 		titleConstraints.gridx = 0;
@@ -266,6 +269,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// add create prescription button to screen
 		GridBagConstraints createConstraints = new GridBagConstraints(); // constraints for create button
+		createConstraints.insets = new Insets(0, 0, 5, 0);
 
 		createConstraints.fill = GridBagConstraints.BOTH;
 		createConstraints.gridx = 1;
@@ -329,6 +333,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // scroll bar for current prescriptions
 
 		GridBagConstraints prescriptionConstraints = new GridBagConstraints(); // constraints for all prescriptions
+		prescriptionConstraints.insets = new Insets(0, 0, 5, 0);
 																				// panel
 
 		prescriptionConstraints.fill = GridBagConstraints.BOTH;
@@ -356,7 +361,23 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 				0, (int) (screenDims.width * 0.5));
 		mainWithTopBar.add(viewArchived, viewArchivedConstraints);
 
-		add(mainWithTopBar);
+		getContentPane().add(mainWithTopBar);
+		
+		btnNewButton = new JButton("Show Interactions");
+		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 32));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String[] allDins = new String[patient.getActivePrescriptions().length()];
+				for (int i = 0; i < allDins.length; i++) {
+					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+				}
+				altDisplay.showInteractions(allDins);
+			}
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 3;
+		mainWithTopBar.add(btnNewButton, gbc_btnNewButton);
 	} // end CurrentPrescriptions
 
 	@Override
