@@ -614,9 +614,11 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					newPatient.setPhoneNumber(phoneField.getText().trim());
 					newPatient.setHealthCardNumber(healthCardNumField.getText().trim());
 					newPatient.newFamilyDoctor(docNameField.getText().trim(), docAddressField.getText().trim(),
-							docPhoneNumberField.getText().trim());
+							docPhoneNumberField.getText().trim(), docFaxField.getText());
 					newPatient.setAdditionalNotes(additionalNotesArea.getText().trim());
 					newPatient.setId(patients.numRecs());
+					newPatient.setGender(genderField.getText());
+					newPatient.setWeight(Double.parseDouble(weightField.getText()));
 					patients.insert(newPatient);
 					SQLHelper.addPatient(newPatient);
 					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", newPatient, patients, stock);
@@ -646,12 +648,18 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					patient.setHealthCardNumber(healthCardNumField.getText().trim());
 					SQLHelper.updateBG("PatientInfo", "healthCard", patient.getHealthCardNumber(), patient.getId());
 					patient.newFamilyDoctor(docNameField.getText().trim(), docAddressField.getText().trim(),
-							docPhoneNumberField.getText().trim());
+							docPhoneNumberField.getText().trim(), docFaxField.getText());
 					SQLHelper.updateBG("PatientInfo", "familyDoctorName", patient.getFamilyDoctorName(),
 							patient.getId());
 					SQLHelper.updateBG("PatientInfo", "familyDoctorAddress", patient.getFamilyDoctorAddress(),
 							patient.getId());
 					SQLHelper.updateBG("PatientInfo", "familyDoctorPhoneNumber", patient.getFamilyDoctorNumber(),
+							patient.getId());
+					patient.setGender(genderField.getText());
+					SQLHelper.updateBG("PatientInfo", "gender", patient.getGender(),
+							patient.getId());
+					patient.setWeight(Double.parseDouble(weightField.getText()));
+					SQLHelper.updateBG("PatientInfo", "weight", patient.getWeight(),
 							patient.getId());
 					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients, stock);
 					openManage.setVisible(true);

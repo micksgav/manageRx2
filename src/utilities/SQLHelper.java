@@ -165,10 +165,9 @@ public class SQLHelper {
 		String familyDoctorName = p.getFamilyDoctorName();
 		String familyDoctorAddress = p.getFamilyDoctorAddress();
 		String familyDoctorPhoneNumber = p.getFamilyDoctorNumber();
-		// fix
-		String familyDoctorFax = "test";
-		String gender = "test";
-		double weight = 100.00;
+		String familyDoctorFax = p.getFamilyDoctor().getFax();
+		String gender = p.getGender();
+		double weight = p.getWeight();
 		int ID = p.getId();
 
 		try {
