@@ -14,9 +14,6 @@ import PatientManagement.Patient;
 import PatientManagement.PatientList;
 import PatientManagement.Prescription;
 import PatientManagement.PrescriptionList;
-import inventory.AllStock;
-import inventory.DrugStock;
-import inventory.DrugStockLinkedList;
 
 public class SQLHelper {
 	ExecutorService service;
@@ -165,9 +162,10 @@ public class SQLHelper {
 		String familyDoctorName = p.getFamilyDoctorName();
 		String familyDoctorAddress = p.getFamilyDoctorAddress();
 		String familyDoctorPhoneNumber = p.getFamilyDoctorNumber();
-		String familyDoctorFax = p.getFamilyDoctor().getFax();
-		String gender = p.getGender();
-		double weight = p.getWeight();
+		// fix
+		String familyDoctorFax = "test";
+		String gender = "test";
+		double weight = 100.00;
 		int ID = p.getId();
 
 		try {
@@ -379,36 +377,6 @@ public class SQLHelper {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logErrors.log(e.getMessage() + " in addPrescription in SQLHelper");
-		}
-	}
-	
-	public DrugStockLinkedList getAllDrugStock() {
-		DrugStockLinkedList stock = new DrugStockLinkedList();
-		try {
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM DrugStock");
-			while (resultSet.next()) {
-				DrugStock drug = new DrugStock(resultSet.getString("DIN"), resultSet.getInt("quantity"), resultSet.getInt("threshold"), resultSet.getInt("ID"));
-				stock.insert(drug);
-			}
-		} catch (Exception e) {
-			logErrors.log(e.getMessage() + " in getAllDrugStock in SQLHelper");
-		}
-		return stock;
-	}
-	
-	public int addDrugStock(DrugStock drug) {
-		try {
-			ResultSet resultSet = statement.executeQuery(
-					"SELECT ID FROM DrugStock WHERE ID = (SELECT MAX(DrugStock) FROM DrugStock)");
-			resultSet.next();
-			int ID = resultSet.getInt("ID") + 1;
-			statement.executeUpdate("INSERT INTO DrugStock values ( " + ID + " , \"" + drug.getDrugDIN() + "\" , "
-					+ drug.getNumInStock() + " , " + drug.getStockThreshold() + " )");
-			return ID;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logErrors.log(e.getMessage() + " in addDrugStock in SQLHelper");
-			return -1;
 		}
 	}
 

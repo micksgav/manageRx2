@@ -97,9 +97,8 @@ public class TempMain {
 
 		WaitDialog.disposeWait();
 		
-		
 		Patient patient = new Patient();
-		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients, stock);
+		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients);
 		
 		
 

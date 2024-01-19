@@ -13,14 +13,10 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -144,57 +140,46 @@ public class loginUI extends JFrame implements ActionListener {
 
 		add(this.buttonPanel, BorderLayout.NORTH);
 
-		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
-		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
-		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
-				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
-		
-		loginPane.setBorder(textBoxBorder);
-		
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(25, 25, 25, 25);
+		gbc.insets = new Insets(10, 10, 10, 10);
 
-		managerxLabel.setFont(nameFont);
+		managerxLabel.setFont(new Font("Vardana", Font.PLAIN, 24));
 		gbc.gridx = 2;
 		gbc.gridy = 0;
+		gbc.gridwidth = 3;
+		gbc.anchor = GridBagConstraints.EAST;
 		loginPane.add(managerxLabel, gbc);
 
-		usernameLabel.setFont(genFont);
+		usernameLabel.setFont(new Font("Vardana", Font.PLAIN, 16));
 		gbc.gridx = 1;
 		gbc.gridy = 1;
+		gbc.gridwidth = 2;
 		gbc.anchor = GridBagConstraints.WEST;
 		loginPane.add(usernameLabel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 2;
-		gbc.gridwidth = 3;
-		usernameField.setFont(genFont);
-		usernameField.setBorder(textBoxBorder);
+		gbc.gridwidth = 5;
 		loginPane.add(usernameField, gbc);
 
-		passwordLabel.setFont(genFont);
+		passwordLabel.setFont(new Font("Vardana", Font.PLAIN, 16));
 		gbc.gridx = 1;
 		gbc.gridy = 3;
+		gbc.gridwidth = 2;
 		gbc.anchor = GridBagConstraints.WEST;
 		loginPane.add(passwordLabel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 4;
-		gbc.gridwidth = 3;
-		passwordField.setFont(genFont);
-		passwordField.setBorder(textBoxBorder);
+		gbc.gridwidth = 5;
 		loginPane.add(passwordField, gbc);
 
 		loginButton.addActionListener(this);
 		loginButton.setActionCommand("loginButtonAction");
-		gbc.gridx = 2;
+		gbc.gridx = 3;
 		gbc.gridy = 5;
 		gbc.gridwidth = 1;
 		gbc.anchor = GridBagConstraints.EAST;
-		loginButton.setFont(genFont);
-		loginButton.setBorder(textBoxBorder);
 		loginPane.add(loginButton, gbc);
 
 		add(loginPane, BorderLayout.CENTER);

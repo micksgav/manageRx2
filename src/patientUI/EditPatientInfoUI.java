@@ -50,20 +50,16 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import utilities.*;
 import PatientManagement.*;
-import inventory.AllStock;
 import mainUI.loginUI;
-import mainUI.orderUI;
 import mainUI.settingsUI;
-import mainUI.stockUI;
 import swingHelper.AppIcon;
 
 public class EditPatientInfoUI extends JFrame implements ActionListener, FocusListener {
 
-	// app information
+	// patient information
 	private Patient patient; // patient used if editing a current patient
 	private PatientList patients; // list containing all patients
 	private Patient newPatient; // patient used if creating a new patient
-	private AllStock stock;
 
 	// panels
 	private JPanel buttonPanel; // panel for header
@@ -134,7 +130,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public EditPatientInfoUI(String title, Patient patient, PatientList patients, AllStock stock) throws ParseException {
+	public EditPatientInfoUI(String title, Patient patient, PatientList patients) throws ParseException {
 
 		dateOfBirthFormat = new MaskFormatter("##/##/####");
 		healthCardFormat = new MaskFormatter("#### - ### - ### - UU");
@@ -153,7 +149,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		setLayout(new BorderLayout());
 		this.patient = patient;
 		this.patients = patients;
-		this.stock = stock;
 		newPatient = new Patient();
 
 		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font used for most text elements
@@ -562,31 +557,25 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	} // end EditPatientInfoUI
 
 	public void actionPerformed(ActionEvent e) {
-		//open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
-			openStock.setVisible(true);
-			setVisible(false);
+			System.out.println("Stock");
 		} // end if
-		// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
-			openOrder.setVisible(true);
-			setVisible(false);
+			System.out.println("Order");
 		} // end if
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			if (patient == null) {
-				SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", null, patients, stock);
+				SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", null, patients);
 				openSearchAdd.setVisible(true);
 				setVisible(false);
 			} // end if
 			else {
-				ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients, stock);
+				ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients);
 				openManage.setVisible(true);
 				setVisible(false);
 			} // end else
@@ -614,14 +603,12 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					newPatient.setPhoneNumber(phoneField.getText().trim());
 					newPatient.setHealthCardNumber(healthCardNumField.getText().trim());
 					newPatient.newFamilyDoctor(docNameField.getText().trim(), docAddressField.getText().trim(),
-							docPhoneNumberField.getText().trim(), docFaxField.getText());
+							docPhoneNumberField.getText().trim());
 					newPatient.setAdditionalNotes(additionalNotesArea.getText().trim());
 					newPatient.setId(patients.numRecs());
-					newPatient.setGender(genderField.getText());
-					newPatient.setWeight(Double.parseDouble(weightField.getText()));
 					patients.insert(newPatient);
 					SQLHelper.addPatient(newPatient);
-					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", newPatient, patients, stock);
+					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", newPatient, patients);
 					openManage.setVisible(true);
 					setVisible(false);
 				} // end if
@@ -648,20 +635,14 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					patient.setHealthCardNumber(healthCardNumField.getText().trim());
 					SQLHelper.updateBG("PatientInfo", "healthCard", patient.getHealthCardNumber(), patient.getId());
 					patient.newFamilyDoctor(docNameField.getText().trim(), docAddressField.getText().trim(),
-							docPhoneNumberField.getText().trim(), docFaxField.getText());
+							docPhoneNumberField.getText().trim());
 					SQLHelper.updateBG("PatientInfo", "familyDoctorName", patient.getFamilyDoctorName(),
 							patient.getId());
 					SQLHelper.updateBG("PatientInfo", "familyDoctorAddress", patient.getFamilyDoctorAddress(),
 							patient.getId());
 					SQLHelper.updateBG("PatientInfo", "familyDoctorPhoneNumber", patient.getFamilyDoctorNumber(),
 							patient.getId());
-					patient.setGender(genderField.getText());
-					SQLHelper.updateBG("PatientInfo", "gender", patient.getGender(),
-							patient.getId());
-					patient.setWeight(Double.parseDouble(weightField.getText()));
-					SQLHelper.updateBG("PatientInfo", "weight", patient.getWeight(),
-							patient.getId());
-					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients, stock);
+					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients);
 					openManage.setVisible(true);
 					setVisible(false);
 				} // end else
@@ -676,12 +657,12 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			if (patient == null) {
 				newPatient.newPrescriptionList();
 				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", newPatient, patients,
-						false, stock);
+						false);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end if
 			else {
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, false, stock);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, false);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end else
@@ -690,12 +671,12 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		if (e.getActionCommand().equals("Manage Insurance Information")) {
 			if (patient == null) {
 				newPatient.newInsuranceList();
-				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", newPatient, patients, stock);
+				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", newPatient, patients);
 				openInsurance.setVisible(true);
 				setVisible(false);
 			} // end if
 			else {
-				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", patient, patients, stock);
+				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", patient, patients);
 				openInsurance.setVisible(true);
 				setVisible(false);
 			} // end else

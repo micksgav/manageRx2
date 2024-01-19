@@ -23,14 +23,11 @@ import javax.swing.text.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import PatientManagement.*;
-import inventory.AllStock;
 import mainUI.loginUI;
-import mainUI.orderUI;
 import mainUI.settingsUI;
-import mainUI.stockUI;
 import swingHelper.AppIcon;
 
-public class SearchForPatientUI extends JFrame implements ActionListener {
+public class SearchForPatientUI extends JFrame implements ActionListener{
 
 	/*
 	 * Method Name: multipleIndex Author: John Brown Creation Date: January 5, 2024
@@ -98,10 +95,9 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		} // end else
 	} // end searchPatient
 
-	// app information
+	// patient information
 	PatientList patients; // list of all patients
 	Patient patient; // patient that is passed into other UIs
-	AllStock stock;
 
 	// panels
 	private JPanel buttonPanel; // header panel
@@ -124,7 +120,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 	private JLabel patientNameLabel = new JLabel("Enter Patient's First and Last Name"); // patient name label
 	private JTextField patientNameField; // patient name field
 	private JLabel patientBirthdayLabel = new JLabel("Enter Patient's Birthday (DD/MM/YYYY)"); // patient birthday label
-	// private JTextField patientBirthdayField; // patient birthday field
+	//private JTextField patientBirthdayField; // patient birthday field
 	private Insets gridBagPadding; // padding for GridBagConstraints
 	JFormattedTextField patientBirthdayField;
 
@@ -134,8 +130,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public SearchForPatientUI(String title, Patient patient, PatientList patients, AllStock stock)
-			throws ParseException {
+	public SearchForPatientUI(String title, Patient patient, PatientList patients) throws ParseException {
 
 		// setup screen attributes
 		FlatLightLaf.setup();
@@ -152,7 +147,6 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		// instantiate variables
 		this.patients = patients;
 		this.patient = patient;
-		this.stock = stock;
 
 		// add all buttons to header, then add header to mainPanel
 		stockIcon = stockIcon.setScale(0.12);
@@ -207,7 +201,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		// headerButtons.add(btnOpenSettings);
+		//headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
@@ -291,27 +285,27 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 	} // end SearchForPatientUI
 
 	public void actionPerformed(ActionEvent e) {
-		// open stock button pressed
+		// open stock page
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
-			openStock.setVisible(true);
-			setVisible(false);
+			System.out.println("Stock");
 		} // end if
-			// open order button pressed
+			// open order page
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
-			openOrder.setVisible(true);
-			setVisible(false);
+			System.out.println("Order");
 		} // end if
-		// open patient management page
+			// open settings page
+		if (e.getActionCommand().equals("openSettings")) {
+			System.out.println("Settings");
+		} // end if
+			// open patient management page
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
 			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -327,7 +321,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 			if (index[0] >= 0) {
 				if (index.length == 1) {
 					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patients.returnData(index[0]),
-							patients, stock);
+							patients);
 					openManage.setVisible(true);
 					setVisible(false);
 				} // end if
@@ -340,7 +334,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 					int finalIndex = multipleIndex(address, index, patients);
 					if (finalIndex >= 0) {
 						ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx",
-								patients.returnData(finalIndex), patients, stock);
+								patients.returnData(finalIndex), patients);
 						openManage.setVisible(true);
 						setVisible(false);
 					} // end if
