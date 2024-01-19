@@ -162,7 +162,7 @@ public class orderUI extends JFrame implements ActionListener {
 		add(this.buttonPanel, BorderLayout.NORTH);
 
 		GridBagConstraints gbc = new GridBagConstraints();// start gridbagconstraints
-		gbc.insets = new Insets(10, 10, 10, 10);// set insets
+		gbc.insets = new Insets(25, 25, 25, 25);// set insets
 		
 		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
 		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
@@ -219,6 +219,10 @@ public class orderUI extends JFrame implements ActionListener {
 
 		JPanel containerSizePane = new JPanel(new FlowLayout());
 
+		orderSmallContainer.setBorder(textFieldPadding);
+		orderMediumContainer.setBorder(textFieldPadding);
+		orderLargeContainer.setBorder(textFieldPadding);
+		
 		containerSizePane.add(orderSmallContainer);
 		containerSizePane.add(orderMediumContainer);
 		containerSizePane.add(orderLargeContainer);
@@ -230,6 +234,8 @@ public class orderUI extends JFrame implements ActionListener {
 
 		gbc.gridx = 1;
 		gbc.gridy = 2;
+		containerSizePane.setBorder(textBoxBorderLine);
+		containerSizePane.setFont(genFont);
 		orderPanel.add(containerSizePane, gbc);
 
 		gbc.gridx = 1;
@@ -248,6 +254,8 @@ public class orderUI extends JFrame implements ActionListener {
 		gbc.anchor = GridBagConstraints.EAST;
 		placeOrder.addActionListener(this);
 		placeOrder.setActionCommand("placeOrder");
+		placeOrder.setBorder(textBoxBorder);
+		placeOrder.setFont(genFont);
 		orderPanel.add(placeOrder, gbc);
 
 		add(orderPanel, BorderLayout.CENTER);
