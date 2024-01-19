@@ -21,16 +21,19 @@ import com.formdev.flatlaf.FlatLightLaf;
 import PatientManagement.*;
 import inventory.*;
 import mainUI.loginUI;
+import mainUI.orderUI;
 import mainUI.settingsUI;
+import mainUI.stockUI;
 import swingHelper.AppIcon;
 import utilities.DrugSelection;
 import utilities.SQLHelper;
 
 public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 
-	// patient information
+	// app information
 	Patient patient; // patient currently selected
 	PatientList patients; // list containing all patients
+	AllStock stock;
 
 	// panels
 	private JPanel buttonPanel; // header panel
@@ -109,7 +112,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 	private JPanel panel;
 	private JButton btnNewButton;
 
-	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients, boolean last) {
+	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients, boolean last, AllStock stock) {
 		// setup display attributes
 		FlatLightLaf.setup();
 		setTitle(title);
@@ -125,6 +128,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		this.patient = patient;
 		this.patients = patients;
 		this.last = last;
+		this.stock = stock;
 
 		// make header
 		stockIcon = stockIcon.setScale(0.12);
@@ -512,27 +516,27 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		SQLHelper helper = new SQLHelper();
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			System.out.println("Stock");
+			stockUI openStock = new stockUI(stock);
+			openStock.setVisible(true);
+			setVisible(false);
 		} // end if
-			// open order button pressed
+		// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			System.out.println("Order");
-		} // end if
-			// open settings button pressed
-		if (e.getActionCommand().equals("openSettings")) {
-			System.out.println("Settings");
+			orderUI openOrder = new orderUI();
+			openOrder.setVisible(true);
+			setVisible(false);
 		} // end if
 			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
 			// open patient manager page
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
 			// cancel or back button pressed
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			// open current prescriptions page
-			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
+			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
 			openCurrent.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -561,7 +565,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				patient.addActivePrescription(newScript);
 				helper.addPrescriptionBG(newScript);
 
-				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
+				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
 				openCurrent.setVisible(true);
 				setVisible(false);
 			} // end if
@@ -597,7 +601,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				newScript.setID(helper.addPrescriptionBG(newScript));
 
 				// open a new add prescription window
-				AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last);
+				AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
 				openAddNew.setVisible(true);
 				setVisible(false);
 			} // end if
