@@ -105,6 +105,8 @@ public class SQLHelper {
 		// pushing to
 		try {
 			statement.executeUpdate("UPDATE " + table + " SET " + column + " = \"" + obj + "\" WHERE ID = " + ID);
+			System.out.println("SQL update in " + table);
+
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -388,26 +390,28 @@ public class SQLHelper {
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM DrugStock");
 			while (resultSet.next()) {
 				DrugStock drug = new DrugStock(resultSet.getString("DIN"), resultSet.getInt("quantity"), resultSet.getInt("threshold"), resultSet.getInt("ID"));
-				stock.insert(drug);
+				stock.insert(drug, false);
 			}
 		} catch (Exception e) {
 			logErrors.log(e.getMessage() + " in getAllDrugStock in SQLHelper");
 		}
+		System.out.println("SQL stock retrieved");
 		return stock;
 	}
 	
 	public int addDrugStock(DrugStock drug) {
 		try {
 			ResultSet resultSet = statement.executeQuery(
-					"SELECT ID FROM DrugStock WHERE ID = (SELECT MAX(DrugStock) FROM DrugStock)");
+					"SELECT ID FROM DrugStock WHERE ID = (SELECT MAX(ID) FROM DrugStock)");
 			resultSet.next();
 			int ID = resultSet.getInt("ID") + 1;
 			statement.executeUpdate("INSERT INTO DrugStock values ( " + ID + " , \"" + drug.getDrugDIN() + "\" , "
 					+ drug.getNumInStock() + " , " + drug.getStockThreshold() + " )");
+			System.out.println("Drug added: " + drug.getDrugDIN());
 			return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logErrors.log(e.getMessage() + " in addDrugStock in SQLHelper");
+			//logErrors.log(e.getMessage() + " in addDrugStock in SQLHelper");
 			return -1;
 		}
 	}

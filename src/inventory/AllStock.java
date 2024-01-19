@@ -13,6 +13,7 @@ package inventory;
 import java.util.*;
 import java.io.IOException;
 import utilities.logErrors;
+import utilities.SQLHelper;
 
 public class AllStock {
 
@@ -24,11 +25,12 @@ public class AllStock {
 	private int numMediumContainers;
 	private int numLargeContainers;
 	private int numBags;
+	private SQLHelper helper = new SQLHelper();
 	Scanner ui = new Scanner(System.in); // delete when doing ui
 	
 	public AllStock(int small, int medium, int large, int bags) {
 		// set totalNum
-		this.drugsList = new DrugStockLinkedList();
+		this.drugsList = helper.getAllDrugStock();
 		numSmallContainers = small;
 		numMediumContainers = medium;
 		numLargeContainers = large;
@@ -36,7 +38,7 @@ public class AllStock {
 	} // end AllStock constructor
 	
 	public AllStock() {
-		this.drugsList = new DrugStockLinkedList();
+		this.drugsList = helper.getAllDrugStock();
 		totalNum = 0;
 		numSmallContainers = 0;
 		numMediumContainers = 0;
@@ -218,11 +220,7 @@ public class AllStock {
 		boolean isStocked = drugsList.checkStockDIN(arrivalDIN);
 		boolean isValid = false;
 		// if this is the inventory's first shipment of the drug
-		// should not run if parameter threshold is ""
 		if(isStocked == false) { 		
-			// needs to be in StockUI
-			// System.out.println("Enter threshold:");
-			// will have to be revised to work with swing
 
 			while(isValid == false) {
 				// will need to be moved to StockUI and revised for input in the setThresholdNum JTextField:
@@ -231,7 +229,7 @@ public class AllStock {
 				if(isInteger(newThreshold)) {
 					isValid = true;
 					DrugStock newDrugStock = new DrugStock(arrivalDIN, 0, Integer.parseInt(newThreshold), 0);	
-					drugsList.insert(newDrugStock);
+					drugsList.insert(newDrugStock, true);
 				} // end if
 				else {
 					// JOptionPane.showMessageDialog(frame, "Threshold must be an integer","ERROR", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame	

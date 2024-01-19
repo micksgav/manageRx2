@@ -3,14 +3,13 @@
  @Name: DrugStockLinkedList
  @Author           : Christina Wong
  @Creation Date    : December 13, 2023
- @Modified Date	   : January 9, 2024
+ @Modified Date	   : January 19, 2024
    @Description    : 
    
 ***********************************************
 */
 package inventory;
-
-// there are extra print statements for testing that can probably be deleted later
+import utilities.*;
 
 public class DrugStockLinkedList {
 
@@ -130,16 +129,18 @@ public class DrugStockLinkedList {
 	* @Description This adds a new drug to the stock, in sequential order based on DIN.
 	* @Parameters  DrugStock insertDrugStock, drug added to linked list
 	* @Returns void
-	* Dependencies: DrugStock
+	* Dependencies: DrugStock, SQL Helper addDrugStock
 	* Throws/Exceptions: N/A
     */
-	public void insert(DrugStock insertDrugStock) {
+	public void insert(DrugStock insertDrugStock, boolean saveToSQL) {
+		SQLHelper helper = new SQLHelper();
 		Node newNode; // a node to contain the new item.
 		newNode = new Node();
 		newNode.drugStock = insertDrugStock;
 
 		if (head == null) {
 			head = newNode;
+
 		} // end if
 
 		else if (Integer.parseInt(head.drugStock.getDrugDIN()) > Integer.parseInt(newNode.drugStock.getDrugDIN())) {
@@ -162,6 +163,11 @@ public class DrugStockLinkedList {
 		} // end else
 		
 		System.out.println("new node inserted");
+		if(saveToSQL == true) {
+			int ID = helper.addDrugStock(insertDrugStock);
+			insertDrugStock.setID(ID);
+		}
+
 		printDINs(); // mainly for testing purposes - may not need to keep in code?
 
 	} // end insert()
@@ -256,7 +262,6 @@ public class DrugStockLinkedList {
 			runner = runner.next;
 		} // end while
 		if(found == false) {
-			// keep this statement, could be a DialogueBox or something else in GUI?
 			System.out.println("Drug not found in inventory");
 			return false;
 		} // end if
@@ -264,6 +269,16 @@ public class DrugStockLinkedList {
 		return found;
 	} // end viewStockUsage
 	
+	/** Method Name: getStockUsage
+	* @Author Christina Wong 
+	* @Date January 16, 2024
+	* @Modified January 17, 2024
+	* @Description This retrieves the array of stock usage information of a specified drug.
+	* @Parameters  String DIN, DIN of drug to retrieve information on
+	* @Returns String[][] stockUsage, the drug's stock usage
+	* Dependencies: DrugStock
+	* Throws/Exceptions: N/A
+    */
 	public String[][] getStockUsage(String DIN){
 		Node runner;
 		runner = head;
@@ -271,11 +286,11 @@ public class DrugStockLinkedList {
 		while(runner != null) {
 			if(runner.drugStock.getDrugDIN().equals(DIN)) {
 				stockUsage = runner.drugStock.getStockChanges();
-			}
+			} // end if
 			runner = runner.next;
-		}
+		} // end while
 		return stockUsage;
-	}
+	} // end getStockUsage
 	
 	public String getDINForName(String name) {
 		String drugDIN = "";
@@ -284,9 +299,9 @@ public class DrugStockLinkedList {
 		while(runner != null) {
 			if(runner.drugStock.getDrugName().toLowerCase().equals(name.toLowerCase())) {
 				drugDIN = runner.drugStock.getDrugDIN();
-			}
+			} // end if
 			runner = runner.next;
-		}
+		} // end while
 		return drugDIN;
 	}
 	

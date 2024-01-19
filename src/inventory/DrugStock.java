@@ -3,7 +3,7 @@
  @Name: DrugStock
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 12, 2024
+ @Modified Date	   : January 19, 2024
    @Description    : 
    
 ***********************************************
@@ -13,6 +13,7 @@ package inventory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*; // just for testing purposes, will need to be replaced with UI stuff later
+import utilities.*;
 import java.io.IOException;
 public class DrugStock {
 	private Drug drug; // drug
@@ -20,6 +21,7 @@ public class DrugStock {
 	private int stockThreshold; // when the drug's threshold is reached, alert is sent
 	private String[][] stockChanges = new String[32][4]; // array of the past month (31 days) of stock changes
 	private int ID;
+	private SQLHelper helper = new SQLHelper();
 	Scanner ui = new Scanner(System.in);
 	
 	public DrugStock(String DIN, int inStock, int threshold, int ID) throws IOException {
@@ -32,6 +34,7 @@ public class DrugStock {
 	} // end DrugStock constructor with stock info
 	
 	public DrugStock(String DIN) throws IOException {
+		this.ID = ID;
 		this.drug = new Drug();
 		this.drug = drugFinder.getDrug(DIN);
 		numInStock = 0;
@@ -76,8 +79,8 @@ public class DrugStock {
 	public void removeFromStock(int filled) {
 		this.numInStock -= filled;
 		System.out.println("prescription of " + filled);
-		
 		changeInStock("Prescription filled:", filled, numInStock);
+		helper.update("DrugStock", "quantity", this.numInStock, ID);
 		checkThreshold();		
 	} // end removeFromStock
 	
@@ -118,6 +121,8 @@ public class DrugStock {
 	public void addToStock(int added) {
 		this.numInStock += added;
 		changeInStock("Shipment arrival:", added, numInStock);
+		helper.update("DrugStock", "quantity", this.numInStock, ID);
+		checkThreshold();
 	} // end addToStock
 	
 	public int getStockThreshold() {
@@ -126,11 +131,16 @@ public class DrugStock {
 	
 	public void setStockThreshold(int threshold) {
 		this.stockThreshold = threshold;
+		helper.update("DrugStock", "threshold", threshold, ID);
 	} // end setStockThreshold
+	
+	public void setID(int newID) {
+		this.ID = newID;
+	} // end setID
 	
 	public String[][] getStockChanges(){
 		return stockChanges;
-	}
+	} // end getStockChanges
 	
 	/** Method Name: fillStockChanges
 	* @Author Christina Wong 
