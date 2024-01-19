@@ -352,6 +352,6 @@ public class stockUI extends JFrame implements ActionListener {
 	
 	private void viewInventory() throws IOException {
 		//stock.viewFullInventory();
-		InventoryUI inventory = new InventoryUI(stock);
+		inventoryUI inventory = new inventoryUI(stock);
 	}
 }

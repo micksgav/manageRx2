@@ -19,16 +19,17 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import PatientManagement.*;
+import inventory.AllStock;
 import utilities.*;
-import mainUI.loginUI;
-import mainUI.settingsUI;
+import mainUI.*;
 import swingHelper.AppIcon;
 
 public class AddNewInsuranceUI extends JFrame implements ActionListener {
 
-	// patient information
+	// app information
 	Patient patient; // currently selected patient
 	PatientList patients; // complete list of patients
+	AllStock stock;
 
 	// panels
 	private JPanel buttonPanel; // panel for header
@@ -68,7 +69,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public AddNewInsuranceUI(String title, Patient patient, PatientList patients) {
+	public AddNewInsuranceUI(String title, Patient patient, PatientList patients, AllStock stock) {
 
 		// setup screen attributes
 		FlatLightLaf.setup();
@@ -83,6 +84,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		// initialize patients
 		this.patient = patient;
 		this.patients = patients;
+		this.stock = stock;
 
 		// make header
 		stockIcon = stockIcon.setScale(0.12);
@@ -306,27 +308,27 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		SQLHelper helper = new SQLHelper();
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			System.out.println("Stock");
+			stockUI openStock = new stockUI(stock);
+			openStock.setVisible(true);
+			setVisible(false);
 		} // end if
 		// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			System.out.println("Order");
-		} // end if
-		// open settings button pressed
-		if (e.getActionCommand().equals("openSettings")) {
-			System.out.println("Settings");
+			orderUI openOrder = new orderUI();
+			openOrder.setVisible(true);
+			setVisible(false);
 		} // end if
 		// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
 			// open patient manager page
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
 		// cancel or back buttons pressed
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			// open view insurance page
-			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients);
+			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients, stock);
 			openView.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -336,7 +338,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
 					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
 			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText(), patient.getId());
-			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients);
+			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients, stock);
 			openView.setVisible(true);
 			setVisible(false);
 		} // end if
