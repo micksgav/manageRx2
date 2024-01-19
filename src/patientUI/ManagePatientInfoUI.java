@@ -18,8 +18,11 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import mainUI.loginUI;
+import mainUI.orderUI;
 import mainUI.settingsUI;
+import mainUI.stockUI;
 import PatientManagement.*;
+import inventory.AllStock;
 
 import java.util.*;
 
@@ -29,9 +32,10 @@ import java.text.ParseException;
 
 public class ManagePatientInfoUI extends JFrame implements ActionListener {
 
-	// patient information
+	// app information
 	Patient patient; // current patient
 	PatientList patients; // list of all patient
+	AllStock stock;
 
 	String[] insuranceCompanyArray; // array containing all insurance companies belonging to patient
 	String[] insuranceNumberArray; // array containing all insurance numbers belonging to patient
@@ -100,7 +104,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public ManagePatientInfoUI(String title, Patient patient, PatientList patients) {
+	public ManagePatientInfoUI(String title, Patient patient, PatientList patients, AllStock stock) {
 
 		// setup screen attributes
 		FlatLightLaf.setup();
@@ -116,6 +120,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		// instantiate variables
 		this.patient = patient;
 		this.patients = patients;
+		this.stock = stock;
 
 		// add buttons to header
 		stockIcon = stockIcon.setScale(0.12);
@@ -496,15 +501,21 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	} // end ManagePatientInfo
 
 	public void actionPerformed(ActionEvent e) {
+		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			System.out.println("Stock");
+			stockUI openStock = new stockUI(stock);
+			openStock.setVisible(true);
+			setVisible(false);
 		} // end if
+		// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			System.out.println("Order");
+			orderUI openOrder = new orderUI();
+			openOrder.setVisible(true);
+			setVisible(false);
 		} // end if
 			// open patient management
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -512,7 +523,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			SearchForPatientUI openSearch;
 			try {
-				openSearch = new SearchForPatientUI("ManageRx", patient, patients);
+				openSearch = new SearchForPatientUI("ManageRx", patient, patients, stock);
 				openSearch.setVisible(true);
 				setVisible(false);
 			} catch (ParseException e1) {
@@ -525,7 +536,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Edit Record")) {
 			EditPatientInfoUI openEdit;
 			try {
-				openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
+				openEdit = new EditPatientInfoUI("ManageRx", patient, patients, stock);
 				openEdit.setVisible(true);
 				setVisible(false);
 			} catch (ParseException e1) {
@@ -540,12 +551,12 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 						"No Prescriptions", JOptionPane.INFORMATION_MESSAGE);
 			} // end if
 			else if (patient.getActivePrescriptions() == null && patient.getArchivedPrescriptions() != null) {
-				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients, true);
+				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients, true, stock);
 				openArchived.setVisible(true);
 				setVisible(false);
 			} // end else if
 			else {
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, true);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, true, stock);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end else
