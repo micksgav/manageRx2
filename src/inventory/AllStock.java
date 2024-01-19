@@ -247,6 +247,14 @@ public class AllStock {
 		
 	} // end updateStock
 	
+	public int thresholdCheck(String DIN) {
+		if(isInteger(DIN) == false) {
+			DIN = drugsList.getDINForName(DIN);
+		}
+		int atThreshold = drugsList.checkThreshold(DIN);
+		return atThreshold;
+	}
+	
 	// must be called in Patient in method addActivePrescription
 	// should be called in whichever method in Prescription or Patient is called to fill refills
 	/** Method Name: fillPrescription
