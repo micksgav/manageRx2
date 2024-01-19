@@ -340,6 +340,18 @@ public class DrugStockLinkedList {
 		return allInventory;
 	} // end viewFullInventory
 	
+	public int checkThreshold(String DIN) {
+		int atThreshold = 0;
+		Node runner;
+		runner = head;
+		while(runner != null) {
+			if(runner.drugStock.getDrugDIN().equals(DIN)) {
+				atThreshold = runner.drugStock.checkThreshold();
+			}
+			runner = runner.next;
+		}
+		return atThreshold;
+	}
 	
 	public int countNodes() {
 		int count = 0;;
@@ -354,7 +366,6 @@ public class DrugStockLinkedList {
 		return count;
 	}
 	
-	// not sure if we will need this
     public DrugStock[] getElements() {
 
         int count;          // For counting elements in the list.

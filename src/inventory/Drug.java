@@ -17,7 +17,7 @@ import utilities.getInteractions;
 public class Drug {
 	private String drugName; // brand name of drug
 	private String drugClass; // drug class
-	private String[] sideEffects; // drug side effects // DON'T DO YET
+	private String[] sideEffects; // drug side effects
 	private String DIN; // drug identification number
 	private final String schedule; // drug schedule
 	private final String company; // drug company

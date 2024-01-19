@@ -91,15 +91,18 @@ public class DrugStock {
 	* Dependencies: N/A
 	* Throws/Exceptions: N/A
     */
-	public void checkThreshold() {
+	public int checkThreshold() {
 		if(numInStock < stockThreshold) {
 			// JOptionPane.showMessageDialog(frame, "Stock is below threshold.\nCurrent stock: " + this.numInStock + "\nThreshold: " + this.stockThreshold,"Threshold Alert", JOptionPane.ERROR_MESSAGE); // frame is the name of the frame
 			System.out.println("\nSTOCK IS BELOW THRESHOLD\n");
+			return 1;
 		} // end if
 		else if(numInStock == stockThreshold) {
 			// JOptionPane.showMessageDialog(frame, "Stock is at threshold.\nCurrent stock: " + this.numInStock,"Threshold Warning", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame
 			System.out.println("\nSTOCK IS AT THRESHOLD\n");
+			return 2;
 		} // end else if
+		return 0;
 	} // end checkThreshold
 	
 	/** Method Name: addToStock
