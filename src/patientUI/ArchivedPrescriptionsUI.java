@@ -18,17 +18,21 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.*;
 
 import mainUI.loginUI;
+import mainUI.orderUI;
 import mainUI.settingsUI;
+import mainUI.stockUI;
 import PatientManagement.*;
+import inventory.AllStock;
 
 import java.awt.*;
 import java.awt.event.*;
 
 public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 
-	// patient information
+	// app information
 	Patient patient; // patient whose prescriptions are being viewed
 	PatientList patients; // list of all patients
+	AllStock stock;
 
 	// panels
 	private JPanel buttonPanel; // header panel containing logo and buttons
@@ -71,7 +75,7 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public ArchivedPrescriptionsUI(String title, Patient patient, PatientList patients, boolean last) {
+	public ArchivedPrescriptionsUI(String title, Patient patient, PatientList patients, boolean last, AllStock stock) {
 
 		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
@@ -87,6 +91,7 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		this.patient = patient;
 		this.patients = patients;
 		this.last = last;
+		this.stock = stock;
 		drugBrandName = new String[patient.getArchivedPrescriptions().length()];
 		drugGenName = new String[patient.getArchivedPrescriptions().length()];
 		datePrescribed = new String[patient.getArchivedPrescriptions().length()];
@@ -307,32 +312,32 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// open stock page
 		if (e.getActionCommand().equals("openStock")) {
-			System.out.println("Stock");
+			stockUI openStock = new stockUI(stock);
+			openStock.setVisible(true);
+			setVisible(false);
 		} // end if
-			// open order page
+		// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			System.out.println("Order");
-		} // end if
-			// open settings page
-		if (e.getActionCommand().equals("openSettings")) {
-			System.out.println("Settings");
+			orderUI openOrder = new orderUI();
+			openOrder.setVisible(true);
+			setVisible(false);
 		} // end if
 			// open patient management page
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
 			// open active prescriptions page
 		if (e.getActionCommand().equals("View Active Prescriptions")) {
-			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
+			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
 			openCurrent.setVisible(true);
 			setVisible(false);
 		} // end if
 			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
 			if (last) {
-			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
+			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
 			openCurrent.setVisible(true);
 			setVisible(false);
 			}
