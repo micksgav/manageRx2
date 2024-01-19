@@ -30,8 +30,8 @@ public class mainMainTemp {
 		Drug drug3 = drugFinder.getDrug("02532042");
 		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), "30");
 		
-//		stockUI stock = new stockUI();
-//		stock.setVisible(true);
+		stockUI stock = new stockUI(inventory);
+		stock.setVisible(true);
 
 //		Drug drug2 = drugFinder.getDrug("02248808");
 //		System.out.println("\nEnter threshold:");
@@ -42,7 +42,7 @@ public class mainMainTemp {
 //		System.out.println("\nEnter threshold:");
 //		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), "30");
 
-		stockUI stock = new stockUI(inventory);
+		//stockUI stock = new stockUI(inventory);
 //		DrugStockUI viewStock = new DrugStockUI(inventory, drug1.getDIN());
 
 	}

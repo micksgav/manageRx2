@@ -573,7 +573,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 					patient.addActivePrescription(newScript);
 					helper.addPrescriptionBG(newScript);
 
-					CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last);
+					CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
 					openCurrent.setVisible(true);
 
 					setVisible(false);
