@@ -19,15 +19,18 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.*;
 
 import mainUI.loginUI;
+import mainUI.orderUI;
 import mainUI.settingsUI;
+import mainUI.stockUI;
 import PatientManagement.*;
+import inventory.AllStock;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
 
 public class ViewInsuranceUI extends JFrame implements ActionListener {
-	
+
 	public static void deleteInsurance(Patient patient) {
 		for (int i = 0; i < patient.getInsuranceInformation().size(); i++) {
 			if (patient.getInsuranceInformation().get(i).getDelete() == true) {
@@ -36,9 +39,10 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		}
 	}
 
-	// patient information
+	// app information
 	Patient patient; // patient whose insurance is being viewed
 	PatientList patients; // list of all patients
+	AllStock stock;
 
 	// panels
 	private JPanel buttonPanel; // header panel containing logo and buttons
@@ -75,7 +79,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public ViewInsuranceUI(String title, Patient patient, PatientList patients) {
+	public ViewInsuranceUI(String title, Patient patient, PatientList patients, AllStock stock) {
 
 		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
@@ -90,6 +94,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		// instantiate variables
 		this.patient = patient;
 		this.patients = patients;
+		this.stock = stock;
 		insuranceCompany = new String[patient.getInsuranceInformation().size()];
 		insuranceNumber = new String[patient.getInsuranceInformation().size()];
 		insuranceNotes = new String[patient.getInsuranceInformation().size()];
@@ -311,21 +316,21 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SQLHelper helper = new SQLHelper();
-		// open stock page
+		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			System.out.println("Stock");
+			stockUI openStock = new stockUI(stock);
+			openStock.setVisible(true);
+			setVisible(false);
 		} // end if
-			// open order page
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			System.out.println("Order");
+			orderUI openOrder = new orderUI();
+			openOrder.setVisible(true);
+			setVisible(false);
 		} // end if
-			// open settings page
-		if (e.getActionCommand().equals("openSettings")) {
-			System.out.println("Settings");
-		} // end if
-			// open patient management page
+		// open patient management page
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -334,7 +339,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 			deleteInsurance(patient);
 			EditPatientInfoUI openEdit;
 			try {
-				openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
+				openEdit = new EditPatientInfoUI("ManageRx", patient, patients, stock);
 				openEdit.setVisible(true);
 				setVisible(false);
 			} catch (ParseException e1) {
@@ -343,9 +348,9 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 			}
 		} // end if
 			// open add new insurance page
-		if (e.getActionCommand().equals("Add New")) {
+		if (e.getActionCommand().equals("Add New Insurance")) {
 			deleteInsurance(patient);
-			AddNewInsuranceUI openAddNew = new AddNewInsuranceUI("ManageRx", patient, patients);
+			AddNewInsuranceUI openAddNew = new AddNewInsuranceUI("ManageRx", patient, patients, stock);
 			openAddNew.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -379,11 +384,17 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 						notes += info[j] + " ";
 					} // end for
 					patient.getInsuranceInformation().get(i).setNotes(notes.trim());
-					
+
 					System.out.println(patient.getInsuranceInformation().get(i).getID());
-					helper.updateInsuranceBG("InsuranceInfo", "company", patient.getInsuranceInformation().get(i).getCompany(), patient.getInsuranceInformation().get(i).getID());
-					helper.updateInsuranceBG("InsuranceInfo", "number", patient.getInsuranceInformation().get(i).getNumber(), patient.getInsuranceInformation().get(i).getID());
-					helper.updateInsuranceBG("InsuranceInfo", "notes", patient.getInsuranceInformation().get(i).getNotes(), patient.getInsuranceInformation().get(i).getID());
+					helper.updateInsuranceBG("InsuranceInfo", "company",
+							patient.getInsuranceInformation().get(i).getCompany(),
+							patient.getInsuranceInformation().get(i).getID());
+					helper.updateInsuranceBG("InsuranceInfo", "number",
+							patient.getInsuranceInformation().get(i).getNumber(),
+							patient.getInsuranceInformation().get(i).getID());
+					helper.updateInsuranceBG("InsuranceInfo", "notes",
+							patient.getInsuranceInformation().get(i).getNotes(),
+							patient.getInsuranceInformation().get(i).getID());
 
 					editInsurance[i].setText("Edit");
 					editInsurance[i].setActionCommand("edit" + i);

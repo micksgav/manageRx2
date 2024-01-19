@@ -6,9 +6,11 @@ public class OtherTempMain {
 
 	public static void main(String[] args) throws IOException {
 		Scanner ui = new Scanner(System.in);
-		
+
 //		mainUI main = new mainUI();
 //		main.setVisible(true);
+		//mainUI main = new mainUI();
+		//main.setVisible(true);
 
 		// loginUI login = new loginUI();
 		// login.setVisible(true);
@@ -19,6 +21,7 @@ public class OtherTempMain {
 		System.out.println("Enter threshold:");
 		String threshold = ui.nextLine();
 		inventory.updateStock(100, drug1.getDIN(), drug1.getDrugClass(), threshold);
+
 		
 		Drug drug2 = drugFinder.getDrug("02248808");
 		System.out.println("\nEnter threshold:");
@@ -31,9 +34,8 @@ public class OtherTempMain {
 		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), threshold);
 
 		stockUI stock = new stockUI(inventory);
-		
-		// inventoryUI newInventory = new inventoryUI(inventory);
-		
+
+		//newInventory.setVisible(true);
 		
 //		stock.setVisible(true);
 		

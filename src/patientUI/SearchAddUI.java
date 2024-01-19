@@ -20,8 +20,11 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import PatientManagement.*;
+import inventory.AllStock;
 import mainUI.loginUI;
+import mainUI.orderUI;
 import mainUI.settingsUI;
+import mainUI.stockUI;
 import swingHelper.AppIcon;
 
 public class SearchAddUI extends JFrame implements ActionListener {
@@ -41,9 +44,10 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	private JButton searchExisting; // search for an existing patient
 	private JButton addNew; // add a new patient
 
-	// patient information
+	// app information
 	Patient patient; // patient to pass through to other UIs
 	PatientList patients; // list containing all patient info
+	AllStock stock;
 
 	// text elements
 	private JLabel pageTitle = new JLabel("Patient Manager"); // patient manager title
@@ -54,7 +58,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public SearchAddUI(String title, Patient patient, PatientList patients) {
+	public SearchAddUI(String title, Patient patient, PatientList patients, AllStock stock) {
 
 		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
@@ -69,6 +73,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		// instantiate variables
 		this.patient = patient;
 		this.patients = patients;
+		this.stock = stock;
 
 		// setup header panel, adding all buttons
 		stockIcon = stockIcon.setScale(0.12);
@@ -99,7 +104,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		btnOpenSettings.setIcon(settingsIcon);
 		btnOpenSettings.setActionCommand("openSettings");
 		btnOpenSettings.addActionListener(this);
-		//this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
+		// this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
@@ -165,36 +170,42 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	} // end SearchAddUI
 
 	public void actionPerformed(ActionEvent e) {
-		// open stock page
+		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			System.out.println("Stock");
+			stockUI openStock = new stockUI(stock);
+			openStock.setVisible(true);
+			setVisible(false);
 		} // end if
-			// open order page
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			System.out.println("Order");
+			orderUI openOrder = new orderUI();
+			openOrder.setVisible(true);
+			setVisible(false);
 		} // end if
-			// open patient management page
+		// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			System.out.println("Patients");
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			openSearchAdd.setVisible(true);
+			setVisible(false);
 		} // end if
 			// open search page
 		if (e.getActionCommand().equals("Search For Existing Patient")) {
 			SearchForPatientUI openSearch;
 			try {
-				openSearch = new SearchForPatientUI("ManageRx", patient, patients);
+				openSearch = new SearchForPatientUI("ManageRx", patient, patients, stock);
 				openSearch.setVisible(true);
 				setVisible(false);
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 		} // end if
 			// open add page
 		if (e.getActionCommand().equals("Add a New Patient")) {
 			EditPatientInfoUI openCreate;
 			try {
-				openCreate = new EditPatientInfoUI("ManageRx", null, patients);
+				openCreate = new EditPatientInfoUI("ManageRx", null, patients, stock);
 				openCreate.setVisible(true);
 				setVisible(false);
 			} catch (ParseException e1) {

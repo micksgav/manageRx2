@@ -230,7 +230,7 @@ public class AllStock {
 
 				if(isInteger(newThreshold)) {
 					isValid = true;
-					DrugStock newDrugStock = new DrugStock(arrivalDIN, 0, Integer.parseInt(newThreshold));	
+					DrugStock newDrugStock = new DrugStock(arrivalDIN, 0, Integer.parseInt(newThreshold), 0);	
 					drugsList.insert(newDrugStock);
 				} // end if
 				else {

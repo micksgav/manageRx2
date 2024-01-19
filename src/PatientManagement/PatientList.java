@@ -71,7 +71,7 @@ public class PatientList {
 		int j = 0;
 		for (runner = head; runner != null; runner = runner.link, i++) {
 
-			if (runner.info.getName().equals(name) && runner.info.getBirthYear() == birthYear
+			if (runner.info.getName().toLowerCase().equals(name.toLowerCase()) && runner.info.getBirthYear() == birthYear //added lowercase check - gavin
 					&& runner.info.getDateOfBirthDay() == birthDay
 					&& runner.info.getDateOfBirthMonth() == birthMonth) {
 				indexes[j] = i;

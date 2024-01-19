@@ -4,9 +4,11 @@ import java.io.IOException;
 import inventory.*;
 public class mainMainTemp {
 
+
 	public static void main(String[] args) throws IOException {
 //		loginUI login = new loginUI();
 //		login.setVisible(true);
+
 		
 //		mainUI main = new mainUI();
 //		main.setVisible(true);
@@ -28,19 +30,21 @@ public class mainMainTemp {
 		Drug drug3 = drugFinder.getDrug("02532042");
 		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), "30");
 		
-//		stockUI stock = new stockUI();
-//		stock.setVisible(true);
+		stockUI stock = new stockUI(inventory);
+		stock.setVisible(true);
 
 //		Drug drug2 = drugFinder.getDrug("02248808");
 //		System.out.println("\nEnter threshold:");
 //		inventory.updateStock(50, drug2.getDIN(), drug2.getDrugClass(), "20");
 //		
+
 //		Drug drug3 = drugFinder.getDrug("02532042");
 //		System.out.println("\nEnter threshold:");
 //		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), "30");
 
-		stockUI stock = new stockUI(inventory);
+		//stockUI stock = new stockUI(inventory);
 //		DrugStockUI viewStock = new DrugStockUI(inventory, drug1.getDIN());
+
 	}
 
 }
