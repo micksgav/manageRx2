@@ -1,5 +1,7 @@
 package mainUI;
 
+import utilities.Encrypt;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -61,14 +63,24 @@ public class loginUI extends JFrame implements ActionListener {
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
+	
+	private Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
+			.getMaximumWindowBounds(); // dimensions of screen from
+	
+	private Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
+	private Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
+	private Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+	private Border redBoxBorderLine = BorderFactory.createLineBorder(new Color(255, 0, 0), screenDims.width / 700);
+	private Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
+			(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
+	private CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+	private CompoundBorder incorrectFieldBorder = new CompoundBorder(redBoxBorderLine,textFieldPadding);
 
 	public loginUI() {
 		
 		// setup screen attributes
 		FlatLightLaf.setup();
 		setTitle("ManageRx");
-		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
-				.getMaximumWindowBounds(); // dimensions of screen from
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
 		// screenDims.width /= 1.5;
 		// screenDims.height /= 1.5;
@@ -143,13 +155,7 @@ public class loginUI extends JFrame implements ActionListener {
 		this.buttonPanel.add(headerButtons, overallButtonConstraints);
 
 		add(this.buttonPanel, BorderLayout.NORTH);
-
-		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
-		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
-		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
-				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+		
 		
 		loginPane.setBorder(textBoxBorder);
 		
@@ -213,22 +219,42 @@ public class loginUI extends JFrame implements ActionListener {
 	}
 
 	private boolean verifyLogin() {
-		boolean login = true;
+		boolean login = true;//value for login
+		
+		//reset the red border on the boxes 
+		if(usernameField.getBorder() == incorrectFieldBorder) {
+			usernameField.setBorder(textBoxBorder);
+		}
+		if(passwordField.getBorder() == incorrectFieldBorder) {
+			passwordField.setBorder(textBoxBorder);
+		}
+		
+		//check username
 		if (!usernameField.getText().equals("username")) {
 			login = false;
+			usernameField.setBorder(incorrectFieldBorder);
 		}
-
-		if (!passwordField.getText().equals("password")) {
+		//if username/login-identifier found in db get user password hash 
+		//compare password hash's
+		if (!getPassword().equals("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")) {
 			login = false;
+			passwordField.setBorder(incorrectFieldBorder);
 		}
 
+		//handle login events
 		if (login) {
 			System.out.println("Logged In");
-		} else {
-			System.out.println(
-					"Not Logged In\nUsername:" + usernameField.getText() + "\nPassword:" + passwordField.getText());
+			mainUI UI = new mainUI();
+			UI.setVisible(true);
+			setVisible(false);
 		}
 		return false;
+	}
+	
+	private String getPassword() {
+		String password = new String(passwordField.getPassword());
+		String encryptedPassword = Encrypt.SHA256(password);
+		return encryptedPassword;
 	}
 
 }
