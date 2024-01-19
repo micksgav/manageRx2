@@ -192,7 +192,7 @@ public class loginUI extends JFrame implements ActionListener {
 		gbc.gridx = 2;
 		gbc.gridy = 5;
 		gbc.gridwidth = 1;
-		gbc.anchor = GridBagConstraints.EAST;
+		gbc.anchor = GridBagConstraints.CENTER;
 		loginButton.setFont(genFont);
 		loginButton.setBorder(textBoxBorder);
 		loginPane.add(loginButton, gbc);
@@ -214,7 +214,7 @@ public class loginUI extends JFrame implements ActionListener {
 
 	private boolean verifyLogin() {
 		boolean login = true;
-		if (!usernameField.getText().equals("username")) {
+		if (usernameField.getText().length() > 0 && passwordField.getText().length() > 0) {		if (!usernameField.getText().equals("username")) {
 			login = false;
 		}
 
@@ -227,6 +227,10 @@ public class loginUI extends JFrame implements ActionListener {
 		} else {
 			System.out.println(
 					"Not Logged In\nUsername:" + usernameField.getText() + "\nPassword:" + passwordField.getText());
+		}
+		}
+		else {
+			System.out.println("Please Fill in All Fields");
 		}
 		return false;
 	}
