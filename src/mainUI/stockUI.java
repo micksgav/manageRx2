@@ -21,6 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -123,6 +126,7 @@ public class stockUI extends JFrame implements ActionListener {
 		backButton.addActionListener(this);
 
 		GridBagConstraints backConstraints = new GridBagConstraints(); // constraints for back button
+		
 
 		backConstraints.gridx = 0;
 		backConstraints.gridy = 0;
@@ -158,9 +162,15 @@ public class stockUI extends JFrame implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(25, 25, 25, 25);
 
+		// re-added
+		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
+		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
+				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
 
-		
-		GridBagConstraints gbc = new GridBagConstraints();
+		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+
+
 		/*content*/
 		
 		//get drug stock
@@ -174,10 +184,6 @@ public class stockUI extends JFrame implements ActionListener {
 
 		drugStockLabel.setFont(genFont);
 		stockPanel.add(drugStockLabel, gbc);
-		
-		
-		
-		
 		
 		
 		stockgbc.gridx = 0;
