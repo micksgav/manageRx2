@@ -14,17 +14,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -64,23 +58,23 @@ public class stockUI extends JFrame implements ActionListener {
 	private JButton backButton;
 	
 	// header buttons
-	private JButton btnOpenStock; // open stock
-	private JButton btnOpenOrder; // open order
-	private JButton btnOpenSettings; // open settings
-	private JButton btnOpenPatientManager; // open patient manager
-
+		private JButton btnOpenStock; // open stock
+		private JButton btnOpenOrder; // open order
+		private JButton btnOpenSettings; // open settings
+		private JButton btnOpenPatientManager; // open patient manager
+	
 	// icons
-	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
-	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
-	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
-	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
-
+		public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
+		public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
+		public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
+		public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
+  
   AllStock stock;
 	
 	public stockUI(AllStock newStock) {
     this.stock = newStock;
-
 		// setup screen attributes
+
 		FlatLightLaf.setup();
 		setTitle("ManageRx");
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
@@ -164,28 +158,20 @@ public class stockUI extends JFrame implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(25, 25, 25, 25);
 
-		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
-		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
-		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
-				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
 
 		
+		GridBagConstraints gbc = new GridBagConstraints();
 		/*content*/
 		
 		//get drug stock
 		checkStockPane.setBorder(textBoxBorder);
 		GridBagConstraints stockgbc = new GridBagConstraints();
-		stockgbc.insets = new Insets(25, 25, 25, 25);
-		
-		
-		
-		
+		stockgbc.insets = new Insets(25, 25, 25, 25);		
 		
 		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
+
 		drugStockLabel.setFont(genFont);
 		stockPanel.add(drugStockLabel, gbc);
 		
@@ -205,21 +191,18 @@ public class stockUI extends JFrame implements ActionListener {
 		viewStockDrugField.setBorder(textBoxBorder);
 		viewStockDrugField.setFont(genFont);
 		checkStockPane.add(viewStockDrugField, stockgbc);
+
 		
 		stockgbc.gridx = 3;
 		stockgbc.gridy = 1;
 		viewStockButton.addActionListener(this);
 		viewStockButton.setActionCommand("viewStock");
+
 		viewStockButton.setBorder(textBoxBorder);
 		viewStockButton.setFont(genFont);
 		checkStockPane.add(viewStockButton, stockgbc);
 
-		
-		
-		
-		
-		
-		
+	
 		//add checkStock to UI
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -231,6 +214,7 @@ public class stockUI extends JFrame implements ActionListener {
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		gbc.anchor = GridBagConstraints.WEST;
+
 		drugSetThresholdLabel.setFont(genFont);
 		stockPanel.add(drugSetThresholdLabel, gbc);
 
@@ -261,11 +245,13 @@ public class stockUI extends JFrame implements ActionListener {
 		setThresholdNum.setBorder(textBoxBorder);
 		setThresholdNum.setFont(genFont);
 		setThresholdPane.add(setThresholdNum, thresholdgbc);
+
 		
 		thresholdgbc.gridx = 5;
 		thresholdgbc.gridy = 1;
 		setThresholdButton.addActionListener(this);
 		setThresholdButton.setActionCommand("setThreshold");
+
 		setThresholdButton.setBorder(textBoxBorder);
 		setThresholdButton.setFont(genFont);
 		setThresholdPane.add(setThresholdButton, thresholdgbc);
@@ -280,7 +266,7 @@ public class stockUI extends JFrame implements ActionListener {
 		GridBagConstraints buttonOrganizergbc = new GridBagConstraints();
 		buttonOrganizergbc.insets = new Insets(25, 25, 25, 25);
 		buttonOrganizerPane.setBorder(textBoxBorderLine);
-		
+
 		// new
 		buttonOrganizergbc.gridx = 0;
 		buttonOrganizergbc.gridy = 0;
@@ -345,6 +331,14 @@ public class stockUI extends JFrame implements ActionListener {
 		else {
 			DrugStockUI viewStock = new DrugStockUI(stock, drug);
 		}
+		int checkThreshold = stock.thresholdCheck(drug);
+		if(checkThreshold == 1) {
+			JOptionPane.showMessageDialog(stockPanel, "Stock is below threshold.", "Threshold Alert", JOptionPane.ERROR_MESSAGE); // frame is the name of the frame
+		}
+		else if(checkThreshold == 2) {
+			JOptionPane.showMessageDialog(stockPanel, "Stock is at threshold.", "Threshold Warning", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame
+		}
+
 	}
 
 	private void setThreshold(String drug, int threshold) {
@@ -358,6 +352,6 @@ public class stockUI extends JFrame implements ActionListener {
 	
 	private void viewInventory() throws IOException {
 		//stock.viewFullInventory();
-		InventoryUI inventory = new InventoryUI(stock);
+		inventoryUI inventory = new inventoryUI(stock);
 	}
 }

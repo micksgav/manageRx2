@@ -12,6 +12,7 @@ package patientUI;
 
 import swingHelper.*;
 import utilities.SQLHelper;
+import utilities.altDisplay;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -19,8 +20,11 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.*;
 
 import mainUI.loginUI;
+import mainUI.orderUI;
 import mainUI.settingsUI;
+import mainUI.stockUI;
 import PatientManagement.*;
+import inventory.AllStock;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -38,6 +42,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 	Patient patient; // patient whose prescriptions are being viewed
 	PatientList patients; // list containing all patient information
+	AllStock stock;
 
 	// panels
 	private JPanel buttonPanel; // header panel containing logo and buttons
@@ -86,8 +91,9 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
+	private JButton btnNewButton;
 
-	public CurrentPrescriptions(String title, Patient patient, PatientList patients, boolean last) {
+	public CurrentPrescriptions(String title, Patient patient, PatientList patients, boolean last, AllStock stock) {
 
 		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
@@ -99,12 +105,13 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 
 		// instantiate variables
 		this.patient = patient;
 		this.patients = patients;
 		this.last = last;
+		this.stock = stock;
 		drugBrandName = new String[patient.getActivePrescriptions().length()];
 		drugGenName = new String[patient.getActivePrescriptions().length()];
 		datePrescribed = new String[patient.getActivePrescriptions().length()];
@@ -146,7 +153,6 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		JLabel label = new JLabel("ManageRx");
 		label.setFont(new Font("Arial", Font.BOLD, 20));
-		this.buttonPanel.add(label);
 
 		btnOpenStock = new JButton("Stock");
 		btnOpenStock.setIcon(stockIcon);
@@ -202,7 +208,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		overallButtonConstraints.anchor = GridBagConstraints.WEST;
 		this.buttonPanel.add(headerButtons, overallButtonConstraints);
 
-		add(this.buttonPanel, BorderLayout.NORTH);
+		getContentPane().add(this.buttonPanel, BorderLayout.NORTH);
 
 		mainPanel = new JPanel(new GridBagLayout()); // information about GridBagLayout from
 														// https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
@@ -235,6 +241,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// add patient name to screen
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient namae
+		nameConstraints.insets = new Insets(0, 0, 5, 0);
 
 		nameConstraints.fill = GridBagConstraints.BOTH;
 		nameConstraints.gridx = 0;
@@ -248,6 +255,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// add page title to screen
 		GridBagConstraints titleConstraints = new GridBagConstraints(); // constraints for page title
+		titleConstraints.insets = new Insets(0, 0, 5, 5);
 
 		titleConstraints.fill = GridBagConstraints.BOTH;
 		titleConstraints.gridx = 0;
@@ -261,6 +269,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// add create prescription button to screen
 		GridBagConstraints createConstraints = new GridBagConstraints(); // constraints for create button
+		createConstraints.insets = new Insets(0, 0, 5, 0);
 
 		createConstraints.fill = GridBagConstraints.BOTH;
 		createConstraints.gridx = 1;
@@ -324,6 +333,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // scroll bar for current prescriptions
 
 		GridBagConstraints prescriptionConstraints = new GridBagConstraints(); // constraints for all prescriptions
+		prescriptionConstraints.insets = new Insets(0, 0, 5, 0);
 																				// panel
 
 		prescriptionConstraints.fill = GridBagConstraints.BOTH;
@@ -351,7 +361,23 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 				0, (int) (screenDims.width * 0.5));
 		mainWithTopBar.add(viewArchived, viewArchivedConstraints);
 
-		add(mainWithTopBar);
+		getContentPane().add(mainWithTopBar);
+		
+		btnNewButton = new JButton("Show Interactions");
+		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 32));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String[] allDins = new String[patient.getActivePrescriptions().length()];
+				for (int i = 0; i < allDins.length; i++) {
+					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+				}
+				altDisplay.showInteractions(allDins);
+			}
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 3;
+		mainWithTopBar.add(btnNewButton, gbc_btnNewButton);
 	} // end CurrentPrescriptions
 
 	@Override
@@ -359,19 +385,19 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		SQLHelper SQLHelper = new SQLHelper(); // sql interactions
 		// open stock page
 		if (e.getActionCommand().equals("openStock")) {
-			System.out.println("Stock");
+			stockUI openStock = new stockUI(stock);
+			openStock.setVisible(true);
+			setVisible(false);
 		} // end if
-		// open order page
+		// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			System.out.println("Order");
-		} // end if
-		// open settings page
-		if (e.getActionCommand().equals("openSettings")) {
-			System.out.println("Settings");
+			orderUI openOrder = new orderUI();
+			openOrder.setVisible(true);
+			setVisible(false);
 		} // end if
 		// open patient management page
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -379,7 +405,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Back")) {
 			archivePrescription(patient);
 			if (last == true) {
-			ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients);
+			ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients, stock);
 			openManage.setVisible(true);
 			setVisible(false);
 			} // end if
@@ -387,7 +413,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			else {
 				EditPatientInfoUI openEdit;
 				try {
-					openEdit = new EditPatientInfoUI("ManageRx", patient, patients);
+					openEdit = new EditPatientInfoUI("ManageRx", patient, patients, stock);
 					openEdit.setVisible(true);
 					setVisible(false);
 				} catch (ParseException e1) {
@@ -400,7 +426,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("View Archived Prescriptions")) {
 			archivePrescription(patient);
 			if (patient.getArchivedPrescriptions().length() > 0) {
-				ArchivedPrescriptionsUI openArchive = new ArchivedPrescriptionsUI("ManageRx", patient, patients, last);
+				ArchivedPrescriptionsUI openArchive = new ArchivedPrescriptionsUI("ManageRx", patient, patients, last, stock);
 				openArchive.setVisible(true);
 				setVisible(false);
 			} // end if
@@ -410,7 +436,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		} // end if
 		// open add prescription page
 		if (e.getActionCommand().equals("Add New Prescription")) {
-			AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last);
+			AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
 			openAddNew.setVisible(true);
 			setVisible(false);
 		} // end if
