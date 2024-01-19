@@ -19,7 +19,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import PatientManagement.*;
 import inventory.AllStock;
@@ -95,8 +94,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JTextField genderField;
 	private JLabel docFaxLabel = new JLabel("Fax Number");
 	private JTextField docFaxField;
-	
-	
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -261,7 +258,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		phoneField.setBackground(textBoxFill);
 		leftMain.add(phoneLabel);
 		leftMain.add(phoneField);
-		
+
 		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
 
 		genderField = new JTextField(patient.getGender());
@@ -396,7 +393,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		docPhoneNumberField.setBackground(textBoxFill);
 		rightMain.add(docPhoneNumberLabel);
 		rightMain.add(docPhoneNumberField);
-		
+
 		docFaxField = new JTextField(patient.getFamilyDoctor().getFax());
 		docFaxField.setBackground(textBoxFill);
 		docFaxField.setEditable(false);
@@ -414,7 +411,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		docAddressField.setBackground(textBoxFill);
 		rightMain.add(docAddressLabel);
 		rightMain.add(docAddressField);
-		
+
 		rightMain.setBorder(textBoxBorder);
 
 		GridBagConstraints rConstraints = new GridBagConstraints(); // constraints for right panel
@@ -452,7 +449,8 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		bConstraints.gridheight = 1;
 		bConstraints.gridwidth = 2;
 		bConstraints.anchor = GridBagConstraints.NORTH;
-		bConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
+		bConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01),
+				(int) (screenDims.width * 0.01));
 		mainPanel.add(bottomMain, bConstraints);
 
 		// add bottom buttons
@@ -503,23 +501,24 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-			// open patient management
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-			// open search for patient
+		// open search for patient
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			SearchForPatientUI openSearch;
 			try {
@@ -551,12 +550,14 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 						"No Prescriptions", JOptionPane.INFORMATION_MESSAGE);
 			} // end if
 			else if (patient.getActivePrescriptions() == null && patient.getArchivedPrescriptions() != null) {
-				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients, true, stock);
+				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients, true,
+						stock);
 				openArchived.setVisible(true);
 				setVisible(false);
 			} // end else if
 			else {
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, true, stock);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, true,
+						stock);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end else

@@ -1,6 +1,5 @@
 package utilities;
 
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -11,12 +10,8 @@ import javax.swing.border.EmptyBorder;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import java.awt.GridLayout;
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.Label;
 import java.awt.Rectangle;
 import java.util.concurrent.ExecutorService;
@@ -28,10 +23,9 @@ public class WaitDialog extends JFrame {
 	private JPanel contentPane;
 	static ExecutorService service;
 	static WaitDialog frame;
-	static boolean animation = true;
 	static String importing;
-	static int i;
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -41,8 +35,6 @@ public class WaitDialog extends JFrame {
 		service.submit(new Runnable() {
 			public void run() {
 				try {
-					animation = true;
-					i = 0;
 					frame = new WaitDialog(true, importing);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,13 +44,7 @@ public class WaitDialog extends JFrame {
 	}
 
 	public static void disposeWait() {
-		animation = false;
-
-	}
-
-	public static void updateProgress(String importing) {
-		WaitDialog.importing = importing;
-		i++;
+		frame.dispose();
 	}
 
 	/**
@@ -79,7 +65,6 @@ public class WaitDialog extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JProgressBar progress = new JProgressBar();
-		progress.setValue(0);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -89,20 +74,15 @@ public class WaitDialog extends JFrame {
 
 		JPanel panel = new JPanel(new FlowLayout());
 
-		Label label = new Label("Please Wait...");
+		Label label = new Label(importing);
 		label.setAlignment(Label.CENTER);
-		label.setFont(new Font("Arial", Font.BOLD, 58));
+		label.setFont(new Font("Arial", Font.BOLD, 20));
 		contentPane.add(label);
+		progress.setIndeterminate(true);
 		panel.add(progress);
-
 		contentPane.add(panel);
 
-		setVisible(true);
-		progress.setIndeterminate(true);
-
-		if (!animation) {
-			dispose();
-		}
+		setVisible(true);	
 	}
 
 	public WaitDialog() {

@@ -21,7 +21,6 @@ import com.formdev.flatlaf.*;
 
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import PatientManagement.*;
 import inventory.AllStock;
@@ -31,7 +30,7 @@ import java.awt.event.*;
 import java.text.ParseException;
 
 public class CurrentPrescriptions extends JFrame implements ActionListener {
-	
+
 	public static void archivePrescription(Patient patient) {
 		for (int i = 0; i < patient.getActivePrescriptions().length(); i++) {
 			if (patient.getActivePrescriptions().atIndex(i).getDelete() == true) {
@@ -84,8 +83,9 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	String[] docAddress; // array containing all doctor addresses belonging to patient
 
 	// last page
-	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the last page was EditPatientInfoUI
-	
+	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the
+					// last page was EditPatientInfoUI
+
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
@@ -311,7 +311,8 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			editArchive[i].add(editPrescription[i]);
 			editArchive[i].add(archivePrescription[i]);
 			prescriptionInfo[i].setText(drugBrandName[i] + "\n" + datePrescribed[i] + "\n" + numRefills[i] + "\n"
-					+ quantity[i] + "\n" + dosage[i] + "\n" + docName[i] + "\n" + docPhone[i] + "\n" + docFax[i] + "\n" + docAddress[i] + "\n"+ instructions[i] + "\n" + prescribedDuration[i]);
+					+ quantity[i] + "\n" + dosage[i] + "\n" + docName[i] + "\n" + docPhone[i] + "\n" + docFax[i] + "\n"
+					+ docAddress[i] + "\n" + instructions[i] + "\n" + prescribedDuration[i]);
 			prescriptionPanels[i].setBorder(simpleLine);
 			prescriptionInfo[i].setEditable(false);
 			prescriptionPanels[i].add(prescriptionInfo[i]);
@@ -320,7 +321,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// set height of mainPanel grid
 		mainPanel = new JPanel(new GridLayout((int) Math.ceil((double) drugBrandName.length / 2), 2,
-					(int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01)));
+				(int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01)));
 
 		// add inner elements to main panel
 		for (int i = 0; i < prescriptionPanels.length; i++) {
@@ -334,7 +335,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		GridBagConstraints prescriptionConstraints = new GridBagConstraints(); // constraints for all prescriptions
 		prescriptionConstraints.insets = new Insets(0, 0, 5, 0);
-																				// panel
+		// panel
 
 		prescriptionConstraints.fill = GridBagConstraints.BOTH;
 		prescriptionConstraints.gridx = 0;
@@ -362,7 +363,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		mainWithTopBar.add(viewArchived, viewArchivedConstraints);
 
 		getContentPane().add(mainWithTopBar);
-		
+
 		btnNewButton = new JButton("Show Interactions");
 		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 32));
 		btnNewButton.addActionListener(new ActionListener() {
@@ -383,21 +384,22 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SQLHelper SQLHelper = new SQLHelper(); // sql interactions
-		// open stock page
+		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open patient management page
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -405,11 +407,11 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Back")) {
 			archivePrescription(patient);
 			if (last == true) {
-			ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients, stock);
-			openManage.setVisible(true);
-			setVisible(false);
+				ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients, stock);
+				openManage.setVisible(true);
+				setVisible(false);
 			} // end if
-				
+
 			else {
 				EditPatientInfoUI openEdit;
 				try {
@@ -420,13 +422,14 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			} //end else
+			} // end else
 		} // end if
-		// open archived prescriptions page, if patient has any
+			// open archived prescriptions page, if patient has any
 		if (e.getActionCommand().equals("View Archived Prescriptions")) {
 			archivePrescription(patient);
 			if (patient.getArchivedPrescriptions().length() > 0) {
-				ArchivedPrescriptionsUI openArchive = new ArchivedPrescriptionsUI("ManageRx", patient, patients, last, stock);
+				ArchivedPrescriptionsUI openArchive = new ArchivedPrescriptionsUI("ManageRx", patient, patients, last,
+						stock);
 				openArchive.setVisible(true);
 				setVisible(false);
 			} // end if
@@ -434,13 +437,13 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(mainPanel, "Patient Does Not Have Any Archived Prescriptions");
 			} // end else
 		} // end if
-		// open add prescription page
+			// open add prescription page
 		if (e.getActionCommand().equals("Add New Prescription")) {
 			AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
 			openAddNew.setVisible(true);
 			setVisible(false);
 		} // end if
-		// change button text/delete if edit/archive is pressed
+			// change button text/delete if edit/archive is pressed
 		for (int i = 0; i < drugBrandName.length; i++) {
 			String keyEdit = "edit" + i; // edit command key
 			if (e.getActionCommand().equals(keyEdit)) {
@@ -453,33 +456,44 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			} // end if
 			String keyArchive = "archive" + i; // archive command key
 			if (e.getActionCommand().equals(keyArchive)) {
-				SQLHelper.updatePrescriptionBG("PrescriptionInfo", "current", 0, patient.getActivePrescriptions().atIndex(i).getID());
+				SQLHelper.updatePrescriptionBG("PrescriptionInfo", "current", 0,
+						patient.getActivePrescriptions().atIndex(i).getID());
 				patient.getActivePrescriptions().atIndex(i).setDelete(true);
 				prescriptionPanels[i].setVisible(false);
 
 			} // end if
-			// save prescription info to patient and update sql
+				// save prescription info to patient and update sql
 			if (archivePrescription[i].getText().equals("Save")) {
 				if (e.getActionCommand().equals("save" + i)) {
 					String prescriptionInfoString = prescriptionInfo[i].getText().replaceAll("Brand Name: ", "")
 							.replaceAll("Date Prescribed: ", "").replaceAll("Number of Refills: ", "")
 							.replaceAll("Quantity: ", "").replaceAll("Dosage: ", "").replaceAll("Dosage: ", "")
-							.replaceAll("Instructions: ", "").replaceAll("Prescribed Duration: ", "").replaceAll("Doctor's Name: ", "").replaceAll("Doctor's Phone Number: ", "").replaceAll("Doctor's Fax Number ", "").replaceAll("Doctor's Address ", "").trim(); // all info in prescription area
+							.replaceAll("Instructions: ", "").replaceAll("Prescribed Duration: ", "")
+							.replaceAll("Doctor's Name: ", "").replaceAll("Doctor's Phone Number: ", "")
+							.replaceAll("Doctor's Fax Number ", "").replaceAll("Doctor's Address ", "").trim(); // all
+																												// info
+																												// in
+																												// prescription
+																												// area
 					String[] info = prescriptionInfoString.split("\n"); // info in prescription area broken up by line
 					String[][] drugDosage = new String[1][1]; // drug dosage
 					drugDosage[0][0] = info[4];
 					patient.getActivePrescriptions().atIndex(i).setBrandName(info[0]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "drugName",
-							patient.getActivePrescriptions().atIndex(i).getBrandName(), patient.getActivePrescriptions().atIndex(i).getID());
+							patient.getActivePrescriptions().atIndex(i).getBrandName(),
+							patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDate(info[1]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "datePrescribed",
-							patient.getActivePrescriptions().atIndex(i).getDate(), patient.getActivePrescriptions().atIndex(i).getID());
+							patient.getActivePrescriptions().atIndex(i).getDate(),
+							patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setRefills(Integer.parseInt(info[2]));
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "numRefills",
-							patient.getActivePrescriptions().atIndex(i).getRefills(), patient.getActivePrescriptions().atIndex(i).getID());
+							patient.getActivePrescriptions().atIndex(i).getRefills(),
+							patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setQuantity(Integer.parseInt(info[3]));
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "quantity",
-							patient.getActivePrescriptions().atIndex(i).getQuantity(), patient.getActivePrescriptions().atIndex(i).getID());
+							patient.getActivePrescriptions().atIndex(i).getQuantity(),
+							patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDosage(drugDosage);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "dosage",
 							patient.getActivePrescriptions().atIndex(i).getDosage()[0][0], patient.getId());
@@ -497,7 +511,8 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 							patient.getActivePrescriptions().atIndex(i).getDocAddress(), patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setDuration(info[info.length - 1]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "prescribedDuration",
-							patient.getActivePrescriptions().atIndex(i).getDuration(), patient.getActivePrescriptions().atIndex(i).getID());
+							patient.getActivePrescriptions().atIndex(i).getDuration(),
+							patient.getActivePrescriptions().atIndex(i).getID());
 					String instructions = ""; // new prescriptions
 					for (int j = 9; j <= info.length - 2; j++) {
 						instructions += info[j] + " ";
@@ -505,14 +520,15 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 					System.out.println(patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setInstructions(instructions.trim());
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "instructions",
-							patient.getActivePrescriptions().atIndex(i).getInstructions(), patient.getActivePrescriptions().atIndex(i).getID());
+							patient.getActivePrescriptions().atIndex(i).getInstructions(),
+							patient.getActivePrescriptions().atIndex(i).getID());
 
 					editPrescription[i].setText("Edit Prescription");
 					editPrescription[i].setActionCommand("edit" + i);
 					archivePrescription[i].setText("Archive Prescription");
 					archivePrescription[i].setActionCommand("archive" + i);
 				} // end if
-				// update button text
+					// update button text
 				if (e.getActionCommand().equals("cancel" + i)) {
 					editPrescription[i].setText("Edit Prescription");
 					editPrescription[i].setActionCommand("edit" + i);

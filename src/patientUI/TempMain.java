@@ -65,8 +65,8 @@ public class TempMain {
 //		patients.insert(patient);
 //		patients.insert(patient3);
 		// patients.insert(patient2);
-
-		WaitDialog.showWait("water");
+		
+		WaitDialog.showWait("Importing Patient Information");
 		
 		SQLHelper helper = new SQLHelper();
 
@@ -77,7 +77,6 @@ public class TempMain {
 
 		for (int i = 0; i < allScripts.length(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
-				WaitDialog.updateProgress("water");
 				if (patients.returnData(j).getId() == allScripts.atIndex(i).getPatientID()) {
 					if (allScripts.atIndex(i).getCurrent()) {
 						patients.returnData(j).addActivePrescription(allScripts.atIndex(i));
@@ -88,9 +87,10 @@ public class TempMain {
 				}
 			}
 		}
+		WaitDialog.showWait("Importing Insurance Information");
+		WaitDialog.disposeWait();
 		for (int i = 0; i < allInsurance.size(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
-				WaitDialog.updateProgress("milk");
 				if (patients.returnData(j).getId() == allInsurance.get(i).getPatientID()) {
 						patients.returnData(j).addNewInsuranceInfo(allInsurance.get(i));
 				}
@@ -101,7 +101,7 @@ public class TempMain {
 		
 		
 		Patient patient = new Patient();
-		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients, stock);
+		SearchAddUI oui = new SearchAddUI("ManageRx", patients, stock);
 		
 		
 
