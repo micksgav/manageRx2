@@ -178,7 +178,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		patientName.setHorizontalAlignment(JLabel.CENTER);
 		mainPanel.add(patientName, nameConstraints);
 
-		centreMain = new JPanel(new GridLayout(6, 1));
+		centreMain = new JPanel(new GridLayout(4, 1));
 
 		// add insurance title to screen
 		GridBagConstraints insuranceTitleConstraints = new GridBagConstraints(); // constraints for insurance title
@@ -208,15 +208,6 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		insuranceNumberLabel.setFont(genFont);
 		centreMain.add(insuranceNumberLabel);
 		centreMain.add(insuranceNumberField);
-
-		// add notes label and area
-		notesArea = new JTextArea();
-		notesArea.setBorder(textBoxBorder);
-		notesArea.setFont(genFont);
-		notesLabel.setFont(genFont);
-		centreMain.add(notesLabel);
-		JScrollPane scrollBar = new JScrollPane(notesArea); // scroll bar for notes
-		centreMain.add(scrollBar);
 
 		centreMain.setBorder(textBoxBorder);
 
@@ -330,8 +321,8 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Save and Go Back")) {
 			// add the new insurance to patient and open view insurance page
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
-					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText(), patient.getId());
+					Integer.parseInt(insuranceNumberField.getText().trim()));
+			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
 			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients, stock);
 			openView.setVisible(true);
 			setVisible(false);
@@ -340,8 +331,8 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Save and Add Another Insurance Plan")) {
 			// add new insurance to patient and clear field
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
-					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText(), patient.getId());
+					Integer.parseInt(insuranceNumberField.getText().trim()));
+			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
 			insuranceCompanyField.setText("");
 			insuranceNumberField.setText("");
 			notesArea.setText("");

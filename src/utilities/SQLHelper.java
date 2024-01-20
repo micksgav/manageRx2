@@ -347,7 +347,6 @@ public class SQLHelper {
 				temp.setPatientID(resultSet.getInt("patientID"));
 				temp.setCompany(resultSet.getString("company"));
 				temp.setNumber(resultSet.getInt("number"));
-				temp.setNotes(resultSet.getString("notes"));
 				temp.setID(resultSet.getInt("insuranceID"));
 				insuranceList.add(temp);
 			}
@@ -357,14 +356,14 @@ public class SQLHelper {
 		return insuranceList;
 	}
 
-	public int addInsurance(String company, int number, String notes, int patientID) {
+	public int addInsurance(String company, int number, int patientID) {
 		try {
 			ResultSet resultSet = statement.executeQuery(
 					"SELECT insuranceID FROM InsuranceInfo WHERE insuranceID = (SELECT MAX(insuranceID) FROM InsuranceInfo)");
 			resultSet.next();
 			int ID = resultSet.getInt("insuranceID") + 1;
 			statement.executeUpdate("INSERT INTO InsuranceInfo values ( " + patientID + " , \"" + company + "\" , "
-					+ number + " , \"" + notes + "\" , " + ID + " )");
+					+ number + " , " + ID + " )");
 			return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -394,6 +393,31 @@ public class SQLHelper {
 			logErrors.log(e.getMessage() + " in getAllDrugStock in SQLHelper");
 		}
 		return stock;
+	}
+	
+	public int[] getAllContainerStock() {
+		int[] containers = new int[3];
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM ContainerStock");
+				resultSet.next();
+				containers[0] = resultSet.getInt("numSmall");
+				containers[1] = resultSet.getInt("numMed");
+				containers[2] = resultSet.getInt("numLarge");
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " in getAllContainerStock in SQLHelper");
+		}
+		return containers;
+	}
+	
+	public void updateContainerStock(String column, int newNum) {
+		
+		try {
+			statement.executeUpdate(
+					"UPDATE ContainerStock SET " + column + " =  " + newNum);
+		}
+		catch(Exception e) {
+			logErrors.log(e.getMessage() + "in updateContainerStock in SQLHelper");
+		}
 	}
 	
 	public int addDrugStock(DrugStock drug) {

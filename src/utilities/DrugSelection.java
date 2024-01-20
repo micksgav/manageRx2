@@ -48,7 +48,6 @@ public class DrugSelection extends JDialog {
 	 * @throws IOException
 	 */
 	public DrugSelection(String NAME) throws IOException {
-		WaitDialog.showWait("Fetching Drug Data");
 		String DIN = SearchForDIN.getDIN(NAME);
 		if (DIN == null) {
 			JOptionPane.showMessageDialog(contentPanel, "Drug Not Found!");
