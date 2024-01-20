@@ -13,15 +13,13 @@ package PatientManagement;
 public class Insurance {
 	private String company; // insurance company
 	private int insuranceNumber; // insurance number
-	private String notes; // notes about insurance
 	private int ID;
 	private int patientID;
 	private boolean delete;
 	
-	public Insurance(String company, int insuranceNumber, String notes, int id) {
+	public Insurance(String company, int insuranceNumber, int id) {
 		this.company = company;
 		this.insuranceNumber = insuranceNumber;
-		this.notes = notes;
 		this.patientID = id;
 	} // end Insurance
 	
@@ -45,14 +43,6 @@ public class Insurance {
 	public void setNumber(int insuranceNumber) {
 		this.insuranceNumber = insuranceNumber;
 	} // end setNumber
-	
-	public void setNotes(String notes) {
-		this.notes = notes;
-	} // end setNotes
-	
-	public String getNotes() {
-		return notes;
-	} // end getNotes
 
 	public void setID(int ID) {
 		this.ID = ID;

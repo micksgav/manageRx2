@@ -592,12 +592,19 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		if (e.getActionCommand().equals("Save Record")) {
 			SQLHelper SQLHelper = new SQLHelper(); // used to interact with sql
 			// ensure required fields are filled in
-			if ((patientNameField.getText().length() > 0 && dateOfBirthField.getText().length() > 0
+			if ((patientNameField.getText().length() > 0 && dateOfBirthField.getText().length() == 10
 					&& addressField.getText().length() > 0 && emailField.getText().length() > 0
-					&& phoneField.getText().length() > 0 && healthCardNumField.getText().length() > 0)
-					&& !(patientNameField.getText().equals("First Last"))) {
+					&& phoneField.getText().length() == 16 && healthCardNumField.getText().length() == 21
+					&& genderField.getText().length() > 0 && weightField.getText().length() > 0)
+					&& !(patientNameField.getText().equals("First Last") && !(emailField.getText().equals("example@domain.com")) && !(addressField.getText().equals("123 ABC Street, City")))) {
 				// if patient is null, create a new one
 				if (patient == null) {
+					if (docNameField.getText().equals("Dr. First Last") || docNameField.getText().length() == 0) {
+						docNameField.setText("N/A");
+						docAddressField.setText("N/A");
+						docPhoneNumberField.setText("(   )     -     ");
+						docFaxField.setText("(   )     -     ");
+					} // end if
 					newPatient.setName(patientNameField.getText().trim());
 					newPatient.setBirthYear(Integer.parseInt(dateOfBirthField.getText().trim()
 							.substring(dateOfBirthField.getText().indexOf('/') + 4).trim()));
@@ -624,6 +631,12 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 				} // end if
 					// if patient isn't null, update current one
 				else {
+					if (docNameField.getText().equals("Dr. First Last") || docNameField.getText().length() == 0) {
+						docNameField.setText("N/A");
+						docAddressField.setText("N/A");
+						docPhoneNumberField.setText("(000) 000 - 0000");
+						docFaxField.setText("(000) 000 - 0000");
+					} // end if
 					patient.setName(patientNameField.getText().trim());
 					SQLHelper.update("PatientInfo", "name", patient.getName(), patient.getId());
 					patient.setBirthYear(Integer.parseInt(dateOfBirthField.getText().trim()
@@ -669,11 +682,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			// open current prescriptions
 		if (e.getActionCommand().equals("Edit Prescriptions")) {
 			if (patient == null) {
-				newPatient.newPrescriptionList();
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", newPatient, patients,
-						false, stock);
-				openPrescriptions.setVisible(true);
-				setVisible(false);
+				JOptionPane.showMessageDialog(mainPanel, "Please Save Patient Record Before Editing Prescriptions");
 			} // end if
 			else {
 				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, false,
@@ -685,10 +694,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			// open insurance page
 		if (e.getActionCommand().equals("Manage Insurance Information")) {
 			if (patient == null) {
-				newPatient.newInsuranceList();
-				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", newPatient, patients, stock);
-				openInsurance.setVisible(true);
-				setVisible(false);
+				JOptionPane.showMessageDialog(mainPanel, "Please Save Patient Record Before Editing Insurance");
 			} // end if
 			else {
 				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", patient, patients, stock);

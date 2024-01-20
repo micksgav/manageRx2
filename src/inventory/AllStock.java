@@ -35,6 +35,15 @@ public class AllStock {
 		numBags = bags;
 	} // end AllStock constructor
 	
+	public AllStock(DrugStockLinkedList drugList) {
+		this.drugsList = drugList;
+		totalNum = 0;
+		numSmallContainers = 0;
+		numMediumContainers = 0;
+		numLargeContainers = 0;
+		numBags = 0;
+	} // end AllStock constructor
+	
 	public AllStock() {
 		this.drugsList = new DrugStockLinkedList();
 		totalNum = 0;

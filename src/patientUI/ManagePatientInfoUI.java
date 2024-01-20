@@ -309,10 +309,10 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		midMain.add(addressField);
 
 		// generate insurance combobox with all patient insurance
-		if (patient.getInsuranceInformation() != null) {
-			insuranceCompanyArray = new String[patient.getInsuranceInformation().size() + 1];
-			insuranceNumberArray = new String[patient.getInsuranceInformation().size() + 1];
-			for (int i = 0; i < insuranceCompanyArray.length - 1; i++) {
+		if (patient.getInsuranceInformation() != null && patient.getInsuranceInformation().size() > 0) {
+			insuranceCompanyArray = new String[patient.getInsuranceInformation().size()];
+			insuranceNumberArray = new String[patient.getInsuranceInformation().size()];
+			for (int i = 0; i < insuranceCompanyArray.length; i++) {
 				insuranceCompanyArray[i] = patient.getInsuranceInformation().get(i).getCompany();
 				insuranceNumberArray[i] = String.valueOf(patient.getInsuranceInformation().get(i).getNumber());
 			} // end for
@@ -559,8 +559,10 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 			// refresh insurance number based on company
 		if (insuranceCompanyArray != null && patient.getInsuranceInformation().size() > 0) {
 			for (int i = 0; i < insuranceCompanyArray.length; i++) {
+				if (insuranceCompanyField.getSelectedItem() != null) {
 				if (((String) insuranceCompanyField.getSelectedItem()).equals(insuranceCompanyArray[i])) {
 					insuranceNumberField.setText(insuranceNumberArray[i]);
+					} // end if
 				} // end if
 			} // end for
 		} // end if

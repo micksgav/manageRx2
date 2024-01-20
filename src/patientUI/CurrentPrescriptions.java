@@ -91,7 +91,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
-	private JButton btnNewButton;
+	private JButton showInteractionsButton;
 
 	public CurrentPrescriptions(String title, Patient patient, PatientList patients, boolean last, AllStock stock) {
 
@@ -358,9 +358,10 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		getContentPane().add(mainWithTopBar);
 
-		btnNewButton = new JButton("Show Interactions");
-		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 32));
-		btnNewButton.addActionListener(new ActionListener() {
+		showInteractionsButton = new JButton("Show Interactions");
+		showInteractionsButton.setFont(genFont);
+		showInteractionsButton.setBorder(textBoxBorder);
+		showInteractionsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] allDins = new String[patient.getActivePrescriptions().length()];
 				for (int i = 0; i < allDins.length; i++) {
@@ -369,10 +370,12 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 				altDisplay.showInteractions(allDins);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 3;
-		mainWithTopBar.add(btnNewButton, gbc_btnNewButton);
+		GridBagConstraints gbc_showInteractionsButton = new GridBagConstraints();
+		gbc_showInteractionsButton.gridx = 1;
+		gbc_showInteractionsButton.gridy = 3;
+		gbc_showInteractionsButton.insets = new Insets((int) (screenDims.height * 0.01), 0,
+				0, 0);
+		mainWithTopBar.add(showInteractionsButton, gbc_showInteractionsButton);
 	} // end CurrentPrescriptions
 
 	@Override
@@ -433,9 +436,16 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		} // end if
 			// open add prescription page
 		if (e.getActionCommand().equals("Add New Prescription")) {
-			AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
-			openAddNew.setVisible(true);
-			setVisible(false);
+			AddNewPrescriptionUI openAddNew;
+			try {
+				openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
+				openAddNew.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		} // end if
 			// change button text/delete if edit/archive is pressed
 		for (int i = 0; i < drugBrandName.length; i++) {
