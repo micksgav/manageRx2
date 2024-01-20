@@ -435,5 +435,27 @@ public class SQLHelper {
 			return -1;
 		}
 	}
+	
+	public String[] getAllUsernamesAndPasswords() {
+		LinkedList<String> usernames = new LinkedList<String>();
+		LinkedList<String> passwords = new LinkedList<String>();
+		
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM ContainerStock");
+				while (resultSet.next()) {
+					usernames.add(resultSet.getString("username"));
+					passwords.add(resultSet.getString("password"));
+				}
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " in getAllContainerStock in SQLHelper");
+		}
+		
+		String[] userAndPass = new String[usernames.size() * 2];
+		for (int i = 0; i < userAndPass.length-1; i++) {
+			userAndPass[i] = usernames.get(i);
+			userAndPass[i+1] = passwords.get(i);
+		} // end for
+		return userAndPass;
+	}
 
 }

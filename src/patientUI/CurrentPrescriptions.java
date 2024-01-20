@@ -436,9 +436,16 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		} // end if
 			// open add prescription page
 		if (e.getActionCommand().equals("Add New Prescription")) {
-			AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
-			openAddNew.setVisible(true);
-			setVisible(false);
+			AddNewPrescriptionUI openAddNew;
+			try {
+				openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
+				openAddNew.setVisible(true);
+				setVisible(false);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		} // end if
 			// change button text/delete if edit/archive is pressed
 		for (int i = 0; i < drugBrandName.length; i++) {
