@@ -136,11 +136,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
 
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
@@ -167,7 +162,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than

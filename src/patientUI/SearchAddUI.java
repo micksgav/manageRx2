@@ -99,12 +99,6 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		btnOpenOrder.addActionListener(this);
 		this.buttonPanel.add(btnOpenOrder, BorderLayout.CENTER);
 
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-		// this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
-
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
