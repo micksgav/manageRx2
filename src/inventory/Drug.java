@@ -4,7 +4,7 @@
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
  @Modified Date	   : January 19, 2024
-   @Description    : 
+   @Description    : This stores all information for a specific drug and allows information to be edited and retrieved.
    
 ***********************************************
 */
