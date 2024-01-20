@@ -3,8 +3,8 @@
  @Name: AllStock
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 12, 2024
-   @Description    : 
+ @Modified Date	   : January 20, 2024
+   @Description    : This is the overall stock inventory management that allows you to search through and modify the inventory.
    
 ***********************************************
 */
@@ -25,12 +25,16 @@ public class AllStock {
 	private int numMediumContainers;
 	private int numLargeContainers;
 	private int numBags;
-	private SQLHelper helper = new SQLHelper();
-	Scanner ui = new Scanner(System.in); // delete when doing ui
 	
-	public AllStock(int small, int medium, int large, int bags) {
-		// set totalNum
+	// used to link with MySQL
+	private SQLHelper helper = new SQLHelper();
+	
+	// scanner, mainly to trace and debug
+	Scanner ui = new Scanner(System.in);
+	
+	public AllStock(int total, int small, int medium, int large, int bags) {
 		this.drugsList = helper.getAllDrugStock();
+		totalNum = total;
 		numSmallContainers = small;
 		numMediumContainers = medium;
 		numLargeContainers = large;
@@ -45,22 +49,11 @@ public class AllStock {
 		numLargeContainers = 0;
 		numBags = 0;
 	} // end AllStock blank constructor
-	
-	/** Method Name: orderMore
-	* @Author Christina Wong 
-	* @Date December 12, 2023
-	* @Modified December 13, 2023
-	* @Description This .
-	* @Parameters  String drug, the drug to be ordered 
-	* @Returns N/A
-	* Dependencies: N/A
-	* Throws/Exceptions: N/A
-    */
-	public void orderMore(String drug) {
-		// hopefully this works with the OrderUI, not sure exactly how we were going to do this or if we need it
-		// drugToOrder, containerToorder, dosage, nuofdrug, num of container, order drug or order container 				
-				
-	} // end orderMore
+
+// not used
+//	public void orderMore(String drug) {
+//			
+//	} // end orderMore
 	
 	public int getTotal() {
 		return totalNum;
@@ -102,8 +95,6 @@ public class AllStock {
 		this.numBags = bags;
 	} // end setNumBags
 	
-	// current UML for StockUI has an option to viewStock
-	// adjust UI to have radio buttons or dropbox for user to choose how to search stock to view
 	/** Method Name: searchByDIN
 	* @Author Christina Wong 
 	* @Date December 15, 2023
@@ -121,7 +112,7 @@ public class AllStock {
 			drugSearch(drugDIN);			
 		} // end if
 		else {
-			System.out.println("All stock DIN - Drug is not found in inventory.");
+			System.out.println("Drug is not found in inventory.");
 			
 		} // end else
 	} // end searchByDIN
@@ -140,7 +131,7 @@ public class AllStock {
 		String searchDIN = "";
 		searchDIN = drugsList.checkStockName(drugName);		
 		if(searchDIN.equals("")) {
-			System.out.println("All stock name - Drug is not found in inventory.");
+			System.out.println("Drug is not found in inventory.");
 		} // end if
 		else {
 			drugSearch(searchDIN);
@@ -162,7 +153,6 @@ public class AllStock {
 		drugsList.printDrugInfo(printDrug);		
 	} // end drugSearch
 	
-	// needs to interact with stock ui
 	/** Method Name: shipmentArrival
 	* @Author Christina Wong 
 	* @Date December 16, 2023
@@ -175,7 +165,6 @@ public class AllStock {
     */
 	public void shipmentArrival(int newStock, String arrivalDIN, String classDrug) throws IOException {
 		updateStock(newStock, arrivalDIN, classDrug, "");
-
 	} // end shipmentArrival	
 	
 	/** Method Name: isInteger
@@ -185,8 +174,8 @@ public class AllStock {
 	* @Description This checks if input was an integer.
 	* @Parameters String num, the user's input
 	* @Returns boolean true if num is an integer, false if num is not an integer
-	* Dependencies: Integer
-	* Throws/Exceptions: NumberFormatException, utilities logErrors
+	* Dependencies: Integer, utilities logErrors
+	* Throws/Exceptions: NumberFormatException
     */
 	public static boolean isInteger(String num)
 	{
@@ -213,27 +202,24 @@ public class AllStock {
 	* @Description When a shipment arrives, the current inventory is checked to see if the drug is in stock and either updates the stock information or adds a new stock of drug.
 	* @Parameters int newStock, the quantity of the shipment; String arrivalDIN, the DIN of the drug arriving; String classDrug, class of the drug; String newThreshold, the drug threshold (is blank if the drug has been added to inventory previously)
 	* @Returns void
-	* Dependencies: DrugStock, Drug, isInteger
-	* Throws/Exceptions: N/A
+	* Dependencies: DrugStockLinkedList, DrugStock, Drug, isInteger
+	* Throws/Exceptions: IOException
     */
 	public void updateStock(int newStock, String arrivalDIN, String classDrug, String newThreshold) throws IOException{
-		boolean isStocked = drugsList.checkStockDIN(arrivalDIN);
-		boolean isValid = false;
+		boolean isStocked = drugsList.checkStockDIN(arrivalDIN); // if drug already exists in inventory
+		boolean isValid = false; // if threshold value is valid
+		
 		// if this is the inventory's first shipment of the drug
 		if(isStocked == false) { 		
 
 			while(isValid == false) {
-				// will need to be moved to StockUI and revised for input in the setThresholdNum JTextField:
-				// newThreshold = setThresholdNum.getText().trim(); 
-
+			
 				if(isInteger(newThreshold)) {
 					isValid = true;
 					DrugStock newDrugStock = new DrugStock(arrivalDIN, 0, Integer.parseInt(newThreshold), 0);	
 					drugsList.insert(newDrugStock, true);
 				} // end if
 				else {
-					// JOptionPane.showMessageDialog(frame, "Threshold must be an integer","ERROR", JOptionPane.WARNING_MESSAGE); // frame is the name of the frame	
-
 					System.out.println("Invalid threshold.  Enter threshold:");
 					newThreshold = ui.nextLine();
 				} // end else
@@ -245,16 +231,24 @@ public class AllStock {
 		
 	} // end updateStock
 	
+	/** Method Name: thresholdCheck
+	* @Author Christina Wong 
+	* @Date January 17, 2024
+	* @Modified January 18, 2024
+	* @Description This checks drug stock amounts compared to their threshold levels.
+	* @Parameters String DIN, the drug to check the threshold of
+	* @Returns int atThreshold, 0 if the drug is above threshold, 1 if the drug is below threshold, 2 if the drug is exactly at the threshold
+	* Dependencies: DrugStockLinkedList, isInteger
+	* Throws/Exceptions: N/A
+    */
 	public int thresholdCheck(String DIN) {
 		if(isInteger(DIN) == false) {
 			DIN = drugsList.getDINForName(DIN);
-		}
+		} // end if
 		int atThreshold = drugsList.checkThreshold(DIN);
 		return atThreshold;
-	}
+	} // end thresholdCheck
 	
-	// must be called in Patient in method addActivePrescription
-	// should be called in whichever method in Prescription or Patient is called to fill refills
 	/** Method Name: fillPrescription
 	* @Author Christina Wong 
 	* @Date December 26, 2023
@@ -272,17 +266,17 @@ public class AllStock {
 	/** Method Name: viewUsage
 	* @Author Christina Wong 
 	* @Date December 19, 2023
-	* @Modified December 19, 2023
+	* @Modified January 17, 2024
 	* @Description This prints inventory usage information for a specific drug.
 	* @Parameters  String DIN, DIN of drug to check the inventory for.
-	* @Returns void
-	* Dependencies: DrugStockLinkedList
+	* @Returns boolean found, true if the drug is found, false if the drug is not found
+	* Dependencies: DrugStockLinkedList, isInteger
 	* Throws/Exceptions: N/A
     */
 	public boolean viewUsage(String DIN) {
 		if(isInteger(DIN) == false) {
 			DIN = drugsList.getDINForName(DIN);
-		}
+		} // end if
 		boolean found = drugsList.viewStockUsage(DIN);
 		return found;
 	} // end viewUsage
@@ -302,19 +296,39 @@ public class AllStock {
 		return fullInventory;
 	} // end viewFullInventory
 	
+	/** Method Name: viewDrugInventory
+	* @Author Christina Wong 
+	* @Date January 17, 2024
+	* @Modified January 17, 2024
+	* @Description This retrieves a drug's stock information.
+	* @Parameters  String DIN, drug to return inventory information for.
+	* @Returns String[][] stockInventory, array of stock inventory information
+	* Dependencies: DrugStockLinkedList, isInteger
+	* Throws/Exceptions: N/A
+    */
 	public String[][] viewDrugInventory(String DIN){
 		if(isInteger(DIN) == false) {
 			DIN = drugsList.getDINForName(DIN);
-		}
+		} // end if
 		String[][] stockInventory = drugsList.getStockUsage(DIN);
 		return stockInventory;
-	}
+	} // end viewDrugInventory
 	
+	/** Method Name: changeThreshold
+	* @Author Christina Wong 
+	* @Date January 17, 2024
+	* @Modified January 17, 2024
+	* @Description This changes the threshold of the specified drug.
+	* @Parameters  String DIN, drug to change threshold of; int newThreshold, the drug's new threshold
+	* @Returns void
+	* Dependencies: DrugStockLinkedList, isInteger
+	* Throws/Exceptions: N/A
+    */
 	public void changeThreshold(String DIN, int newThreshold) {
 		if(isInteger(DIN) == false) {
 			DIN = drugsList.getDINForName(DIN);
-		}
+		} // end if
 		drugsList.setNewThreshold(DIN, newThreshold);
-	}
+	} // end changeThreshold
 	
 } // end AllStock

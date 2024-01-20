@@ -3,7 +3,7 @@
  @Name: Drug
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 10, 2024
+ @Modified Date	   : January 19, 2024
    @Description    : 
    
 ***********************************************
@@ -61,11 +61,11 @@ public class Drug {
 	
 	public String getForm() {
 		return form;
-	}
+	} // end getForm
 	
 	public void setForm(String form) {
 		this.form = form;
-	}
+	} // end setForm
 
 	public String getDrugClass() {
 		return drugClass;

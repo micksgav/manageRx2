@@ -3,8 +3,8 @@
  @Name: DrugStockLinkedList
  @Author           : Christina Wong
  @Creation Date    : December 13, 2023
- @Modified Date	   : January 19, 2024
-   @Description    : 
+ @Modified Date	   : January 20, 2024
+   @Description    : This is a linked list of DrugStock nodes with methods to search through and modify the list and its nodes.
    
 ***********************************************
 */
@@ -125,11 +125,11 @@ public class DrugStockLinkedList {
 	/** Method Name: insert
 	* @Author Kyle McKay
 	* @Date Unknown
-	* @Modified December 18, 2023
+	* @Modified January 19, 2023
 	* @Description This adds a new drug to the stock, in sequential order based on DIN.
-	* @Parameters  DrugStock insertDrugStock, drug added to linked list
+	* @Parameters  DrugStock insertDrugStock, drug added to linked list; boolean saveToSQL, true if the data is added to the SQL table, false if the data came from the table
 	* @Returns void
-	* Dependencies: DrugStock, SQL Helper addDrugStock
+	* Dependencies: DrugStock, SQLHelper addDrugStock
 	* Throws/Exceptions: N/A
     */
 	public void insert(DrugStock insertDrugStock, boolean saveToSQL) {
@@ -163,10 +163,11 @@ public class DrugStockLinkedList {
 		} // end else
 		
 		System.out.println("new node inserted");
+		
 		if(saveToSQL == true) {
 			int ID = helper.addDrugStock(insertDrugStock);
 			insertDrugStock.setID(ID);
-		}
+		} // end if
 
 		printDINs(); // mainly for testing purposes - may not need to keep in code?
 
@@ -241,10 +242,10 @@ public class DrugStockLinkedList {
 	/** Method Name: viewStockUsage
 	* @Author Christina Wong 
 	* @Date December 19, 2023
-	* @Modified December 22, 2023
+	* @Modified January 17, 2023
 	* @Description This checks the current inventory for a drug and, if found, prints inventory usage information for a specific drug.
 	* @Parameters  String DIN, DIN of drug to view information on
-	* @Returns void
+	* @Returns boolean found, true if the drug is found in the inventory, false if it is not found
 	* Dependencies: DrugStock
 	* Throws/Exceptions: error message, if DIN is not found
     */
@@ -292,6 +293,16 @@ public class DrugStockLinkedList {
 		return stockUsage;
 	} // end getStockUsage
 	
+	/** Method Name: getDINForName
+	* @Author Christina Wong 
+	* @Date January 16, 2024
+	* @Modified January 17, 2024
+	* @Description This takes the name of a drug and returns its DIN if it exists in the inventory.
+	* @Parameters  String name, the name of the drug to return the corresponding DIN of
+	* @Returns String drugDIN, the corresponding DIN
+	* Dependencies: DrugStock
+	* Throws/Exceptions: N/A
+    */
 	public String getDINForName(String name) {
 		String drugDIN = "";
 		Node runner;
@@ -303,8 +314,18 @@ public class DrugStockLinkedList {
 			runner = runner.next;
 		} // end while
 		return drugDIN;
-	}
+	} // end getDINForName
 	
+	/** Method Name: setNewThreshold
+	* @Author Christina Wong 
+	* @Date January 17, 2024
+	* @Modified January 17, 2024
+	* @Description This changes the threshold of the specified drug.
+	* @Parameters  String DIN, drug to change threshold of; int newThreshold, the drug's new threshold
+	* @Returns void
+	* Dependencies: DrugStock
+	* Throws/Exceptions: N/A
+    */
 	public void setNewThreshold(String DIN, int newThreshold) {
 		Node runner;
 		runner = head;
@@ -312,10 +333,10 @@ public class DrugStockLinkedList {
 			if(runner.drugStock.getDrugDIN().equals(DIN)) {
 				runner.drugStock.setStockThreshold(newThreshold);
 				System.out.println("new threshold for " + runner.drugStock.getDrugName() + " (" + runner.drugStock.getDrugDIN() + ")");
-			}
+			} // end if
 			runner = runner.next;
-		}
-	}
+		} // end while
+	} // end setNewThreshold
 	
 	/** Method Name: viewFullInventory
 	* @Author Christina Wong 
@@ -330,7 +351,6 @@ public class DrugStockLinkedList {
 	public String[][] viewFullInventory() {
 		int nodeCount = countNodes();
 		String[][] allInventory = new String[nodeCount][3];
-		//allInventory[0][0] = "Drug Name:\t\tDIN:\t\tCurrent Stock:";
 		int lineCount = 0;
 		Node runner;
 		runner = head;
@@ -341,7 +361,7 @@ public class DrugStockLinkedList {
 			System.out.print(runner.drugStock.getDrugName() + "\t\t");
 			if(runner.drugStock.getDrugName().length() < 8) {
 				System.out.print("\t");
-			}
+			} // end if
 			allInventory[lineCount][1] = runner.drugStock.getDrugDIN();
 			allInventory[lineCount][2] = String.valueOf(runner.drugStock.getNumInStock());
 			System.out.print(runner.drugStock.getDrugDIN() + "\t");
@@ -355,6 +375,16 @@ public class DrugStockLinkedList {
 		return allInventory;
 	} // end viewFullInventory
 	
+	/** Method Name: checkThreshold
+	* @Author Christina Wong 
+	* @Date January 17, 2024
+	* @Modified January 18, 2024
+	* @Description This checks drug stock amounts compared to their threshold levels.
+	* @Parameters String DIN, the drug to check the threshold of
+	* @Returns int atThreshold, 0 if the drug is above threshold, 1 if the drug is below threshold, 2 if the drug is exactly at the threshold
+	* Dependencies: DrugStock
+	* Throws/Exceptions: N/A
+    */
 	public int checkThreshold(String DIN) {
 		int atThreshold = 0;
 		Node runner;
@@ -362,12 +392,22 @@ public class DrugStockLinkedList {
 		while(runner != null) {
 			if(runner.drugStock.getDrugDIN().equals(DIN)) {
 				atThreshold = runner.drugStock.checkThreshold();
-			}
+			} // end if
 			runner = runner.next;
-		}
+		} // end while
 		return atThreshold;
-	}
+	} // end checkThreshold
 	
+	/** Method Name: countNodes
+	* @Author Christina Wong 
+	* @Date January 15, 2024
+	* @Modified January 15, 2024
+	* @Description This counts the number of nodes in the list.
+	* @Parameters N/A
+	* @Returns int count, the number of nodes in the list
+	* Dependencies: N/A
+	* Throws/Exceptions: N/A
+    */
 	public int countNodes() {
 		int count = 0;;
 		Node runner;
@@ -375,20 +415,26 @@ public class DrugStockLinkedList {
 		while(runner != null) {
 			count++;
 			runner = runner.next;
-		}
-		
-		
-		return count;
-	}
-	
-    public DrugStock[] getElements() {
+		} // end while
 
+		return count;
+	} // end countNodes
+	
+
+	/** Method Name: getElements
+	* @Author Kyle McKay
+	* @Date Unknown
+	* @Modified December 15, 2023
+	* @Description This retrieves the drug stock of every node in the list.
+	* @Parameters  N/A
+	* @Returns DrugStock[], an array of all the drug stocks in th elist
+	* Dependencies: N/A
+	* Throws/Exceptions: N/A
+    */
+    public DrugStock[] getElements() {
         int count;          // For counting elements in the list.
         Node runner;        // For traversing the list.
         DrugStock[] drugs;  // An array to hold the list elements.
-
-        // First, go through the list and count the number
-        // of elements that it contains.
 
         count = 0;
         runner = head;
@@ -396,10 +442,6 @@ public class DrugStockLinkedList {
             count++;
             runner = runner.next;
         } // end while
-
-        // Create an array just large enough to hold all the
-        // list elements.  Go through the list again and
-        // fill the array with elements from the list.
 
         drugs = new DrugStock[count];
         runner = head;
