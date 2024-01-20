@@ -124,6 +124,7 @@ public class stockUI extends JFrame implements ActionListener {
 		backButton.addActionListener(this);
 
 		GridBagConstraints backConstraints = new GridBagConstraints(); // constraints for back button
+		
 
 		backConstraints.gridx = 0;
 		backConstraints.gridy = 0;
@@ -175,7 +176,6 @@ public class stockUI extends JFrame implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(25, 25, 25, 25);
 
-		
 		/*content*/
 		
 		//get drug stock
@@ -188,6 +188,7 @@ public class stockUI extends JFrame implements ActionListener {
 
 		drugStockLabel.setFont(genFont);
 		stockPanel.add(drugStockLabel, gbc);
+
 
 		stockgbc.gridx = 0;
 		stockgbc.gridy = 0;
@@ -347,17 +348,17 @@ public class stockUI extends JFrame implements ActionListener {
 		boolean drugFound = stock.viewUsage(drug);
 		if (drugFound == false) {
 			JOptionPane.showMessageDialog(stockPanel, "Drug not found in inventory.", "ERROR",
-					JOptionPane.WARNING_MESSAGE); // frame is the name of the frame
+					JOptionPane.WARNING_MESSAGE); 
 		} else {
 			DrugStockUI viewStock = new DrugStockUI("ManageRx", patients, stock, drug);
 		}
 		int checkThreshold = stock.thresholdCheck(drug);
 		if (checkThreshold == 1) {
 			JOptionPane.showMessageDialog(stockPanel, "Stock is below threshold.", "Threshold Alert",
-					JOptionPane.ERROR_MESSAGE); // frame is the name of the frame
+					JOptionPane.ERROR_MESSAGE); 
 		} else if (checkThreshold == 2) {
 			JOptionPane.showMessageDialog(stockPanel, "Stock is at threshold.", "Threshold Warning",
-					JOptionPane.WARNING_MESSAGE); // frame is the name of the frame
+					JOptionPane.WARNING_MESSAGE);
 		}
 
 	}
