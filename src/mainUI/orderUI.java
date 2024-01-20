@@ -32,13 +32,19 @@ import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import PatientManagement.PatientList;
 import swingHelper.AppIcon;
 
 import inventory.*;
+import patientUI.SearchAddUI;
 
 
 public class orderUI extends JFrame implements ActionListener {
 
+	// app information
+	PatientList patients;
+	AllStock stock;
+	
 	private JPanel orderPanel = new JPanel(new GridBagLayout());
 
 	private JPanel buttonPanel; // header panel
@@ -80,7 +86,7 @@ public class orderUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public orderUI() {
+	public orderUI(String title, PatientList patients, AllStock stock) {
 		// setup screen attributes
 		FlatLightLaf.setup();
 		setTitle("ManageRx");
@@ -267,6 +273,21 @@ public class orderUI extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		 if (e.getActionCommand().equals("openStock")) {
+	            stockUI openStock = new stockUI("ManageRx", patients, stock);
+	            openStock.setVisible(true);
+	            setVisible(false);
+	        }
+	        if (e.getActionCommand().equals("openOrder")) {
+	        	orderUI openOrder = new orderUI("ManageRx", patients, stock);
+	        	openOrder.setVisible(true);
+	        	setVisible(false);
+	        }
+	        if (e.getActionCommand().equals("openPatientManager")) {
+	        	SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
+	        	openSearchAdd.setVisible(true);
+	        	setVisible(false);
+	        }
 		System.out.println(e.getActionCommand());
 		if (e.getActionCommand().equals("placeOrder")) {
 			System.out.println("placed");
@@ -286,6 +307,7 @@ public class orderUI extends JFrame implements ActionListener {
 				placeOrder("", "", 1, 2, 3, true);
 			}
 		}
+		
 
 	}
 

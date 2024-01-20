@@ -30,9 +30,9 @@ public class OtherTempMain {
 		threshold = ui.nextLine();
 		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), threshold);
 
-		stockUI stock = new stockUI(inventory);
-		
-		 inventoryUI newInventory = new inventoryUI(inventory);
+//		stockUI stock = new stockUI("ManageRx", inventory);
+//		
+//		 inventoryUI newInventory = new inventoryUI(inventory);
 		//newInventory.setVisible(true);
 		
 //		stock.setVisible(true);

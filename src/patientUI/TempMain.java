@@ -65,8 +65,8 @@ public class TempMain {
 //		patients.insert(patient);
 //		patients.insert(patient3);
 		// patients.insert(patient2);
-
-		WaitDialog.showWait();
+		
+		WaitDialog.showWait("Importing Patient Information");
 		
 		SQLHelper helper = new SQLHelper();
 
@@ -75,31 +75,33 @@ public class TempMain {
 		PrescriptionList allScripts = helper.getAllPrescriptions();
 		LinkedList<Insurance> allInsurance = helper.getAllInsurance();
 
-//		for (int i = 0; i < allScripts.length(); i++) {
-//			for (int j = 0; j < patients.numRecs(); j++) {
-//				if (patients.returnData(j).getId() == allScripts.atIndex(i).getPatientID()) {
-//					if (allScripts.atIndex(i).getCurrent()) {
-//						patients.returnData(j).addActivePrescription(allScripts.atIndex(i));
-//					} 
-//					else {
-//						patients.returnData(j).addArchivedPrescription(allScripts.atIndex(i));
-//					}
-//				}
-//			}
-//		}
-//		for (int i = 0; i < allInsurance.size(); i++) {
-//			for (int j = 0; j < patients.numRecs(); j++) {
-//				if (patients.returnData(j).getId() == allInsurance.get(i).getPatientID()) {
-//						patients.returnData(j).addNewInsuranceInfo(allInsurance.get(i));
-//				}
-//			}
-//		}
+		for (int i = 0; i < allScripts.length(); i++) {
+			for (int j = 0; j < patients.numRecs(); j++) {
+				if (patients.returnData(j).getId() == allScripts.atIndex(i).getPatientID()) {
+					if (allScripts.atIndex(i).getCurrent()) {
+						patients.returnData(j).addActivePrescription(allScripts.atIndex(i));
+					} 
+					else {
+						patients.returnData(j).addArchivedPrescription(allScripts.atIndex(i));
+					}
+				}
+			}
+		}
+		WaitDialog.showWait("Importing Insurance Information");
+		WaitDialog.disposeWait();
+		for (int i = 0; i < allInsurance.size(); i++) {
+			for (int j = 0; j < patients.numRecs(); j++) {
+				if (patients.returnData(j).getId() == allInsurance.get(i).getPatientID()) {
+						patients.returnData(j).addNewInsuranceInfo(allInsurance.get(i));
+				}
+			}
+		}
 
 		WaitDialog.disposeWait();
 		
 		
 		Patient patient = new Patient();
-		SearchAddUI oui = new SearchAddUI("ManageRx", patient, patients, stock);
+		SearchAddUI oui = new SearchAddUI("ManageRx", patients, stock);
 		
 		
 
