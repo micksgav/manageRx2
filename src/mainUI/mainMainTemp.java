@@ -6,8 +6,8 @@ public class mainMainTemp {
 
 
 	public static void main(String[] args) throws IOException {
-		loginUI login = new loginUI();
-		login.setVisible(true);
+//		loginUI login = new loginUI();
+//		login.setVisible(true);
 
 		
 //		mainUI main = new mainUI();

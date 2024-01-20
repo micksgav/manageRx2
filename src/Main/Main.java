@@ -14,7 +14,6 @@ public class Main {
 		SQLHelper helper = new SQLHelper(); // for connecting with sql
 
 		PatientList patients = helper.getAllPatients(); // all patients
-		WaitDialog.showWait("Importing Stock Information");
 		DrugStockLinkedList drugStock = helper.getAllDrugStock(); // complete drug stock
 		AllStock stock = new AllStock(drugStock); // complete stock
 		int[] containerStock = helper.getAllContainerStock(); // stock of all container sizes
@@ -26,9 +25,10 @@ public class Main {
 		stock.setNumLarge(numLarge);
 		PrescriptionList allScripts = helper.getAllPrescriptions(); // all prescriptions
 		LinkedList<Insurance> allInsurance = helper.getAllInsurance(); // all insurance
+		String[] usernames = helper.getAllUsernames();
+		String[] passwords = helper.getAllPasswords();
 
 		// import prescriptions and place in correct patients
-		WaitDialog.disposeWait();
 		WaitDialog.showWait("Importing Prescription Information");
 		for (int i = 0; i < allScripts.length(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
@@ -44,7 +44,7 @@ public class Main {
 		} // end for
 		
 		// import insurance information and place in correct patients
-		WaitDialog.disposeWait();
+		//WaitDialog.disposeWait();
 		WaitDialog.showWait("Importing Insurance Information");
 		for (int i = 0; i < allInsurance.size(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
@@ -56,7 +56,7 @@ public class Main {
 
 		WaitDialog.disposeWait();
 
-		mainUI oui = new mainUI("ManageRx", patients, stock);
+		loginUI oui = new loginUI("ManageRx", patients, stock, usernames, passwords);
 
 		oui.setVisible(true);
 	}

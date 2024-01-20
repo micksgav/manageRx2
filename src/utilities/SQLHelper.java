@@ -436,26 +436,42 @@ public class SQLHelper {
 		}
 	}
 	
-	public String[] getAllUsernamesAndPasswords() {
+	public String[] getAllUsernames() {
 		LinkedList<String> usernames = new LinkedList<String>();
+		
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM LoginInfo");
+				while (resultSet.next()) {
+					usernames.add(resultSet.getString("username"));
+				}
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " in getAllUsernames in SQLHelper");
+		}
+		
+		String[] users = new String[usernames.size()];
+		for (int i = 0; i < users.length; i++) {
+			users[i] = usernames.get(i);
+		} // end for
+		return users;
+	}
+	
+	public String[] getAllPasswords() {
 		LinkedList<String> passwords = new LinkedList<String>();
 		
 		try {
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM ContainerStock");
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM LoginInfo");
 				while (resultSet.next()) {
-					usernames.add(resultSet.getString("username"));
 					passwords.add(resultSet.getString("password"));
 				}
 		} catch (Exception e) {
-			logErrors.log(e.getMessage() + " in getAllContainerStock in SQLHelper");
+			logErrors.log(e.getMessage() + " in getAllPasswords in SQLHelper");
 		}
 		
-		String[] userAndPass = new String[usernames.size() * 2];
-		for (int i = 0; i < userAndPass.length-1; i++) {
-			userAndPass[i] = usernames.get(i);
-			userAndPass[i+1] = passwords.get(i);
+		String[] passes = new String[passwords.size()];
+		for (int i = 0; i < passes.length; i++) {
+			passes[i] = passwords.get(i);
 		} // end for
-		return userAndPass;
+		return passes;
 	}
 
 }

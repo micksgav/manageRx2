@@ -10,6 +10,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class Encrypt {
+	
+	public static void main(String args[]) {
+		String password = SHA256("password2");
+		System.out.println(password);
+	}
 
 	private String Key;
 	
