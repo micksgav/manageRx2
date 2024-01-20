@@ -109,11 +109,6 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
 
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
@@ -139,7 +134,6 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
@@ -184,7 +178,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		patientName.setHorizontalAlignment(JLabel.CENTER);
 		mainPanel.add(patientName, nameConstraints);
 
-		centreMain = new JPanel(new GridLayout(6, 1));
+		centreMain = new JPanel(new GridLayout(4, 1));
 
 		// add insurance title to screen
 		GridBagConstraints insuranceTitleConstraints = new GridBagConstraints(); // constraints for insurance title
@@ -214,15 +208,6 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		insuranceNumberLabel.setFont(genFont);
 		centreMain.add(insuranceNumberLabel);
 		centreMain.add(insuranceNumberField);
-
-		// add notes label and area
-		notesArea = new JTextArea();
-		notesArea.setBorder(textBoxBorder);
-		notesArea.setFont(genFont);
-		notesLabel.setFont(genFont);
-		centreMain.add(notesLabel);
-		JScrollPane scrollBar = new JScrollPane(notesArea); // scroll bar for notes
-		centreMain.add(scrollBar);
 
 		centreMain.setBorder(textBoxBorder);
 
@@ -308,20 +293,20 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		SQLHelper helper = new SQLHelper();
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
 		// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
 		// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
 			// open patient manager page
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
@@ -336,8 +321,8 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Save and Go Back")) {
 			// add the new insurance to patient and open view insurance page
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
-					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText(), patient.getId());
+					Integer.parseInt(insuranceNumberField.getText().trim()));
+			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
 			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients, stock);
 			openView.setVisible(true);
 			setVisible(false);
@@ -346,8 +331,8 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("Save and Add Another Insurance Plan")) {
 			// add new insurance to patient and clear field
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
-					Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText());
-			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), notesArea.getText(), patient.getId());
+					Integer.parseInt(insuranceNumberField.getText().trim()));
+			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
 			insuranceCompanyField.setText("");
 			insuranceNumberField.setText("");
 			notesArea.setText("");

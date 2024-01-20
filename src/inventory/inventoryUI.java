@@ -28,6 +28,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import PatientManagement.PatientList;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -45,7 +47,7 @@ public class inventoryUI{
 	 
 	private AllStock stock;
 
-	public inventoryUI(AllStock fullStock) throws IOException {
+	public inventoryUI(String title, PatientList patients, AllStock fullStock) throws IOException {
 		stock = fullStock;
 		String[][] fullInventory = stock.viewFullInventory();
 		

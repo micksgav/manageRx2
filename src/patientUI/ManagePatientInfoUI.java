@@ -19,7 +19,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import PatientManagement.*;
 import inventory.AllStock;
@@ -95,8 +94,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JTextField genderField;
 	private JLabel docFaxLabel = new JLabel("Fax Number");
 	private JTextField docFaxField;
-	
-	
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -145,11 +142,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
 
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
@@ -176,7 +168,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons in header
@@ -261,7 +252,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		phoneField.setBackground(textBoxFill);
 		leftMain.add(phoneLabel);
 		leftMain.add(phoneField);
-		
+
 		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
 
 		genderField = new JTextField(patient.getGender());
@@ -318,10 +309,10 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		midMain.add(addressField);
 
 		// generate insurance combobox with all patient insurance
-		if (patient.getInsuranceInformation() != null) {
-			insuranceCompanyArray = new String[patient.getInsuranceInformation().size() + 1];
-			insuranceNumberArray = new String[patient.getInsuranceInformation().size() + 1];
-			for (int i = 0; i < insuranceCompanyArray.length - 1; i++) {
+		if (patient.getInsuranceInformation() != null && patient.getInsuranceInformation().size() > 0) {
+			insuranceCompanyArray = new String[patient.getInsuranceInformation().size()];
+			insuranceNumberArray = new String[patient.getInsuranceInformation().size()];
+			for (int i = 0; i < insuranceCompanyArray.length; i++) {
 				insuranceCompanyArray[i] = patient.getInsuranceInformation().get(i).getCompany();
 				insuranceNumberArray[i] = String.valueOf(patient.getInsuranceInformation().get(i).getNumber());
 			} // end for
@@ -396,7 +387,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		docPhoneNumberField.setBackground(textBoxFill);
 		rightMain.add(docPhoneNumberLabel);
 		rightMain.add(docPhoneNumberField);
-		
+
 		docFaxField = new JTextField(patient.getFamilyDoctor().getFax());
 		docFaxField.setBackground(textBoxFill);
 		docFaxField.setEditable(false);
@@ -414,7 +405,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		docAddressField.setBackground(textBoxFill);
 		rightMain.add(docAddressLabel);
 		rightMain.add(docAddressField);
-		
+
 		rightMain.setBorder(textBoxBorder);
 
 		GridBagConstraints rConstraints = new GridBagConstraints(); // constraints for right panel
@@ -452,7 +443,8 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		bConstraints.gridheight = 1;
 		bConstraints.gridwidth = 2;
 		bConstraints.anchor = GridBagConstraints.NORTH;
-		bConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
+		bConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), (int) (screenDims.height * 0.01),
+				(int) (screenDims.width * 0.01));
 		mainPanel.add(bottomMain, bConstraints);
 
 		// add bottom buttons
@@ -503,23 +495,24 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-			// open patient management
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-			// open search for patient
+		// open search for patient
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			SearchForPatientUI openSearch;
 			try {
@@ -551,12 +544,14 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 						"No Prescriptions", JOptionPane.INFORMATION_MESSAGE);
 			} // end if
 			else if (patient.getActivePrescriptions() == null && patient.getArchivedPrescriptions() != null) {
-				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients, true, stock);
+				ArchivedPrescriptionsUI openArchived = new ArchivedPrescriptionsUI("ManageRx", patient, patients, true,
+						stock);
 				openArchived.setVisible(true);
 				setVisible(false);
 			} // end else if
 			else {
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, true, stock);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, true,
+						stock);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end else
@@ -564,8 +559,10 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 			// refresh insurance number based on company
 		if (insuranceCompanyArray != null && patient.getInsuranceInformation().size() > 0) {
 			for (int i = 0; i < insuranceCompanyArray.length; i++) {
+				if (insuranceCompanyField.getSelectedItem() != null) {
 				if (((String) insuranceCompanyField.getSelectedItem()).equals(insuranceCompanyArray[i])) {
 					insuranceNumberField.setText(insuranceNumberArray[i]);
+					} // end if
 				} // end if
 			} // end for
 		} // end if

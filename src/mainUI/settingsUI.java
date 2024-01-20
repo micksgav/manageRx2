@@ -16,7 +16,7 @@ public class settingsUI {
         // Method body goes here
     }
 
-    public void loginToNew(LoginUI loginUI) {
+    public void loginToNew(loginUI loginUI) {
         // Method body goes here
     }
 

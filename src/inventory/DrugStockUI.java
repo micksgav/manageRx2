@@ -28,6 +28,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import PatientManagement.PatientList;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -48,7 +50,7 @@ public class DrugStockUI {
 	private AllStock stock; // inventory
 	private String[][] stockInventory; // drug's inventory information
 
-	public DrugStockUI(AllStock fullStock, String DIN) throws IOException {
+	public DrugStockUI(String title, PatientList patients, AllStock fullStock, String DIN) throws IOException {
 		stock = fullStock;
 		stock.viewUsage(DIN);
 		stockInventory = stock.viewDrugInventory(DIN);

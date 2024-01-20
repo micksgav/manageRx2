@@ -53,7 +53,6 @@ import PatientManagement.*;
 import inventory.AllStock;
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import swingHelper.AppIcon;
 
@@ -134,7 +133,8 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public EditPatientInfoUI(String title, Patient patient, PatientList patients, AllStock stock) throws ParseException {
+	public EditPatientInfoUI(String title, Patient patient, PatientList patients, AllStock stock)
+			throws ParseException {
 
 		dateOfBirthFormat = new MaskFormatter("##/##/####");
 		healthCardFormat = new MaskFormatter("#### - ### - ### - UU");
@@ -246,11 +246,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
 
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
@@ -277,7 +272,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
@@ -562,26 +556,29 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	} // end EditPatientInfoUI
 
 	public void actionPerformed(ActionEvent e) {
-		//open stock button pressed
+		// open stock button pressed
+		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			if (patient == null) {
-				SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", null, patients, stock);
+				SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 				openSearchAdd.setVisible(true);
 				setVisible(false);
 			} // end if
@@ -595,12 +592,19 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		if (e.getActionCommand().equals("Save Record")) {
 			SQLHelper SQLHelper = new SQLHelper(); // used to interact with sql
 			// ensure required fields are filled in
-			if ((patientNameField.getText().length() > 0 && dateOfBirthField.getText().length() > 0
+			if ((patientNameField.getText().length() > 0 && dateOfBirthField.getText().length() == 10
 					&& addressField.getText().length() > 0 && emailField.getText().length() > 0
-					&& phoneField.getText().length() > 0 && healthCardNumField.getText().length() > 0)
-					&& !(patientNameField.getText().equals("First Last"))) {
+					&& phoneField.getText().length() == 16 && healthCardNumField.getText().length() == 21
+					&& genderField.getText().length() > 0 && weightField.getText().length() > 0)
+					&& !(patientNameField.getText().equals("First Last") && !(emailField.getText().equals("example@domain.com")) && !(addressField.getText().equals("123 ABC Street, City")))) {
 				// if patient is null, create a new one
 				if (patient == null) {
+					if (docNameField.getText().equals("Dr. First Last") || docNameField.getText().length() == 0) {
+						docNameField.setText("N/A");
+						docAddressField.setText("N/A");
+						docPhoneNumberField.setText("(   )     -     ");
+						docFaxField.setText("(   )     -     ");
+					} // end if
 					newPatient.setName(patientNameField.getText().trim());
 					newPatient.setBirthYear(Integer.parseInt(dateOfBirthField.getText().trim()
 							.substring(dateOfBirthField.getText().indexOf('/') + 4).trim()));
@@ -627,6 +631,12 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 				} // end if
 					// if patient isn't null, update current one
 				else {
+					if (docNameField.getText().equals("Dr. First Last") || docNameField.getText().length() == 0) {
+						docNameField.setText("N/A");
+						docAddressField.setText("N/A");
+						docPhoneNumberField.setText("(000) 000 - 0000");
+						docFaxField.setText("(000) 000 - 0000");
+					} // end if
 					patient.setName(patientNameField.getText().trim());
 					SQLHelper.update("PatientInfo", "name", patient.getName(), patient.getId());
 					patient.setBirthYear(Integer.parseInt(dateOfBirthField.getText().trim()
@@ -656,11 +666,9 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					SQLHelper.updateBG("PatientInfo", "familyDoctorPhoneNumber", patient.getFamilyDoctorNumber(),
 							patient.getId());
 					patient.setGender(genderField.getText());
-					SQLHelper.updateBG("PatientInfo", "gender", patient.getGender(),
-							patient.getId());
+					SQLHelper.updateBG("PatientInfo", "gender", patient.getGender(), patient.getId());
 					patient.setWeight(Double.parseDouble(weightField.getText()));
-					SQLHelper.updateBG("PatientInfo", "weight", patient.getWeight(),
-							patient.getId());
+					SQLHelper.updateBG("PatientInfo", "weight", patient.getWeight(), patient.getId());
 					ManagePatientInfoUI openManage = new ManagePatientInfoUI("ManageRx", patient, patients, stock);
 					openManage.setVisible(true);
 					setVisible(false);
@@ -674,14 +682,11 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			// open current prescriptions
 		if (e.getActionCommand().equals("Edit Prescriptions")) {
 			if (patient == null) {
-				newPatient.newPrescriptionList();
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", newPatient, patients,
-						false, stock);
-				openPrescriptions.setVisible(true);
-				setVisible(false);
+				JOptionPane.showMessageDialog(mainPanel, "Please Save Patient Record Before Editing Prescriptions");
 			} // end if
 			else {
-				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, false, stock);
+				CurrentPrescriptions openPrescriptions = new CurrentPrescriptions("ManageRx", patient, patients, false,
+						stock);
 				openPrescriptions.setVisible(true);
 				setVisible(false);
 			} // end else
@@ -689,10 +694,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			// open insurance page
 		if (e.getActionCommand().equals("Manage Insurance Information")) {
 			if (patient == null) {
-				newPatient.newInsuranceList();
-				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", newPatient, patients, stock);
-				openInsurance.setVisible(true);
-				setVisible(false);
+				JOptionPane.showMessageDialog(mainPanel, "Please Save Patient Record Before Editing Insurance");
 			} // end if
 			else {
 				ViewInsuranceUI openInsurance = new ViewInsuranceUI("ManageRx", patient, patients, stock);
