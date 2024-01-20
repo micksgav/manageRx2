@@ -175,7 +175,10 @@ public class stockUI extends JFrame implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(25, 25, 25, 25);
 
-		// get drug stock
+		
+		/*content*/
+		
+		//get drug stock
 		checkStockPane.setBorder(textBoxBorder);
 		GridBagConstraints stockgbc = new GridBagConstraints();
 		stockgbc.insets = new Insets(25, 25, 25, 25);
