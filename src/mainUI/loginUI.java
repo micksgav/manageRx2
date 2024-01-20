@@ -230,19 +230,19 @@ public class loginUI extends JFrame implements ActionListener {
 		}
 		
 		//check username
-		if (!usernameField.getText().equals("username")) {
+		if(!usernameField.getText().equals("username")) {
 			login = false;
 			usernameField.setBorder(incorrectFieldBorder);
 		}
 		//if username/login-identifier found in db get user password hash 
 		//compare password hash's
-		if (!getPassword().equals("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")) {
+		if(!getPassword().equals("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")) {
 			login = false;
 			passwordField.setBorder(incorrectFieldBorder);
 		}
 
 		//handle login events
-		if (login) {
+		if(login) {
 			System.out.println("Logged In");
 			mainUI UI = new mainUI();
 			UI.setVisible(true);
