@@ -73,7 +73,6 @@ public class stockUI extends JFrame implements ActionListener {
 	PatientList patients;
 
 	public stockUI(String title, PatientList patients, AllStock newStock) {
-		this.stock = newStock;
 		// setup screen attributes
 
 		FlatLightLaf.setup();
@@ -95,6 +94,9 @@ public class stockUI extends JFrame implements ActionListener {
 
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
+		
+		this.patients = patients;
+		this.stock = newStock;
 
 		JLabel label = new JLabel("ManageRx");
 		label.setFont(new Font("Arial", Font.BOLD, 20));
