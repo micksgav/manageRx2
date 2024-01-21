@@ -1,5 +1,7 @@
 package mainUI;
 
+import utilities.Encrypt;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,6 +27,8 @@ import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import PatientManagement.PatientList;
+import inventory.AllStock;
 import swingHelper.AppIcon;
 
 import javax.swing.JLabel;
@@ -34,8 +38,6 @@ public class loginUI extends JFrame implements ActionListener {
 
 	// JPanels
 	private JPanel loginPane = new JPanel(new GridBagLayout());// panel for login components
-	private JPanel buttonPanel; // header panel
-	private JPanel headerButtons; // buttons other than back in header
 	// Jlabels
 	private JLabel managerxLabel = new JLabel("ManageRx");// label for managerx
 	private JLabel usernameLabel = new JLabel("User ID");// label for user id/credentials
@@ -46,110 +48,46 @@ public class loginUI extends JFrame implements ActionListener {
 	// JButtons
 	private JButton loginButton = new JButton("Login");
 	
-
-	// header buttons
-	private JButton btnOpenStock; // open stock
-	private JButton btnOpenOrder; // open order
-	private JButton btnOpenSettings; // open settings
-	private JButton btnOpenPatientManager; // open patient manager
-
-	// main buttons
-	private JButton backButton; // go back to previous page
+	// app info
+	PatientList patients;
+	AllStock stock;
+	String[] usernames;
+	String[] passwords;
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
+	
+	private Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
+			.getMaximumWindowBounds(); // dimensions of screen from
+	
+	private Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
+	private Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
+	private Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+	private Border redBoxBorderLine = BorderFactory.createLineBorder(new Color(255, 0, 0), screenDims.width / 700);
+	private Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
+			(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
+	private CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+	private CompoundBorder incorrectFieldBorder = new CompoundBorder(redBoxBorderLine,textFieldPadding);
 
-	public loginUI() {
+	public loginUI(String title, PatientList patients, AllStock stock, String[] usernames, String[] passwords) {
 		
 		// setup screen attributes
 		FlatLightLaf.setup();
 		setTitle("ManageRx");
-		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
-				.getMaximumWindowBounds(); // dimensions of screen from
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
 		// screenDims.width /= 1.5;
 		// screenDims.height /= 1.5;
 		this.setPreferredSize(new Dimension(screenDims.width, screenDims.height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-
-		// add all buttons to header, then add header to mainPanel
-		stockIcon = stockIcon.setScale(0.12);
-		orderIcon = orderIcon.setScale(0.12);
-		settingsIcon = settingsIcon.setScale(0.12);
-		patientsIcon = patientsIcon.setScale(0.12);
-
-		this.buttonPanel = new JPanel(new GridBagLayout());
-		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
-
-		JLabel label = new JLabel("ManageRx");
-		label.setFont(new Font("Arial", Font.BOLD, 20));
-
-		btnOpenStock = new JButton("Stock");
-		btnOpenStock.setIcon(stockIcon);
-		btnOpenStock.setActionCommand("openStock");
-		btnOpenStock.addActionListener(this);
-
-		btnOpenOrder = new JButton("Order");
-		btnOpenOrder.setIcon(orderIcon);
-		btnOpenOrder.setActionCommand("openOrder");
-		btnOpenOrder.addActionListener(this);
-
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-
-		btnOpenPatientManager = new JButton("Patients");
-		btnOpenPatientManager.setIcon(patientsIcon);
-		btnOpenPatientManager.setActionCommand("openPatientManager");
-		btnOpenPatientManager.addActionListener(this);
-
-		// add back button to header
-		backButton = new JButton("Back");
-		backButton.addActionListener(this);
-
-		GridBagConstraints backConstraints = new GridBagConstraints(); // constraints for back button
-
-		backConstraints.gridx = 0;
-		backConstraints.gridy = 0;
-		backConstraints.gridwidth = 1;
-		backConstraints.anchor = GridBagConstraints.WEST;
-		backConstraints.ipadx = (int) (screenDims.width * 0.02);
-		backConstraints.weightx = 0.45;
-		backConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, 0);
-		this.buttonPanel.add(backButton, backConstraints);
-
-		// add buttons other than back to header
-		headerButtons = new JPanel(new FlowLayout());
-
-		headerButtons.add(label);
-		headerButtons.add(btnOpenStock);
-		headerButtons.add(btnOpenOrder);
-		// headerButtons.add(btnOpenSettings);
-		headerButtons.add(btnOpenPatientManager);
-
-		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
-																				// back in header
-
-		overallButtonConstraints.gridx = 2;
-		overallButtonConstraints.gridy = 0;
-		overallButtonConstraints.gridwidth = 1;
-		overallButtonConstraints.weightx = 0.55;
-		overallButtonConstraints.anchor = GridBagConstraints.WEST;
-		this.buttonPanel.add(headerButtons, overallButtonConstraints);
-
-		add(this.buttonPanel, BorderLayout.NORTH);
-
-		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text
-		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
-		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
-				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+		
+		this.patients = patients;
+		this.stock = stock;
+		this.usernames = usernames;
+		this.passwords = passwords;	
 		
 		loginPane.setBorder(textBoxBorder);
 		
@@ -192,7 +130,7 @@ public class loginUI extends JFrame implements ActionListener {
 		gbc.gridx = 2;
 		gbc.gridy = 5;
 		gbc.gridwidth = 1;
-		gbc.anchor = GridBagConstraints.EAST;
+		gbc.anchor = GridBagConstraints.CENTER;
 		loginButton.setFont(genFont);
 		loginButton.setBorder(textBoxBorder);
 		loginPane.add(loginButton, gbc);
@@ -213,22 +151,63 @@ public class loginUI extends JFrame implements ActionListener {
 	}
 
 	private boolean verifyLogin() {
-		boolean login = true;
-		if (!usernameField.getText().equals("username")) {
+		boolean login = true;//value for login
+		
+		//reset the red border on the boxes 
+		if(usernameField.getBorder() == incorrectFieldBorder) {
+			usernameField.setBorder(textBoxBorder);
+		}
+		if(passwordField.getBorder() == incorrectFieldBorder) {
+			passwordField.setBorder(textBoxBorder);
+		}
+		
+		//check username
+		for (int i = 0; i < usernames.length; i ++) {
+		if(!usernameField.getText().equals(usernames[i])) {
+			login = false;	
+		}
+		else {
+			login = true;
+			break;
+		}
+		}
+		if (!login) {
+			usernameField.setBorder(incorrectFieldBorder);
+		}
+		//if username/login-identifier found in db get user password hash 
+		//compare password hash's
+		for (int i = 1; i < passwords.length; i += 2) {
+		if(!getPassword().equals(passwords[i])) {
 			login = false;
 		}
-
-		if (!passwordField.getText().equals("password")) {
-			login = false;
+		else {
+			login = true;
+			break;
+		}
+	}
+		if (!login) {
+			passwordField.setBorder(incorrectFieldBorder);
 		}
 
-		if (login) {
+		//handle login events
+		if(login) {
 			System.out.println("Logged In");
-		} else {
-			System.out.println(
-					"Not Logged In\nUsername:" + usernameField.getText() + "\nPassword:" + passwordField.getText());
+			mainUI UI = new mainUI("ManageRx", patients, stock);
+			UI.setVisible(true);
+			setVisible(false);
+			System.out.println(getPassword());
+		}
+		else {
+			System.out.println("Please Fill in All Fields");
 		}
 		return false;
+}
+
+	
+	private String getPassword() {
+		String password = new String(passwordField.getPassword());
+		String encryptedPassword = Encrypt.SHA256(password);
+		return encryptedPassword;
 	}
 
 }

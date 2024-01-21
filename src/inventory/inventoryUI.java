@@ -1,3 +1,13 @@
+/**
+***********************************************
+ @Name: inventoryUI
+ @Author           : Christina Wong
+ @Creation Date    : January 16, 2024
+ @Modified Date	   : January 19, 2024
+   @Description    : This displays information for all existing drugs currently in the inventory.
+   
+***********************************************
+*/
 package inventory;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -18,6 +28,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import PatientManagement.PatientList;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,8 +37,6 @@ import java.awt.event.ActionEvent;
 public class inventoryUI{
 
 	private JFrame frame;
-	String[] display;
-	String selection;
 	
 	private JLabel nameLabel = new JLabel("\tDrug Name:");
 	private JLabel DINLabel = new JLabel("\t\tDIN:");
@@ -37,9 +47,11 @@ public class inventoryUI{
 	 
 	private AllStock stock;
 
-	public inventoryUI(AllStock fullStock) throws IOException {
+	public inventoryUI(String title, PatientList patients, AllStock fullStock) throws IOException {
 		stock = fullStock;
 		String[][] fullInventory = stock.viewFullInventory();
+		
+		// fields for inventory information
 		drugName.setText("");
 		drugDIN.setText("");
 		drugStock.setText("");
@@ -50,27 +62,32 @@ public class inventoryUI{
         drugDIN.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         drugStock.setFont(new Font("Sans Serif", Font.PLAIN, 16));
 
-
+        // adds all information to all fields
 		for(int i = 0; i < fullInventory.length; i++) {
 			drugName.append(fullInventory[i][0] + "\n");
 			drugDIN.append(fullInventory[i][1] + "\n");
 			drugStock.append(fullInventory[i][2] + "\n");
-		}
+		} // end for
 		
-		initialize();
-		
-	}
+		initialize();	
+	} // end inventoryUI constructor
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	/** Method Name: initialize
+	* @Author Christina Wong 
+	* @Date January 16, 2024
+	* @Modified January 19, 2024
+	* @Description This creates the interface for the inventory information.
+	* @Parameters N/A
+	* @Returns void
+	* Dependencies: N/A
+	* Throws/Exceptions: N/A
+    */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 695, 341);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 
-		
 		JLabel lblNewLabel = new JLabel("Full Inventory:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Monospaced", Font.BOLD, 16));
@@ -85,7 +102,6 @@ public class inventoryUI{
 		DINLabel.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		stockLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		stockLabel.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-
 
 		panel.add(nameLabel);
 		panel.add(DINLabel);
@@ -112,12 +128,12 @@ public class inventoryUI{
 			public void actionPerformed(ActionEvent e) {
 				// button action
 				frame.dispose();
-			}
+			} // end actionPerformed
 		});
 		btnNewButton.setBounds(549, 261, 120, 30);
 		frame.add(btnNewButton, BorderLayout.SOUTH);
 
 		frame.setVisible(true);
-	}
+	} // end initialize
 
-}
+} // end inventoryUI

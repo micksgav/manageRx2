@@ -105,6 +105,8 @@ public class SQLHelper {
 		// pushing to
 		try {
 			statement.executeUpdate("UPDATE " + table + " SET " + column + " = \"" + obj + "\" WHERE ID = " + ID);
+			System.out.println("SQL update in " + table);
+
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -345,7 +347,6 @@ public class SQLHelper {
 				temp.setPatientID(resultSet.getInt("patientID"));
 				temp.setCompany(resultSet.getString("company"));
 				temp.setNumber(resultSet.getInt("number"));
-				temp.setNotes(resultSet.getString("notes"));
 				temp.setID(resultSet.getInt("insuranceID"));
 				insuranceList.add(temp);
 			}
@@ -355,14 +356,14 @@ public class SQLHelper {
 		return insuranceList;
 	}
 
-	public int addInsurance(String company, int number, String notes, int patientID) {
+	public int addInsurance(String company, int number, int patientID) {
 		try {
 			ResultSet resultSet = statement.executeQuery(
 					"SELECT insuranceID FROM InsuranceInfo WHERE insuranceID = (SELECT MAX(insuranceID) FROM InsuranceInfo)");
 			resultSet.next();
 			int ID = resultSet.getInt("insuranceID") + 1;
 			statement.executeUpdate("INSERT INTO InsuranceInfo values ( " + patientID + " , \"" + company + "\" , "
-					+ number + " , \"" + notes + "\" , " + ID + " )");
+					+ number + " , " + ID + " )");
 			return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -386,12 +387,38 @@ public class SQLHelper {
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM DrugStock");
 			while (resultSet.next()) {
 				DrugStock drug = new DrugStock(resultSet.getString("DIN"), resultSet.getInt("quantity"), resultSet.getInt("threshold"), resultSet.getInt("ID"));
-				stock.insert(drug);
+				stock.insert(drug, false);
 			}
 		} catch (Exception e) {
 			logErrors.log(e.getMessage() + " in getAllDrugStock in SQLHelper");
 		}
+		System.out.println("SQL stock retrieved");
 		return stock;
+	}
+	
+	public int[] getAllContainerStock() {
+		int[] containers = new int[3];
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM ContainerStock");
+				resultSet.next();
+				containers[0] = resultSet.getInt("numSmall");
+				containers[1] = resultSet.getInt("numMed");
+				containers[2] = resultSet.getInt("numLarge");
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " in getAllContainerStock in SQLHelper");
+		}
+		return containers;
+	}
+	
+	public void updateContainerStock(String column, int newNum) {
+		
+		try {
+			statement.executeUpdate(
+					"UPDATE ContainerStock SET " + column + " =  " + newNum);
+		}
+		catch(Exception e) {
+			logErrors.log(e.getMessage() + "in updateContainerStock in SQLHelper");
+		}
 	}
 	
 	public int addDrugStock(DrugStock drug) {
@@ -402,12 +429,51 @@ public class SQLHelper {
 			int ID = resultSet.getInt("ID") + 1;
 			statement.executeUpdate("INSERT INTO DrugStock values ( " + ID + " , \"" + drug.getDrugDIN() + "\" , "
 					+ drug.getNumInStock() + " , " + drug.getStockThreshold() + " )");
+			System.out.println("Drug added: " + drug.getDrugDIN());
 			return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logErrors.log(e.getMessage() + " in addDrugStock in SQLHelper");
+			//logErrors.log(e.getMessage() + " in addDrugStock in SQLHelper");
 			return -1;
 		}
+	}
+	
+	public String[] getAllUsernames() {
+		LinkedList<String> usernames = new LinkedList<String>();
+		
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM LoginInfo");
+				while (resultSet.next()) {
+					usernames.add(resultSet.getString("username"));
+				}
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " in getAllUsernames in SQLHelper");
+		}
+		
+		String[] users = new String[usernames.size()];
+		for (int i = 0; i < users.length; i++) {
+			users[i] = usernames.get(i);
+		} // end for
+		return users;
+	}
+	
+	public String[] getAllPasswords() {
+		LinkedList<String> passwords = new LinkedList<String>();
+		
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM LoginInfo");
+				while (resultSet.next()) {
+					passwords.add(resultSet.getString("password"));
+				}
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " in getAllPasswords in SQLHelper");
+		}
+		
+		String[] passes = new String[passwords.size()];
+		for (int i = 0; i < passes.length; i++) {
+			passes[i] = passwords.get(i);
+		} // end for
+		return passes;
 	}
 
 }

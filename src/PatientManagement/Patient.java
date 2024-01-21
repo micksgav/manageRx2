@@ -244,8 +244,8 @@ public class Patient {
 		return insuranceInformation;
 	} // end getInsuranceInformation
 
-	public void addNewInsuranceInfo(String company, int num, String notes) {
-		insuranceInformation.add(new Insurance(company, num, notes, id));
+	public void addNewInsuranceInfo(String company, int num) {
+		insuranceInformation.add(new Insurance(company, num, id));
 	} // end addNewInsuranceInfo
 
 	public void addNewInsuranceInfo(Insurance insurance) {

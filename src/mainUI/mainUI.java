@@ -7,12 +7,19 @@ import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import PatientManagement.PatientList;
+import inventory.AllStock;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class mainUI extends JFrame implements ActionListener {
 
+	// app information
+	PatientList patients;
+	AllStock stock;
+	
 	//panels
 	private JPanel headerPanel = new JPanel(new FlowLayout());
 	private JPanel bPanel = new JPanel(new GridBagLayout());
@@ -30,7 +37,7 @@ public class mainUI extends JFrame implements ActionListener {
     public AppIcon patientsIcon = new AppIcon("icons/person.png");//icon for patients
     
     
-    public mainUI() {
+    public mainUI(String title, PatientList patients, AllStock stock) {
     	FlatLightLaf.setup();
 		setTitle("ManageRx");
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment().getMaximumWindowBounds(); // dimensions of screen from
@@ -40,6 +47,9 @@ public class mainUI extends JFrame implements ActionListener {
 		this.setSize(new Dimension(screenDims.width, screenDims.height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		
+		this.patients = patients;
+		this.stock = stock;
 
         stockIcon = stockIcon.setScale(0.12);
         orderIcon = orderIcon.setScale(0.12);
@@ -91,17 +101,19 @@ public class mainUI extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("openStock")) {
-            System.out.println("Stock");
+            stockUI openStock = new stockUI("ManageRx", patients, stock);
+            openStock.setVisible(true);
+            setVisible(false);
         }
         if (e.getActionCommand().equals("openOrder")) {
-        	System.out.println("Order");
-        }
-        if (e.getActionCommand().equals("openSettings")) {
-        	System.out.println("Settings");
+        	orderUI openOrder = new orderUI("ManageRx", patients, stock);
+        	openOrder.setVisible(true);
+        	setVisible(false);
         }
         if (e.getActionCommand().equals("openPatientManager")) {
-        	System.out.println("Patients");
-        	
+        	SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
+        	openSearchAdd.setVisible(true);
+        	setVisible(false);
         }
     }
     

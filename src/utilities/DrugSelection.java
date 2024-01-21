@@ -48,7 +48,6 @@ public class DrugSelection extends JDialog {
 	 * @throws IOException
 	 */
 	public DrugSelection(String NAME) throws IOException {
-		WaitDialog.showWait();
 		String DIN = SearchForDIN.getDIN(NAME);
 		if (DIN == null) {
 			JOptionPane.showMessageDialog(contentPanel, "Drug Not Found!");
@@ -97,7 +96,9 @@ public class DrugSelection extends JDialog {
 					JButton cancelButton = new JButton("Cancel");
 					cancelButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							selection = null;
+							selection[0] = null;
+							selection[1] = null;
+							selection[2] = null;
 							dispose();
 						}
 					});

@@ -19,7 +19,6 @@ import com.formdev.flatlaf.*;
 
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import PatientManagement.*;
 import inventory.AllStock;
@@ -64,6 +63,10 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	String[] dosage; // array containing all archived dosages
 	String[] instructions; // array contaiing all archived instructions
 	String[] prescribedDuration; // array containing all archived prescribed durations
+	String[] docName; // array containing all doctor names belonging to patient
+	String[] docPhone; // array containing all doctor phone numbers belonging to patient
+	String[] docFax; // array containing all doctor fax numbers belonging to patient
+	String[] docAddress; // array containing all doctor addresses belonging to patient
 
 	// last page
 	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the
@@ -100,6 +103,10 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		dosage = new String[patient.getArchivedPrescriptions().length()];
 		instructions = new String[patient.getArchivedPrescriptions().length()];
 		prescribedDuration = new String[patient.getArchivedPrescriptions().length()];
+		docName = new String[patient.getArchivedPrescriptions().length()];
+		docPhone = new String[patient.getArchivedPrescriptions().length()];
+		docFax = new String[patient.getArchivedPrescriptions().length()];
+		docAddress = new String[patient.getArchivedPrescriptions().length()];
 		prescriptionPanels = new JPanel[patient.getArchivedPrescriptions().length()];
 
 		for (int i = 0; i < drugBrandName.length; i++) {
@@ -112,6 +119,10 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 			instructions[i] = "Instructions: " + patient.getArchivedPrescriptions().atIndex(i).getInstructions();
 			prescribedDuration[i] = "Prescribed Duration: "
 					+ patient.getArchivedPrescriptions().atIndex(i).getDuration();
+			docName[i] = "Doctor's Name: " + patient.getArchivedPrescriptions().atIndex(i).getDocName();
+			docPhone[i] = "Doctor's Phone Number: " + patient.getArchivedPrescriptions().atIndex(i).getDocPhone();
+			docFax[i] = "Doctor's Fax Number: " + patient.getArchivedPrescriptions().atIndex(i).getDocFax();
+			docAddress[i] = "Doctor's Address: " + patient.getArchivedPrescriptions().atIndex(i).getDocAddress();
 		} // end for
 
 		// setup all buttons for the header
@@ -136,11 +147,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		btnOpenOrder.setIcon(orderIcon);
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
-
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
@@ -168,7 +174,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
@@ -249,9 +254,9 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 
 		for (int i = 0; i < drugBrandName.length; i++) {
 			prescriptionInfo[i] = new JTextArea();
-			prescriptionInfo[i].setBackground(Color.white);
 			prescriptionInfo[i].setText(drugBrandName[i] + "\n" + datePrescribed[i] + "\n" + numRefills[i] + "\n"
-					+ quantity[i] + "\n" + dosage[i] + "\n" + instructions[i] + "\n" + prescribedDuration[i]);
+					+ quantity[i] + "\n" + dosage[i] + "\n" + docName[i] + "\n" + docPhone[i] + "\n" + docFax[i] + "\n"
+					+ docAddress[i] + "\n" + instructions[i] + "\n" + prescribedDuration[i]);
 			prescriptionPanels[i].setBorder(simpleLine);
 			prescriptionInfo[i].setEditable(false);
 			prescriptionPanels[i].add(prescriptionInfo[i]);
@@ -310,25 +315,26 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// open stock page
+		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-			// open patient management page
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-			// open active prescriptions page
+		// open active prescriptions page
 		if (e.getActionCommand().equals("View Active Prescriptions")) {
 			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
 			openCurrent.setVisible(true);
@@ -337,9 +343,9 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
 			if (last) {
-			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
-			openCurrent.setVisible(true);
-			setVisible(false);
+				CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
+				openCurrent.setVisible(true);
+				setVisible(false);
 			}
 		} // end if
 	} // end actionPerformed

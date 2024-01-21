@@ -23,7 +23,6 @@ import PatientManagement.*;
 import inventory.AllStock;
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import swingHelper.AppIcon;
 
@@ -58,7 +57,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public SearchAddUI(String title, Patient patient, PatientList patients, AllStock stock) {
+	public SearchAddUI(String title, PatientList patients, AllStock stock) {
 
 		// setup screen attributes
 		FlatLightLaf.setup(); // custom look and feel
@@ -99,12 +98,6 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
 		this.buttonPanel.add(btnOpenOrder, BorderLayout.CENTER);
-
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-		// this.buttonPanel.add(btnOpenSettings, BorderLayout.CENTER);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
@@ -172,23 +165,24 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
 			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open patient manager button pressed
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-			// open search page
+		// open search page
 		if (e.getActionCommand().equals("Search For Existing Patient")) {
 			SearchForPatientUI openSearch;
 			try {
