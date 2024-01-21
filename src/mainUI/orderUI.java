@@ -98,6 +98,10 @@ public class orderUI extends JFrame implements ActionListener {
 		this.setPreferredSize(new Dimension(screenDims.width, screenDims.height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		
+		// instantiate app variables
+		this.patients = patients;
+		this.stock = stock;
 
 		// add all buttons to header, then add header to mainPanel
 		stockIcon = stockIcon.setScale(0.12);
