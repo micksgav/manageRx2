@@ -557,8 +557,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 				}
 				allDins[allDins.length - 1] = dinField.getText();
 				if (altDisplay.showInteractions(allDins)) {
-					String[][] drugDosage = new String[1][1];
-					drugDosage[0][0] = dosageField.getText().trim();
+					String drugDosage  = dosageField.getText().trim();
 					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
 							null, formField.getText().trim(), drugDosage);
 					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
@@ -657,8 +656,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-				}	
-
+				}
 			} // end if
 				// if not all fields have been filled in, open a popup
 			else {
