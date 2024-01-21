@@ -61,6 +61,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JButton editRecord; // edit patient record
 	private JButton prescriptions; // view patient prescriptions
 	private JButton backButton; // go back to previous page
+	private JButton report;
 
 	// text elements
 	private JLabel familyDoc = new JLabel("Family Doctor"); // family doctor title
@@ -472,10 +473,12 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		mainPanel.add(bottomButtonsMain, buttonConstraints);
 
 		// add prescriptions button
+		JPanel prescriptionsReport = new JPanel(new GridLayout(2, 1, 0, 0));
 		prescriptions = new JButton("View Prescriptions");
 		prescriptions.addActionListener(this);
 		prescriptions.setBorder(textBoxBorder);
 		prescriptions.setFont(genFont);
+		prescriptionsReport.add(prescriptions);
 
 		GridBagConstraints prescriptionsConstraints = new GridBagConstraints(); // constraints for prescription button
 
@@ -487,6 +490,24 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		prescriptionsConstraints.insets = new Insets((int) (screenDims.height * 0.05), 0,
 				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.02));
 		mainPanel.add(prescriptions, prescriptionsConstraints);
+		
+		// add report butotn
+		report = new JButton("Print Report");
+		report.addActionListener(this);
+		report.setBorder(textBoxBorder);
+		report.setFont(genFont);
+		prescriptionsReport.add(report);
+		
+		GridBagConstraints reportConstraints = new GridBagConstraints();
+		
+		reportConstraints.fill = GridBagConstraints.BOTH;
+		reportConstraints.gridx = 0;
+		reportConstraints.gridy = 5;
+		reportConstraints.gridheight = 1;
+		reportConstraints.anchor = GridBagConstraints.NORTH;
+//		reportConstraints.insets = new Insets((int) (screenDims.height * 0.05), 0,
+//				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.02));
+		mainPanel.add(report, reportConstraints);
 
 		add(mainPanel, BorderLayout.CENTER);
 
@@ -566,5 +587,9 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 				} // end if
 			} // end for
 		} // end if
+		// print report
+		if (e.getActionCommand().equals("Print Report")) {
+			System.out.println("report"); // add the printout file from Gavin
+		}
 	} // end actionPerformed
 } // end ManagePatientInfoUI
