@@ -7,7 +7,7 @@ import java.util.*;
 public class TestRun {
 
 	public static void main(String[] args) throws IOException {
-		AllStock stock = new AllStock(100, 1000, 10000, 400);
+		AllStock stock = new AllStock();
 		Scanner ui = new Scanner(System.in);
 		Drug drug1 = drugFinder.getDrug("00548359");
 
