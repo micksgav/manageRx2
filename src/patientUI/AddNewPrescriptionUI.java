@@ -627,30 +627,37 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 							&& !(dosageField.getText().equals("00 units")
 									&& !(prescribedDurationField.getForeground().equals(new Color(204, 204, 204))))))) {
 				// create a drug and a prescription, then add to patient
-				String[][] drugDosage = new String[1][1];
-				drugDosage[0][0] = dosageField.getText().trim();
-				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
-						null, formField.getText().trim(), drugDosage);
-				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
-						Integer.parseInt(numRefillsField.getText().trim()),
-						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
-						prescribedDurationField.getText().trim(), docPrescribedNameField.getText().trim(),
-						docPrescribedAddressField.getText().trim(), docPrescribedPhoneField.getText().trim(),
-						docPrescribedFaxField.getText().trim());
-				newScript.setPatientID(patient.getId());
-				patient.addActivePrescription(newScript);
-				newScript.setID(helper.addPrescriptionBG(newScript));
-
-				// open a new add prescription window
-				AddNewPrescriptionUI openAddNew;
-				try {
-					openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
-					openAddNew.setVisible(true);
-					setVisible(false);
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				String[] allDins = new String[patient.getActivePrescriptions().length() + 1];
+				for (int i = 0; i < allDins.length - 1; i++) {
+					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
 				}
+				allDins[allDins.length - 1] = dinField.getText();
+				if (altDisplay.showInteractions(allDins)) {
+					String[][] drugDosage = new String[1][1];
+					drugDosage[0][0] = dosageField.getText().trim();
+					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
+							null, formField.getText().trim(), drugDosage);
+					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
+							Integer.parseInt(numRefillsField.getText().trim()),
+							Integer.parseInt(quantityField.getText().trim()), drugDosage,
+							instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
+							docPrescribedNameField.getText().trim(), docPrescribedAddressField.getText().trim(),
+							docPrescribedPhoneField.getText().trim(), docPrescribedFaxField.getText().trim());
+					newScript.setPatientID(patient.getId());
+					patient.addActivePrescription(newScript);
+					helper.addPrescriptionBG(newScript);
+
+					// open a new add prescription window
+					AddNewPrescriptionUI openAddNew;
+					try {
+						openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
+						openAddNew.setVisible(true);
+						setVisible(false);
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}	
 
 			} // end if
 				// if not all fields have been filled in, open a popup
