@@ -632,8 +632,8 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 				}
 				allDins[allDins.length - 1] = dinField.getText();
 				if (altDisplay.showInteractions(allDins)) {
-					String[][] drugDosage = new String[1][1];
-					drugDosage[0][0] = dosageField.getText().trim();
+					String drugDosage;
+					drugDosage = dosageField.getText().trim();
 					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
 							null, formField.getText().trim(), drugDosage);
 					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),

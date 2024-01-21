@@ -233,13 +233,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// panel to hold name, create button, and all prescriptions
 		mainWithTopBar = new JPanel(new GridBagLayout());
-		
-		btnNewButton_1 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 0;
-		mainWithTopBar.add(btnNewButton_1, gbc_btnNewButton_1);
+
 
 		// add patient name to screen
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient namae
