@@ -108,7 +108,7 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 			numRefills[i] = "Number of Refills: "
 					+ String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getRefills());
 			quantity[i] = "Quantity: " + String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getQuantity());
-			dosage[i] = "Dosage: " + String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getDosage()[0][0]);
+			dosage[i] = "Dosage: " + String.valueOf(patient.getArchivedPrescriptions().atIndex(i).getDosage());
 			instructions[i] = "Instructions: " + patient.getArchivedPrescriptions().atIndex(i).getInstructions();
 			prescribedDuration[i] = "Prescribed Duration: "
 					+ patient.getArchivedPrescriptions().atIndex(i).getDuration();

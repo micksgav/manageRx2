@@ -521,7 +521,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
 			orderUI openOrder = new orderUI();
 			openOrder.setVisible(true);
@@ -559,8 +559,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 				}
 				allDins[allDins.length - 1] = dinField.getText();
 				if (altDisplay.showInteractions(allDins)) {
-					String[][] drugDosage = new String[1][1];
-					drugDosage[0][0] = dosageField.getText().trim();
+					String drugDosage  = dosageField.getText().trim();
 					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
 							null, formField.getText().trim(), drugDosage);
 					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
@@ -573,7 +572,8 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 					patient.addActivePrescription(newScript);
 					helper.addPrescriptionBG(newScript);
 
-					CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
+					CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last,
+							stock);
 					openCurrent.setVisible(true);
 
 					setVisible(false);
@@ -596,25 +596,33 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 					&& drugNameField.getText().length() > 0 && docPrescribedNameField.getText().length() > 0
 					&& docPrescribedAddressField.getText().length() > 0
 					&& docPrescribedPhoneField.getText().length() > 0 && docPrescribedFaxField.getText().length() > 0) {
-				// create a drug and a prescription, then add to patient
-				String[][] drugDosage = new String[1][1];
-				drugDosage[0][0] = dosageField.getText().trim();
-				Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
-						null, formField.getText().trim(), drugDosage);
-				Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
-						Integer.parseInt(numRefillsField.getText().trim()),
-						Integer.parseInt(quantityField.getText().trim()), drugDosage, instructionsArea.getText().trim(),
-						prescribedDurationField.getText().trim(), docPrescribedNameField.getText().trim(),
-						docPrescribedAddressField.getText().trim(), docPrescribedPhoneField.getText().trim(),
-						docPrescribedFaxField.getText().trim());
-				newScript.setPatientID(patient.getId());
-				patient.addActivePrescription(newScript);
-				newScript.setID(helper.addPrescriptionBG(newScript));
 
-				// open a new add prescription window
-				AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
-				openAddNew.setVisible(true);
-				setVisible(false);
+				// create a drug and a prescription, then add to patient
+				String[] allDins = new String[patient.getActivePrescriptions().length() + 1];
+				for (int i = 0; i < allDins.length - 1; i++) {
+					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+				}
+				allDins[allDins.length - 1] = dinField.getText();
+				if (altDisplay.showInteractions(allDins)) {
+					String drugDosage = dosageField.getText().trim();
+					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
+							null, formField.getText().trim(), drugDosage);
+					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
+							Integer.parseInt(numRefillsField.getText().trim()),
+							Integer.parseInt(quantityField.getText().trim()), drugDosage,
+							instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
+							docPrescribedNameField.getText().trim(), docPrescribedAddressField.getText().trim(),
+							docPrescribedPhoneField.getText().trim(), docPrescribedFaxField.getText().trim());
+					newScript.setPatientID(patient.getId());
+					patient.addActivePrescription(newScript);
+					newScript.setID(helper.addPrescriptionBG(newScript));
+
+					// open a new add prescription window
+					AddNewPrescriptionUI openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last,
+							stock);
+					openAddNew.setVisible(true);
+					setVisible(false);
+				}
 			} // end if
 				// if not all fields have been filled in, open a popup
 			else {

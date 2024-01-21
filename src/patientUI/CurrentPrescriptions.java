@@ -11,6 +11,7 @@
 package patientUI;
 
 import swingHelper.*;
+import utilities.Report;
 import utilities.SQLHelper;
 import utilities.altDisplay;
 
@@ -92,6 +93,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 	private JButton btnNewButton;
+	private JButton btnNewButton_1;
 
 	public CurrentPrescriptions(String title, Patient patient, PatientList patients, boolean last, AllStock stock) {
 
@@ -133,7 +135,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			numRefills[i] = "Number of Refills: "
 					+ String.valueOf(patient.getActivePrescriptions().atIndex(i).getRefills());
 			quantity[i] = "Quantity: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getQuantity());
-			dosage[i] = "Dosage: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getDosage()[0][0]);
+			dosage[i] = "Dosage: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getDosage());
 			instructions[i] = "Instructions: " + patient.getActivePrescriptions().atIndex(i).getInstructions();
 			prescribedDuration[i] = "Prescribed Duration: " + patient.getActivePrescriptions().atIndex(i).getDuration();
 			docName[i] = "Doctor's Name: " + patient.getActivePrescriptions().atIndex(i).getDocName();
@@ -238,6 +240,13 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// panel to hold name, create button, and all prescriptions
 		mainWithTopBar = new JPanel(new GridBagLayout());
+		
+		btnNewButton_1 = new JButton("New button");
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton_1.gridx = 0;
+		gbc_btnNewButton_1.gridy = 0;
+		mainWithTopBar.add(btnNewButton_1, gbc_btnNewButton_1);
 
 		// add patient name to screen
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient namae
@@ -367,11 +376,15 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 32));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[] allDins = new String[patient.getActivePrescriptions().length()];
-				for (int i = 0; i < allDins.length; i++) {
-					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+				if (patient.getActivePrescriptions().length() != 0) {
+					String[] allDins = new String[patient.getActivePrescriptions().length()];
+					for (int i = 0; i < allDins.length; i++) {
+						allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+					}
+					altDisplay.showInteractions(allDins);
+				} else {
+					JOptionPane.showMessageDialog(mainPanel, "Patient Does Not Have Any Prescriptions");
 				}
-				altDisplay.showInteractions(allDins);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -466,8 +479,8 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 							.replaceAll("Quantity: ", "").replaceAll("Dosage: ", "").replaceAll("Dosage: ", "")
 							.replaceAll("Instructions: ", "").replaceAll("Prescribed Duration: ", "").replaceAll("Doctor's Name: ", "").replaceAll("Doctor's Phone Number: ", "").replaceAll("Doctor's Fax Number ", "").replaceAll("Doctor's Address ", "").trim(); // all info in prescription area
 					String[] info = prescriptionInfoString.split("\n"); // info in prescription area broken up by line
-					String[][] drugDosage = new String[1][1]; // drug dosage
-					drugDosage[0][0] = info[4];
+					String drugDosage; // drug dosage
+					drugDosage = info[4];
 					patient.getActivePrescriptions().atIndex(i).setBrandName(info[0]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "drugName",
 							patient.getActivePrescriptions().atIndex(i).getBrandName(), patient.getActivePrescriptions().atIndex(i).getID());
@@ -482,7 +495,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 							patient.getActivePrescriptions().atIndex(i).getQuantity(), patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDosage(drugDosage);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "dosage",
-							patient.getActivePrescriptions().atIndex(i).getDosage()[0][0], patient.getId());
+							patient.getActivePrescriptions().atIndex(i).getDosage(), patient.getId());
 					patient.getActivePrescriptions().atIndex(i).setDocName(info[5]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedName",
 							patient.getActivePrescriptions().atIndex(i).getDocName(), patient.getId());

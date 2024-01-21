@@ -244,7 +244,7 @@ public class SQLHelper {
 		int patientID = p.getPatientID();
 		int numRefills = p.getRefills();
 		int quantity = p.getQuantity();
-		String dosage = p.getDosage()[0][0]; // fix array stuff
+		String dosage = p.getDosage(); // fix array stuff
 		String instructions = p.getInstructions();
 		String prescribedDuration = p.getDuration();
 		String datePrescribed = p.getDate();
@@ -310,14 +310,12 @@ public class SQLHelper {
 		PrescriptionList pList = new PrescriptionList();
 		try {
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM PrescriptionInfo");
-			String[][] dosage = new String[1][1];
 			while (resultSet.next()) {
 				Prescription temp = new Prescription();
 				temp.setPatientID(resultSet.getInt("patientID"));
 				temp.setRefills(resultSet.getInt("numRefills"));
 				temp.setQuantity(resultSet.getInt("quantity"));
-				dosage[0][0] = resultSet.getString("dosage");
-				temp.setDosage(dosage);
+				temp.setDosage(resultSet.getString("dosage"));
 				temp.setInstructions(resultSet.getString("instructions"));
 				temp.setDuration(resultSet.getString("prescribedDuration"));
 				temp.setDate(resultSet.getString("datePrescribed"));
@@ -399,7 +397,7 @@ public class SQLHelper {
 	public int addDrugStock(DrugStock drug) {
 		try {
 			ResultSet resultSet = statement.executeQuery(
-					"SELECT ID FROM DrugStock WHERE ID = (SELECT MAX(DrugStock) FROM DrugStock)");
+					"SELECT ID FROM DrugStock WHERE ID = (SELECT MAX(ID) FROM DrugStock)");
 			resultSet.next();
 			int ID = resultSet.getInt("ID") + 1;
 			statement.executeUpdate("INSERT INTO DrugStock values ( " + ID + " , \"" + drug.getDrugDIN() + "\" , "
