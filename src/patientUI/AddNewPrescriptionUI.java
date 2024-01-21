@@ -29,7 +29,7 @@ import utilities.DrugSelection;
 import utilities.SQLHelper;
 import utilities.altDisplay;
 
-public class AddNewPrescriptionUI extends JFrame implements ActionListener {
+public class AddNewPrescriptionUI extends JFrame implements ActionListener, FocusListener {
 
 	// app information
 	Patient patient; // patient currently selected
@@ -70,20 +70,20 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 	private JLabel quantityLabel = new JLabel("Quantity"); // quantity label
 	private JTextField quantityField; // quantity field
 	private JLabel dosageLabel = new JLabel("Dosage"); // dosage label
-	private JTextField dosageField; // dosage field
+	private JTextField dosageField = new JTextField("0 units"); // dosage field
 	private JLabel instructionsLabel = new JLabel("Instructions"); // instructions label
 	private JTextArea instructionsArea; // instructions field
 	private JLabel prescribedDurationLabel = new JLabel("Prescribed Duration"); // prescribed duration label
-	private JTextField prescribedDurationField; // prescribed duration field
+	private JTextField prescribedDurationField = new JTextField("6 months"); // prescribed duration field
 	private JLabel formLabel = new JLabel("Form"); // form of drug label
 	private JTextField formField; // form of drug field
 	private Insets gridBagPadding; // padding for some GridBagConstraints
 	private Insets leftButtonPadding; // padding for left button
 	private Insets rightButtonsPadding; // padding for right button
 	private JLabel docPrescribedNameLabel = new JLabel("Doctor's Name");
-	private JTextField docPrescribedNameField;
+	private JTextField docPrescribedNameField = new JTextField("First Last");
 	private JLabel docPrescribedAddressLabel = new JLabel("Doctor's Address");
-	private JTextField docPrescribedAddressField;
+	private JTextField docPrescribedAddressField = new JTextField("123 ABC Street, City");
 	private JLabel docPrescribedPhoneLabel = new JLabel("Doctor's Phone Number");
 	private JFormattedTextField docPrescribedPhoneField;
 	private JLabel docPrescribedFaxLabel = new JLabel("Doctor's Fax Number");
@@ -103,7 +103,8 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 	private JPanel panel;
 	private JButton searchButton;
 
-	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients, boolean last, AllStock stock) throws ParseException {
+	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients, boolean last, AllStock stock)
+			throws ParseException {
 		// setup display attributes
 		FlatLightLaf.setup();
 		setTitle(title);
@@ -120,7 +121,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		this.patients = patients;
 		this.last = last;
 		this.stock = stock;
-		
+
 		// formats
 		dateOfBirthFormat = new MaskFormatter("##/##/####");
 		phoneFormat = new MaskFormatter("(###) ### - ####");
@@ -193,6 +194,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for most text elements
 		Font smallGen = new Font("Arial", Font.PLAIN, 15); // smaller general font where gen font won't fit fully
 		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
+		Color textBoxFill = new Color(204, 204, 204); // fill for textboxes
 		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
 		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
 				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
@@ -264,15 +266,17 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		innerLeftMain.add(formLabel);
 		innerLeftMain.add(formField);
 
-		docPrescribedNameField = new JTextField();
 		docPrescribedNameField.setBorder(textBoxBorder);
+		docPrescribedNameField.setForeground(textBoxFill);
+		docPrescribedNameField.addFocusListener(this);
 		docPrescribedNameLabel.setFont(genFont);
 		docPrescribedNameField.setFont(smallGen);
 		docPrescribed.add(docPrescribedNameLabel);
 		docPrescribed.add(docPrescribedNameField);
 
-		docPrescribedAddressField = new JTextField();
 		docPrescribedAddressField.setBorder(textBoxBorder);
+		docPrescribedAddressField.setForeground(textBoxFill);
+		docPrescribedAddressField.addFocusListener(this);
 		docPrescribedAddressLabel.setFont(genFont);
 		docPrescribedAddressField.setFont(smallGen);
 		docPrescribed.add(docPrescribedAddressLabel);
@@ -359,8 +363,9 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		rightMain.add(quantityField);
 
 // add dosage label and field
-		dosageField = new JTextField();
 		dosageField.setBorder(textBoxBorder);
+		dosageField.setForeground(textBoxFill);
+		dosageField.addFocusListener(this);
 		dosageField.setFont(genFont);
 		dosageLabel.setFont(genFont);
 		rightMain.add(dosageLabel);
@@ -376,8 +381,9 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		rightMain.add(scroll);
 
 // add prescribed duration label and field
-		prescribedDurationField = new JTextField();
 		prescribedDurationField.setBorder(textBoxBorder);
+		prescribedDurationField.setForeground(textBoxFill);
+		prescribedDurationField.addFocusListener(this);
 		prescribedDurationField.setFont(genFont);
 		prescribedDurationLabel.setFont(genFont);
 		rightMain.add(prescribedDurationLabel);
@@ -466,14 +472,15 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		SQLHelper helper = new SQLHelper(); // connect to sql
-		
+
 		// search button
 		if (e.getActionCommand().equals("Search")) {
-		String[] selection = DrugSelection.getDrugSelection(drugNameField.getText());
-		System.out.println(selection[0] + selection[1] + selection[2]);
-		dinField.setText(selection[0]);
-		drugNameField.setText(selection[1]);
-		dosageField.setText(selection[2]);
+			String[] selection = DrugSelection.getDrugSelection(drugNameField.getText());
+			System.out.println(selection[0] + selection[1] + selection[2]);
+			dinField.setText(selection[0]);
+			drugNameField.setText(selection[1]);
+			dosageField.setText(selection[2]);
+			dosageField.setForeground(Color.black);
 		}
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
@@ -503,6 +510,32 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		} // end if
 			// save and go back button pressed
 		if (e.getActionCommand().equals("Save and Go Back")) {
+			if (quantityField.getText().length() > 0) {
+			try {
+				int i = Integer.parseInt(quantityField.getText());
+				if (i <= 0) {
+					JOptionPane.showMessageDialog(mainPanel,
+							"Error, quantity must be a whole number greater than 0.");
+				}
+			}
+			catch (NumberFormatException f){
+				JOptionPane.showMessageDialog(mainPanel,
+						"Error, quantity must be a whole number greater than 0.");
+			}
+			}
+			if (numRefillsField.getText().length() > 0) {
+			try {
+				int i = Integer.parseInt(numRefillsField.getText());
+				if (i < 0) {
+					JOptionPane.showMessageDialog(mainPanel,
+							"Error, number of refills must be a whole number greater than or equal to 0.");
+				}
+			}
+			catch (NumberFormatException f){
+				JOptionPane.showMessageDialog(mainPanel,
+						"Error, number of refills must be a whole number greater than or equal to 0.");
+			}
+			}
 			// make sure field have been filled in
 			if (dinField.getText().length() > 0 && datePrescribedField.getText().length() == 10
 					&& numRefillsField.getText().length() > 0 && quantityField.getText().length() > 0
@@ -510,7 +543,12 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 					&& prescribedDurationField.getText().length() > 0 && formField.getText().length() > 0
 					&& drugNameField.getText().length() > 0 && docPrescribedNameField.getText().length() > 0
 					&& docPrescribedAddressField.getText().length() > 0
-					&& docPrescribedPhoneField.getText().length() == 16 && docPrescribedFaxField.getText().length() == 16) {
+					&& docPrescribedPhoneField.getText().length() == 16
+					&& docPrescribedFaxField.getText().length() == 16
+					&& !(docPrescribedNameField.getText().equals("First Last") && !(docPrescribedAddressField.getText()
+							.equals("123 ABC Street, City")
+							&& !(dosageField.getText().equals("00 units")
+									&& !(prescribedDurationField.getForeground().equals(new Color(204, 204, 204))))))) {
 				// create a drug and prescription from input, then add to patient
 
 				String[] allDins = new String[patient.getActivePrescriptions().length() + 1];
@@ -549,14 +587,45 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 		} // end if
 			// save and add another button pressed
 		if (e.getActionCommand().equals("Save and Add Another Prescription")) {
+			if (quantityField.getText().length() > 0) {
+				try {
+					int i = Integer.parseInt(quantityField.getText());
+					if (i <= 0) {
+						JOptionPane.showMessageDialog(mainPanel,
+								"Error, quantity must be a whole number greater than 0.");
+					}
+				}
+				catch (NumberFormatException f){
+					JOptionPane.showMessageDialog(mainPanel,
+							"Error, quantity must be a whole number greater than 0.");
+				}
+				}
+				if (numRefillsField.getText().length() > 0) {
+				try {
+					int i = Integer.parseInt(numRefillsField.getText());
+					if (i < 0) {
+						JOptionPane.showMessageDialog(mainPanel,
+								"Error, number of refills must be a whole number greater than or equal to 0.");
+					}
+				}
+				catch (NumberFormatException f){
+					JOptionPane.showMessageDialog(mainPanel,
+							"Error, number of refills must be a whole number greater than or equal to 0.");
+				}
+				}
 			// make sure all field have been filled in
-			if (dinField.getText().length() > 0 && datePrescribedField.getText().length() > 0
+			if (dinField.getText().length() > 0 && datePrescribedField.getText().length() == 10
 					&& numRefillsField.getText().length() > 0 && quantityField.getText().length() > 0
 					&& dosageField.getText().length() > 0 && instructionsArea.getText().length() > 0
 					&& prescribedDurationField.getText().length() > 0 && formField.getText().length() > 0
 					&& drugNameField.getText().length() > 0 && docPrescribedNameField.getText().length() > 0
 					&& docPrescribedAddressField.getText().length() > 0
-					&& docPrescribedPhoneField.getText().length() > 0 && docPrescribedFaxField.getText().length() > 0) {
+					&& docPrescribedPhoneField.getText().length() == 16
+					&& docPrescribedFaxField.getText().length() == 16
+					&& !(docPrescribedNameField.getText().equals("First Last") && !(docPrescribedAddressField.getText()
+							.equals("123 ABC Street, City")
+							&& !(dosageField.getText().equals("00 units")
+									&& !(prescribedDurationField.getForeground().equals(new Color(204, 204, 204))))))) {
 				// create a drug and a prescription, then add to patient
 				String[][] drugDosage = new String[1][1];
 				drugDosage[0][0] = dosageField.getText().trim();
@@ -582,7 +651,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			} // end if
 				// if not all fields have been filled in, open a popup
 			else {
@@ -591,4 +660,31 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener {
 			} // end else
 		} // end if
 	} // end actionPerformed
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		if (e.getComponent().equals(docPrescribedNameField)) {
+			docPrescribedNameField.setText("");
+			docPrescribedNameField.setForeground(Color.black);
+		}
+		if (e.getComponent().equals(docPrescribedAddressField)) {
+			docPrescribedAddressField.setText("");
+			docPrescribedAddressField.setForeground(Color.black);
+		}
+		if (e.getComponent().equals(dosageField) && dosageField.getText().equals("0 units")) {
+			dosageField.setText("");
+			dosageField.setForeground(Color.black);
+		}
+		if (e.getComponent().equals(prescribedDurationField)) {
+			prescribedDurationField.setText("");
+			prescribedDurationField.setForeground(Color.black);
+		}
+
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 } // end AddNewPrescriptionUI
