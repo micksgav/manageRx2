@@ -1,3 +1,12 @@
+/**
+ ***********************************************
+ * @Author : John Brown
+ * @Originally made : January 21, 2024
+ * @Last Modified: January 22, 2024
+ * @Description: Main driver for ManageRx. Initializes all objects that are required for the program by pulling from sql database.
+ ***********************************************
+ */
+
 package Main;
 
 import java.util.LinkedList;
@@ -56,10 +65,8 @@ public class Main {
 			} // end for
 		} // end for
 
-		WaitDialog.disposeWait(); // dispose of loading screens
-
 		loginUI oui = new loginUI("ManageRx", patients, stock, usernames, passwords); // open UI
 
 		oui.setVisible(true);
-	}
-}
+	} // end main
+} // end Main

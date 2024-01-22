@@ -591,9 +591,23 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					&& addressField.getText().length() > 0 && emailField.getText().length() > 0
 					&& phoneField.getText().length() == 16 && healthCardNumField.getText().length() == 21
 					&& genderField.getText().length() > 0 && weightField.getText().length() > 0)
-					&& !(patientNameField.getText().equals("First Last")
-							&& !(emailField.getText().equals("example@domain.com"))
-							&& !(addressField.getText().equals("123 ABC Street, City")))) {
+					&& !(patientNameField.getText().equals("First Last"))
+					&& !(emailField.getText().equals("example@domain.com"))
+					&& !(addressField.getText().equals("123 ABC Street, City"))
+					&& Integer.parseInt(dateOfBirthField.getText().trim()
+							.substring(0, dateOfBirthField.getText().indexOf('/')).trim()) > 0
+					&& Integer.parseInt(dateOfBirthField.getText().trim()
+							.substring(0, dateOfBirthField.getText().indexOf('/')).trim()) < 32
+					&& Integer.parseInt(dateOfBirthField.getText().trim()
+							.substring(dateOfBirthField.getText().indexOf('/') + 1,
+									dateOfBirthField.getText().indexOf('/') + 3)
+							.trim()) > 0
+					&& Integer.parseInt(dateOfBirthField.getText().trim()
+							.substring(dateOfBirthField.getText().indexOf('/') + 1,
+									dateOfBirthField.getText().indexOf('/') + 3)
+							.trim()) < 13
+					&& Integer.parseInt(dateOfBirthField.getText().trim()
+							.substring(dateOfBirthField.getText().indexOf('/') + 4).trim()) > 0) {
 				// if patient is null, create a new one
 				if (patient == null) {
 					if (docNameField.getText().equals("Dr. First Last") || docNameField.getText().length() == 0) {
@@ -673,7 +687,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 			} // end if
 			else {
 				JOptionPane.showMessageDialog(mainPanel,
-						"Please fill in all required fields in order to save patient details.");
+						"Please Make Sure All Fields Are Filled In Correctly.");
 			} // end else
 		} // end if
 			// open current prescriptions

@@ -547,7 +547,6 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 					for (int j = 9; j <= info.length - 2; j++) {
 						instructions += info[j] + " ";
 					} // end for
-					System.out.println(patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setInstructions(instructions.trim());
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "instructions",
 							patient.getActivePrescriptions().atIndex(i).getInstructions(),

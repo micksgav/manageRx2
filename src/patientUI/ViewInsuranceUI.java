@@ -366,7 +366,6 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 				deleteInsurance[i].setActionCommand("save" + i);
 			} // end if
 			if (e.getActionCommand().equals("delete" + i)) {
-				System.out.println(patient.getInsuranceInformation().get(i).getID());
 				helper.removeInsurance(patient.getInsuranceInformation().get(i).getID()); // may not work
 				patient.getInsuranceInformation().get(i).setDelete(true);
 				insurancePanels[i].setVisible(false);
@@ -380,7 +379,6 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 					patient.getInsuranceInformation().get(i).setCompany(info[0]);
 					patient.getInsuranceInformation().get(i).setNumber(Integer.parseInt(info[1]));
 
-					System.out.println(patient.getInsuranceInformation().get(i).getID());
 					helper.updateInsuranceBG("InsuranceInfo", "company",
 							patient.getInsuranceInformation().get(i).getCompany(),
 							patient.getInsuranceInformation().get(i).getID());

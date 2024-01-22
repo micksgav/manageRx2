@@ -488,7 +488,6 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		if (e.getActionCommand().equals("Search")) {
 			if (drugNameField.getText().trim().length() > 0) {
 			String[] selection = DrugSelection.getDrugSelection(drugNameField.getText());
-			System.out.println(selection[0] + selection[1] + selection[2]);
 			dinField.setText(selection[0]);
 			drugNameField.setText(selection[1]);
 			dosageField.setText(selection[2]);
