@@ -110,7 +110,7 @@ public class orderUI extends JFrame implements ActionListener {
 		settingsIcon = settingsIcon.setScale(0.12);
 		patientsIcon = patientsIcon.setScale(0.12);
 
-		this.buttonPanel = new JPanel(new GridBagLayout());
+		this.buttonPanel = new JPanel(new FlowLayout());
 		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
 
 		JLabel label = new JLabel("ManageRx");
@@ -126,49 +126,15 @@ public class orderUI extends JFrame implements ActionListener {
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
 
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
 		btnOpenPatientManager.addActionListener(this);
 
-		// add back button to header
-		backButton = new JButton("Back");
-		backButton.addActionListener(this);
-
-		GridBagConstraints backConstraints = new GridBagConstraints(); // constraints for back button
-
-		backConstraints.gridx = 0;
-		backConstraints.gridy = 0;
-		backConstraints.gridwidth = 1;
-		backConstraints.anchor = GridBagConstraints.WEST;
-		backConstraints.ipadx = (int) (screenDims.width * 0.02);
-		backConstraints.weightx = 0.45;
-		backConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, 0);
-		this.buttonPanel.add(backButton, backConstraints);
-
-		// add buttons other than back to header
-		headerButtons = new JPanel(new FlowLayout());
-
-		headerButtons.add(label);
-		headerButtons.add(btnOpenStock);
-		headerButtons.add(btnOpenOrder);
-		// headerButtons.add(btnOpenSettings);
-		headerButtons.add(btnOpenPatientManager);
-
-		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
-																				// back in header
-
-		overallButtonConstraints.gridx = 2;
-		overallButtonConstraints.gridy = 0;
-		overallButtonConstraints.gridwidth = 1;
-		overallButtonConstraints.weightx = 0.55;
-		overallButtonConstraints.anchor = GridBagConstraints.WEST;
-		this.buttonPanel.add(headerButtons, overallButtonConstraints);
+		this.buttonPanel.add(label);
+		this.buttonPanel.add(btnOpenStock);
+		this.buttonPanel.add(btnOpenOrder);
+		this.buttonPanel.add(btnOpenPatientManager);
 
 		add(this.buttonPanel, BorderLayout.NORTH);
 

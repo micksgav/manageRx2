@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Manage patient information page in the patient management section of ManageRx
  ***********************************************
  */
@@ -18,13 +18,10 @@ import javax.swing.border.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
-import mainUI.loginUI;
 import mainUI.orderUI;
 import mainUI.stockUI;
 import PatientManagement.*;
 import inventory.AllStock;
-
-import java.util.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -35,7 +32,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	// app information
 	Patient patient; // current patient
 	PatientList patients; // list of all patient
-	AllStock stock;
+	AllStock stock; // complete stock for pharmacy
 
 	String[] insuranceCompanyArray; // array containing all insurance companies belonging to patient
 	String[] insuranceNumberArray; // array containing all insurance numbers belonging to patient
@@ -62,7 +59,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JButton editRecord; // edit patient record
 	private JButton prescriptions; // view patient prescriptions
 	private JButton backButton; // go back to previous page
-	private JButton report;
+	private JButton report; // print report button
 
 	// text elements
 	private JLabel familyDoc = new JLabel("Family Doctor"); // family doctor title
@@ -90,19 +87,18 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JLabel docAddressLabel = new JLabel("Address"); // family doc address label
 	private JTextField docAddressField; // family doc address field
 	private JLabel patientName; // patient name
-	private JLabel weightLabel = new JLabel("Weight");
-	private JTextField weightField;
-	private JLabel genderLabel = new JLabel("Gender");
-	private JTextField genderField;
-	private JLabel docFaxLabel = new JLabel("Fax Number");
-	private JTextField docFaxField;
+	private JLabel weightLabel = new JLabel("Weight"); // patient weight label
+	private JTextField weightField; // patient weight field
+	private JLabel genderLabel = new JLabel("Gender"); // patient gender label
+	private JTextField genderField; // patient gender field
+	private JLabel docFaxLabel = new JLabel("Fax Number"); // doctor fax label
+	private JTextField docFaxField; // docor fax field
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
-	private JButton btnNewButton;
 
 	public ManagePatientInfoUI(String title, Patient patient, PatientList patients, AllStock stock) {
 
@@ -112,7 +108,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds(); // dimensions of screen from
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
-		// Rectangle screenDims = new Rectangle(1366, 768);
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
@@ -131,7 +126,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
 
-		JLabel label = new JLabel("ManageRx");
+		JLabel label = new JLabel("ManageRx"); // label for header
 		label.setFont(new Font("Arial", Font.BOLD, 20));
 
 		btnOpenStock = new JButton("Stock");
@@ -205,8 +200,8 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 
 		// add patient name
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient name
-		nameConstraints.insets = new Insets(0, 0, 5, 5);
 
+		nameConstraints.insets = new Insets(0, 0, 5, 5);
 		nameConstraints.fill = GridBagConstraints.BOTH;
 		nameConstraints.gridx = 0;
 		nameConstraints.gridy = 1;
@@ -256,7 +251,9 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		leftMain.add(phoneLabel);
 		leftMain.add(phoneField);
 
-		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
+		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0)); // panel for
+																										// gender and
+																										// weight
 
 		genderField = new JTextField(patient.getGender());
 		genderField.setEditable(false);
@@ -458,19 +455,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		cancel.setBorder(textBoxBorder);
 		editRecord = new JButton("Edit Record");
 		editRecord.addActionListener(this);
-		
-		btnNewButton = new JButton("Generate Patient Report");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Report.patientReport(patient);
-			}
-		});
-		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 5;
-		mainPanel.add(btnNewButton, gbc_btnNewButton);
+
 		editRecord.setBorder(textBoxBorder);
 		cancel.setFont(genFont);
 		editRecord.setFont(genFont);
@@ -505,23 +490,21 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		prescriptionsConstraints.insets = new Insets((int) (screenDims.height * 0.05), 0,
 				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.02));
 		mainPanel.add(prescriptions, prescriptionsConstraints);
-		
+
 		// add report butotn
 		report = new JButton("Print Report");
 		report.addActionListener(this);
 		report.setBorder(textBoxBorder);
 		report.setFont(genFont);
 		prescriptionsReport.add(report);
-		
+
 		GridBagConstraints reportConstraints = new GridBagConstraints();
-		
+
 		reportConstraints.fill = GridBagConstraints.BOTH;
 		reportConstraints.gridx = 0;
 		reportConstraints.gridy = 5;
 		reportConstraints.gridheight = 1;
 		reportConstraints.anchor = GridBagConstraints.NORTH;
-//		reportConstraints.insets = new Insets((int) (screenDims.height * 0.05), 0,
-//				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.02));
 		mainPanel.add(report, reportConstraints);
 
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
@@ -548,17 +531,18 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open search for patient
+			// open search for patient
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			SearchForPatientUI openSearch;
 			try {
 				openSearch = new SearchForPatientUI("ManageRx", patient, patients, stock);
 				openSearch.setVisible(true);
 				setVisible(false);
-			} catch (ParseException e1) {
+			} // end try
+			catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
+			} // end catch
 
 		} // end if
 			// open edit patient record
@@ -568,10 +552,11 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 				openEdit = new EditPatientInfoUI("ManageRx", patient, patients, stock);
 				openEdit.setVisible(true);
 				setVisible(false);
-			} catch (ParseException e1) {
+			} // end try
+			catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
+			} // end catch
 		} // end if
 			// open current prescriptions if there are any, else show popup
 		if (e.getActionCommand().equals("View Prescriptions")) {
@@ -596,15 +581,15 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		if (insuranceCompanyArray != null && patient.getInsuranceInformation().size() > 0) {
 			for (int i = 0; i < insuranceCompanyArray.length; i++) {
 				if (insuranceCompanyField.getSelectedItem() != null) {
-				if (((String) insuranceCompanyField.getSelectedItem()).equals(insuranceCompanyArray[i])) {
-					insuranceNumberField.setText(insuranceNumberArray[i]);
+					if (((String) insuranceCompanyField.getSelectedItem()).equals(insuranceCompanyArray[i])) {
+						insuranceNumberField.setText(insuranceNumberArray[i]);
 					} // end if
 				} // end if
 			} // end for
 		} // end if
-		// print report
+			// print report
 		if (e.getActionCommand().equals("Print Report")) {
-			System.out.println("report"); // add the printout file from Gavin
-		}
+			Report.patientReport(patient);
+		} // end if
 	} // end actionPerformed
 } // end ManagePatientInfoUI

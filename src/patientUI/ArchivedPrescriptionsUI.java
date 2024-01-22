@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: View archived prescriptions page in the patient management section of ManageRx
  ***********************************************
  */
@@ -17,7 +17,6 @@ import javax.swing.border.*;
 
 import com.formdev.flatlaf.*;
 
-import mainUI.loginUI;
 import mainUI.orderUI;
 import mainUI.stockUI;
 import PatientManagement.*;
@@ -31,7 +30,7 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	// app information
 	Patient patient; // patient whose prescriptions are being viewed
 	PatientList patients; // list of all patients
-	AllStock stock;
+	AllStock stock; // complete stock for pharmacy
 
 	// panels
 	private JPanel buttonPanel; // header panel containing logo and buttons
@@ -44,7 +43,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	// header buttons
 	private JButton btnOpenStock; // open stock page
 	private JButton btnOpenOrder; // open order page
-	private JButton btnOpenSettings; // open settings page
 	private JButton btnOpenPatientManager; // open patient manager page
 
 	// main buttons
@@ -56,7 +54,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 	private JTextArea[] prescriptionInfo; // prescription information
 	private JLabel archivedPrescriptions = new JLabel("Archived Prescriptions"); // title label
 	String[] drugBrandName; // array containing all archived drug names
-	String[] drugGenName;
 	String[] datePrescribed; // array containing all archived dates prescribed
 	String[] numRefills; // array containing all archived number of refills
 	String[] quantity; // array containing all archived quantities
@@ -96,7 +93,6 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		this.last = last;
 		this.stock = stock;
 		drugBrandName = new String[patient.getArchivedPrescriptions().length()];
-		drugGenName = new String[patient.getArchivedPrescriptions().length()];
 		datePrescribed = new String[patient.getArchivedPrescriptions().length()];
 		numRefills = new String[patient.getArchivedPrescriptions().length()];
 		quantity = new String[patient.getArchivedPrescriptions().length()];
@@ -134,7 +130,7 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
 
-		JLabel label = new JLabel("ManageRx");
+		JLabel label = new JLabel("ManageRx"); // header label
 		label.setFont(new Font("Arial", Font.BOLD, 20));
 		this.buttonPanel.add(label);
 
@@ -334,7 +330,7 @@ public class ArchivedPrescriptionsUI extends JFrame implements ActionListener {
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open active prescriptions page
+			// open active prescriptions page
 		if (e.getActionCommand().equals("View Active Prescriptions")) {
 			CurrentPrescriptions openCurrent = new CurrentPrescriptions("ManageRx", patient, patients, last, stock);
 			openCurrent.setVisible(true);

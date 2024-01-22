@@ -2,13 +2,13 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 16, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Prescription object containing information about a prescription belonging to a pharmacy patient
  ***********************************************
  */
 
-
 package PatientManagement;
+
 import inventory.*;
 
 public class Prescription {
@@ -19,16 +19,18 @@ public class Prescription {
 	private String dosage; // dosage of the drug
 	private String instructions; // instructions for taking the prescription
 	private String prescribedDuration; // duration to take prescribed drug for
-	private int ID;
-	private int patientID;
-	private boolean current;
-	private String docPrescribedName;
-	private String docPrescribedAddress;
-	private String docPrescribedPhone;
-	private String docPrescribedFax;
-	private boolean delete;
-	
-	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String dosage, String instructions, String prescribedDuration, String docPrescribedName, String docPrescribedAddress, String docPrescribedPhone, String docPrescribedFax) {
+	private int ID; // id for sql
+	private int patientID; // patient id for sql
+	private boolean current; // if the prescription is current or not, used for sql
+	private String docPrescribedName; // name of doctor who prescribed meds
+	private String docPrescribedAddress; // address of doctor who prescribed meds
+	private String docPrescribedPhone; // phone number of doctor who prescribed meds
+	private String docPrescribedFax; // fax number of doctor who prescribed meds
+	private boolean delete; // used for archiving a prescription from the current prescriptions page
+
+	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String dosage,
+			String instructions, String prescribedDuration, String docPrescribedName, String docPrescribedAddress,
+			String docPrescribedPhone, String docPrescribedFax) {
 		this.drug = drug;
 		this.datePrescribed = datePrescribed;
 		this.numRefills = numRefills;
@@ -42,48 +44,47 @@ public class Prescription {
 		this.docPrescribedFax = docPrescribedFax;
 		current = true;
 	} // end Prescription
-	
-	public Prescription(){
+
+	public Prescription() {
 		drug = new Drug();
 		current = true;
 	} // end Prescription
-	
+
 	public void setDocName(String docName) {
 		docPrescribedName = docName;
-	}
-	
+	} // end setDocName
+
 	public String getDocName() {
 		return docPrescribedName;
-	}
-	
+	} // end getDocName
+
 	public void setDocAddress(String address) {
 		docPrescribedAddress = address;
-	}
-	
+	} // end setDocAddress
+
 	public String getDocAddress() {
 		return docPrescribedAddress;
-	}
-	
+	} // end getDocAddress
+
 	public void setDocPhone(String phone) {
 		docPrescribedPhone = phone;
-	}
-	
+	} // end setDocPhone
+
 	public String getDocPhone() {
 		return docPrescribedPhone;
-	}
-	
+	} // end getDocPhone
+
 	public void setDocFax(String fax) {
 		docPrescribedFax = fax;
-	}
-	
+	} // end setDocFax
+
 	public String getDocFax() {
 		return docPrescribedFax;
-	}
-	
+	} // end getDocFax
+
 	public Drug getDrug() {
 		return drug;
-	} // end getDeug
-
+	} // end getDrug
 
 	public String getName() {
 		return drug.getDrugName();
@@ -92,14 +93,14 @@ public class Prescription {
 	public void setName(String genName) {
 		drug.setDrugName(genName);
 	} // end setName
-	
+
 	public String getDIN() {
 		return drug.getDIN();
-	}
-	
+	} /// end getDIN
+
 	public void setDIN(String DIN) {
 		drug.setDIN(DIN);
-	}
+	} // end setDIN
 
 	public String getBrandName() {
 		return drug.getDrugName();
@@ -158,49 +159,48 @@ public class Prescription {
 	} // end setDuration
 
 	public int getID() {
-		// TODO Auto-generated method stub
 		return ID;
-	}
-	
+	} // end getID
+
 	public void setID(int ID) {
 		this.ID = ID;
-	}
-	
+	} // end setID
+
 	public String getForm() {
 		return drug.getForm();
-	}
-	
+	} // end getForm
+
 	public void setForm(String form) {
 		drug.setForm(form);
-	}
-	
+	} // end setForm
+
 	public int getPatientID() {
 		return patientID;
-	}
-	
+	} // end getPatientID
+
 	public void setPatientID(int ID) {
 		patientID = ID;
-	}
+	} // end setPatientID
 
 	public void setCurrent(int current) {
 		if (current == 1) {
 			this.current = true;
-		}
+		} // end if
 		else {
 			this.current = false;
-		}
-	}
-	
+		} // end else
+	} // end setCurrent
+
 	public boolean getCurrent() {
 		return current;
-	}
-	
+	} // end getCurrent
+
 	public boolean getDelete() {
 		return delete;
-	}
-	
+	} // end getDelete
+
 	public void setDelete(boolean delete) {
 		this.delete = delete;
-	}
-	
+	} // end setDelete
+
 } // end Prescription

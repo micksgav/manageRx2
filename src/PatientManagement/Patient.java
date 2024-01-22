@@ -2,21 +2,17 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 16, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Patient object containing all relevant information about a patient at a pharmacy
  ***********************************************
  */
 
 package PatientManagement;
 
-import inventory.*;
-
-import java.io.IOException;
 import java.util.*;
-import utilities.*;
 
 public class Patient {
-	private int id;
+	private int id; // ID for sql
 	private String name; // patient name
 	private String address; // patient address
 	private int birthMonth; // patient birth month
@@ -29,7 +25,10 @@ public class Patient {
 	private String healthCardNum; // health card number
 	private FamilyDoctor familyDoctor; // patient's family doctor
 	private LinkedList<Insurance> insuranceInformation; // patient's insurance information
-	private String additionalNotes = "Medical Conditions:\n\nLifestyle Habits:\n\nAllergies/Dietary Restrictions:\n";
+	private String additionalNotes = "Medical Conditions:\n\nLifestyle Habits:\n\nAllergies/Dietary Restrictions:\n"; // additional
+																														// notes
+																														// about
+																														// patient
 	private String gender; // patient gender
 	private double weight; // patient weight
 
@@ -64,7 +63,7 @@ public class Patient {
 
 	public void addArchivedPrescription(Prescription prescription) {
 		pastPrescriptions.insert(prescription);
-	}
+	} // end addArchivedPrescription
 
 	public void setWeight(double weight) {
 		this.weight = weight;
@@ -112,20 +111,6 @@ public class Patient {
 		familyDoctor.setPhoneNumber(phoneNumber);
 		familyDoctor.setFax(faxNumber);
 	} // end newFamilyDoctor
-
-	public ArrayList<String[]> drugInteractions(Drug newDrug) throws IOException {
-
-		ArrayList<String[]> allInteractions = new ArrayList<String[]>(); // list containing all interaction data for the
-																			// two drugs
-		String[] interactions; // list containing interactions between the current drug in the list and the new
-								// drug
-		for (int i = 0; i < activePrescriptions.length(); i++) {
-			String currentDIN = activePrescriptions.atIndex(i).getDrug().getDIN();
-			interactions = getInteractions.search(currentDIN, newDrug.getDIN());
-			allInteractions.add(interactions);
-		}
-		return allInteractions;
-	}
 
 	public String getName() {
 		return name;
@@ -250,7 +235,7 @@ public class Patient {
 
 	public void addNewInsuranceInfo(Insurance insurance) {
 		insuranceInformation.add(insurance);
-	}
+	} // end addNewInsuranceInfo
 
 	public void removeInsurance(int i) {
 		insuranceInformation.remove(i);
@@ -267,7 +252,6 @@ public class Patient {
 
 	public FamilyDoctor getFamilyDoctor() {
 		return familyDoctor;
-	}
-
+	} // end getFamilyDoctor
 
 } // end Patient

@@ -2,11 +2,10 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 16, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Family doctor object containing information about the family doctor of a pharmacy patient
  ***********************************************
  */
-
 
 package PatientManagement;
 
@@ -15,14 +14,14 @@ public class FamilyDoctor {
 	private String address; // family doctor address
 	private String faxNumber; // fax number
 	private String phoneNumber; // family doctor phone number
-	
+
 	public FamilyDoctor(String name, String address, String phoneNumber, String faxNumber) {
 		this.name = name;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.faxNumber = faxNumber;
 	} // end FamilyDoctor
-	
+
 	public FamilyDoctor() {
 		this.name = "";
 		this.address = "";
@@ -30,11 +29,10 @@ public class FamilyDoctor {
 		this.phoneNumber = "";
 	} // end FamilyDoctor
 
-	
 	public String getFax() {
 		return faxNumber;
 	} // end getFax
-	
+
 	public void setFax(String faxNumber) {
 		this.faxNumber = faxNumber;
 	} // end setFax
@@ -60,7 +58,6 @@ public class FamilyDoctor {
 	} // end getPhoneNumber
 
 	public void setPhoneNumber(String phoneNumber) {
-
 		this.phoneNumber = phoneNumber;
 	} // end setPhoneNumber
 } // end FamilyDoctor

@@ -50,9 +50,7 @@ public class DrugSelection extends JDialog {
 	public DrugSelection(String NAME) throws IOException {
 		String DIN = SearchForDIN.getDIN(NAME);
 		if (DIN == null) {
-			JOptionPane.showMessageDialog(contentPanel, "Drug Not Found!");
-			WaitDialog.disposeWait();
-			dispose();
+			JOptionPane.showMessageDialog(null, "Drug Not Found!");
 		} else {
 
 			String[][] alternatives = findAlternatives.findAlternative(DIN);
@@ -60,7 +58,6 @@ public class DrugSelection extends JDialog {
 			for (int i = 0; i < display.length; i++) {
 				display[i] = alternatives[i][0] + " " + alternatives[i][1] + " - " + alternatives[i][2];
 			}
-			WaitDialog.disposeWait();
 			setBounds(100, 100, 450, 300);
 			getContentPane().setLayout(new BorderLayout());
 			contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

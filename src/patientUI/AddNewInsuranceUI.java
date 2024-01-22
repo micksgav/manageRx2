@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Add new insurance page in the patient management section of ManageRx
  ***********************************************
  */
@@ -29,7 +29,7 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 	// app information
 	Patient patient; // currently selected patient
 	PatientList patients; // complete list of patients
-	AllStock stock;
+	AllStock stock; // complete stock of pharmacy
 
 	// panels
 	private JPanel buttonPanel; // panel for header
@@ -157,14 +157,15 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
 		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
 				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding); // border made up of
+																								// textBoxBorderLine and
+																								// textFieldPadding
 		gridBagPadding = new Insets(0, (int) (screenDims.width * 0.07), 0, (int) (screenDims.width * 0.07));
 		leftButtonPadding = new Insets((int) (screenDims.height * 0.01), 0, (int) (screenDims.height * 0.01),
 				(int) (screenDims.width * 0.25));
 		rightButtonsPadding = new Insets((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
 				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
 
-		
 		// add patient name to screen
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient name
 
@@ -223,7 +224,6 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		centrePanelConstraints.insets = gridBagPadding;
 		mainPanel.add(centreMain, centrePanelConstraints);
 
-		
 		// add bottom buttons to screen
 		bottomMain = new JPanel(new GridBagLayout());
 
@@ -253,7 +253,8 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		bottomMain.add(cancel, cancelConstraints);
 
 		// add save and go back button
-		GridBagConstraints saveGoBackConstraints = new GridBagConstraints(); // constraints for the save and go back button
+		GridBagConstraints saveGoBackConstraints = new GridBagConstraints(); // constraints for the save and go back
+																				// button
 
 		saveGoBackConstraints.fill = GridBagConstraints.BOTH;
 		saveGoBackConstraints.gridx = 1;
@@ -264,7 +265,8 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 		bottomMain.add(saveGoBack, saveGoBackConstraints);
 
 		// add save and add more button
-		GridBagConstraints saveAddMoreConstraints = new GridBagConstraints(); // constraints for save and add more button
+		GridBagConstraints saveAddMoreConstraints = new GridBagConstraints(); // constraints for save and add more
+																				// button
 
 		saveAddMoreConstraints.fill = GridBagConstraints.BOTH;
 		saveAddMoreConstraints.gridx = 2;
@@ -290,49 +292,51 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 	} // end AddNewInsuranceUI
 
 	public void actionPerformed(ActionEvent e) {
-		SQLHelper helper = new SQLHelper();
+		SQLHelper helper = new SQLHelper(); // connect to sql
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
 			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open order button pressed
+			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
 			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open patient manager button pressed
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
 			// open patient manager page
 			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-		// cancel or back buttons pressed
+			// cancel or back buttons pressed
 		if (e.getActionCommand().equals("Cancel") || e.getActionCommand().equals("Back")) {
 			// open view insurance page
 			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients, stock);
 			openView.setVisible(true);
 			setVisible(false);
 		} // end if
-		// save and go back button pressed
+			// save and go back button pressed
 		if (e.getActionCommand().equals("Save and Go Back")) {
 			// add the new insurance to patient and open view insurance page
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
 					Integer.parseInt(insuranceNumberField.getText().trim()));
-			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
+			helper.addInsurance(insuranceCompanyField.getText().trim(),
+					Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
 			ViewInsuranceUI openView = new ViewInsuranceUI("ManageRx", patient, patients, stock);
 			openView.setVisible(true);
 			setVisible(false);
 		} // end if
-		// save and add another button pressed
+			// save and add another button pressed
 		if (e.getActionCommand().equals("Save and Add Another Insurance Plan")) {
 			// add new insurance to patient and clear field
 			patient.addNewInsuranceInfo(insuranceCompanyField.getText().trim(),
 					Integer.parseInt(insuranceNumberField.getText().trim()));
-			helper.addInsurance(insuranceCompanyField.getText().trim(), Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
+			helper.addInsurance(insuranceCompanyField.getText().trim(),
+					Integer.parseInt(insuranceNumberField.getText().trim()), patient.getId());
 			insuranceCompanyField.setText("");
 			insuranceNumberField.setText("");
 			notesArea.setText("");

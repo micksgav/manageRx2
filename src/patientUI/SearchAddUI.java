@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Search for/add patient page in the patient management section of ManageRx
  ***********************************************
  */
@@ -21,7 +21,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import PatientManagement.*;
 import inventory.AllStock;
-import mainUI.loginUI;
 import mainUI.orderUI;
 import mainUI.stockUI;
 import swingHelper.AppIcon;
@@ -36,7 +35,6 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	// header buttons
 	private JButton btnOpenStock; // open stock page
 	private JButton btnOpenOrder; // open order page
-	private JButton btnOpenSettings; // open settings page
 	private JButton btnOpenPatientManager; // open patient manager page
 
 	// main buttons
@@ -46,7 +44,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 	// app information
 	Patient patient; // patient to pass through to other UIs
 	PatientList patients; // list containing all patient info
-	AllStock stock;
+	AllStock stock; // complete stock for pharmacy
 
 	// text elements
 	private JLabel pageTitle = new JLabel("Patient Manager"); // patient manager title
@@ -70,7 +68,6 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		setLayout(new BorderLayout());
 
 		// instantiate variables
-		this.patient = patient;
 		this.patients = patients;
 		this.stock = stock;
 
@@ -83,7 +80,7 @@ public class SearchAddUI extends JFrame implements ActionListener {
 		this.buttonPanel = new JPanel(new FlowLayout());
 		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
 
-		JLabel label = new JLabel("ManageRx");
+		JLabel label = new JLabel("ManageRx"); // header label
 		label.setFont(new Font("Arial", Font.BOLD, 20));
 		this.buttonPanel.add(label);
 
@@ -182,17 +179,18 @@ public class SearchAddUI extends JFrame implements ActionListener {
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open search page
+			// open search page
 		if (e.getActionCommand().equals("Search For Existing Patient")) {
 			SearchForPatientUI openSearch;
 			try {
 				openSearch = new SearchForPatientUI("ManageRx", patient, patients, stock);
 				openSearch.setVisible(true);
 				setVisible(false);
-			} catch (ParseException e1) {
+			} // end try
+			catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
+			} // end catch
 
 		} // end if
 			// open add page
@@ -202,10 +200,11 @@ public class SearchAddUI extends JFrame implements ActionListener {
 				openCreate = new EditPatientInfoUI("ManageRx", null, patients, stock);
 				openCreate.setVisible(true);
 				setVisible(false);
-			} catch (ParseException e1) {
+			} // end try
+			catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
+			} // end catch
 		} // end if
 	} // end actionPerformed
 } // end SearchAddUI

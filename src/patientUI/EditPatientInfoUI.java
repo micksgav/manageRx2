@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Edit patient information page/create new patient page in the patient management section of ManageRx
  ***********************************************
  */
@@ -29,7 +29,6 @@ import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,14 +43,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
-import java.util.*;
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 import utilities.*;
 import PatientManagement.*;
 import inventory.AllStock;
-import mainUI.loginUI;
 import mainUI.orderUI;
 import mainUI.stockUI;
 import swingHelper.AppIcon;
@@ -62,7 +58,7 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private Patient patient; // patient used if editing a current patient
 	private PatientList patients; // list containing all patients
 	private Patient newPatient; // patient used if creating a new patient
-	private AllStock stock;
+	private AllStock stock; // complete stock of pharmacy
 
 	// panels
 	private JPanel buttonPanel; // panel for header
@@ -79,7 +75,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	// header buttons
 	private JButton btnOpenStock; // open stock page
 	private JButton btnOpenOrder; // open order page
-	private JButton btnOpenSettings; // open settings page
 	private JButton btnOpenPatientManager; // open patient management page
 	private JButton backButton; // go back to previous page
 
@@ -117,15 +112,15 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JTextField docAddressField; // doctor address field
 	private JLabel patientNameLabel = new JLabel("Name"); // patient name label
 	private JTextField patientNameField; // patient name field
-	private JLabel weightLabel = new JLabel("Weight (kg)");
-	private JTextField weightField;
-	private JLabel genderLabel = new JLabel("Gender");
-	private JTextField genderField;
+	private JLabel weightLabel = new JLabel("Weight (kg)"); // patient weight label
+	private JTextField weightField; // patient weight field
+	private JLabel genderLabel = new JLabel("Gender"); // patient gender label
+	private JTextField genderField; // patient gender field
 
 	// formats
-	MaskFormatter dateOfBirthFormat;
-	MaskFormatter healthCardFormat;
-	MaskFormatter phoneFormat;
+	MaskFormatter dateOfBirthFormat; // format for DOB
+	MaskFormatter healthCardFormat; // format for health card
+	MaskFormatter phoneFormat; // format for phone
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -146,8 +141,6 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds(); // dimensions of screen from
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
-		// screenDims.width /= 1.5;
-//		screenDims.height /=1.5;
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
@@ -341,7 +334,9 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 		leftMain.add(healthCardNumLabel);
 		leftMain.add(healthCardNumField);
 
-		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
+		JPanel weightGenderGrid = new JPanel(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0)); // panel for
+																										// weight and
+																										// gender
 
 		genderField.setBorder(textBoxBorder);
 		genderLabel.setFont(genFont);
@@ -596,7 +591,9 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 					&& addressField.getText().length() > 0 && emailField.getText().length() > 0
 					&& phoneField.getText().length() == 16 && healthCardNumField.getText().length() == 21
 					&& genderField.getText().length() > 0 && weightField.getText().length() > 0)
-					&& !(patientNameField.getText().equals("First Last") && !(emailField.getText().equals("example@domain.com")) && !(addressField.getText().equals("123 ABC Street, City")))) {
+					&& !(patientNameField.getText().equals("First Last")
+							&& !(emailField.getText().equals("example@domain.com"))
+							&& !(addressField.getText().equals("123 ABC Street, City")))) {
 				// if patient is null, create a new one
 				if (patient == null) {
 					if (docNameField.getText().equals("Dr. First Last") || docNameField.getText().length() == 0) {
@@ -740,7 +737,5 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	} // end focusGained
 
 	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-
 	} // end focusLost
 } // end EditPatientInfoUI

@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Search for patient page in the patient management section of ManageRx
  ***********************************************
  */
@@ -12,9 +12,7 @@ package patientUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -24,7 +22,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import PatientManagement.*;
 import inventory.AllStock;
-import mainUI.loginUI;
 import mainUI.orderUI;
 import mainUI.stockUI;
 import swingHelper.AppIcon;
@@ -100,7 +97,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 	// app information
 	PatientList patients; // list of all patients
 	Patient patient; // patient that is passed into other UIs
-	AllStock stock;
+	AllStock stock; // complete stock for pharmacy
 
 	// panels
 	private JPanel buttonPanel; // header panel
@@ -111,7 +108,6 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 	// header buttons
 	private JButton btnOpenStock; // open stock
 	private JButton btnOpenOrder; // open order
-	private JButton btnOpenSettings; // open settings
 	private JButton btnOpenPatientManager; // open patient manager
 
 	// main buttons
@@ -123,9 +119,8 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 	private JLabel patientNameLabel = new JLabel("Enter Patient's First and Last Name"); // patient name label
 	private JTextField patientNameField; // patient name field
 	private JLabel patientBirthdayLabel = new JLabel("Enter Patient's Birthday (DD/MM/YYYY)"); // patient birthday label
-	// private JTextField patientBirthdayField; // patient birthday field
 	private Insets gridBagPadding; // padding for GridBagConstraints
-	JFormattedTextField patientBirthdayField;
+	JFormattedTextField patientBirthdayField; // patient birthday field
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -142,8 +137,6 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds(); // dimensions of screen from
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
-		// screenDims.width /= 1.5;
-		// screenDims.height /= 1.5;
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
@@ -162,7 +155,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
 
-		JLabel label = new JLabel("ManageRx");
+		JLabel label = new JLabel("ManageRx"); // header label
 		label.setFont(new Font("Arial", Font.BOLD, 20));
 
 		btnOpenStock = new JButton("Stock");
@@ -217,10 +210,12 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 
 		Font genFont = new Font("Arial", Font.PLAIN, 25); // general font for text boxes and labels
 		Font nameFont = new Font("Arial", Font.PLAIN, 75); // title font
-		Color textBoxFill = new Color(204, 204, 204); // text box fill
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // line
+																													// for
+																													// textBoxBorder
+																													// https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
 		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
-				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
+				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01)); // padding for textBoxBorder
 		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding); // compounded border for
 																								// boxes and buttons
 		gridBagPadding = new Insets((int) (screenDims.height * 0.05), 0, (int) (screenDims.height * 0.08), 0);
@@ -249,7 +244,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		mainGrid.add(patientNameLabel);
 		mainGrid.add(patientNameField);
 
-		MaskFormatter birthFormat = new MaskFormatter("##/##/####");
+		MaskFormatter birthFormat = new MaskFormatter("##/##/####"); // birthday format
 		patientBirthdayField = new JFormattedTextField(birthFormat);
 		patientBirthdayField.setFont(genFont);
 		patientBirthdayLabel.setFont(genFont);
@@ -303,7 +298,7 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-		// go back to previous page
+			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
 			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);

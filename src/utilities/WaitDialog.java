@@ -36,6 +36,7 @@ public class WaitDialog extends JFrame {
 			public void run() {
 				try {
 					frame = new WaitDialog(true, importing);
+					frame.toFront();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -44,7 +45,7 @@ public class WaitDialog extends JFrame {
 	}
 
 	public static void disposeWait() {
-		frame.dispose();
+		frame.setVisible(false);
 	}
 
 	/**
@@ -81,7 +82,6 @@ public class WaitDialog extends JFrame {
 		progress.setIndeterminate(true);
 		panel.add(progress);
 		contentPane.add(panel);
-
 		setVisible(true);	
 	}
 

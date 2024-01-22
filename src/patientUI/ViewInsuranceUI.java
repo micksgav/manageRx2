@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: View insurance page in the patient management section of ManageRx
  ***********************************************
  */
@@ -18,7 +18,6 @@ import javax.swing.border.*;
 
 import com.formdev.flatlaf.*;
 
-import mainUI.loginUI;
 import mainUI.orderUI;
 import mainUI.stockUI;
 import PatientManagement.*;
@@ -30,18 +29,28 @@ import java.text.ParseException;
 
 public class ViewInsuranceUI extends JFrame implements ActionListener {
 
+	/*
+	 * Method Name: deleteInsurnace Author: John Brown Creation Date: January 18,
+	 * 2024 Modified Date: January 18, 2024 Description: deletes an insurance plan
+	 * from a patient
+	 *
+	 * @Paramaters: Patient patient: patient who is having an insurance plan removed
+	 * 
+	 * @Return Value: none Data Type: void Dependencies: Patient Throws/Exceptions:
+	 * none
+	 */
 	public static void deleteInsurance(Patient patient) {
 		for (int i = 0; i < patient.getInsuranceInformation().size(); i++) {
 			if (patient.getInsuranceInformation().get(i).getDelete() == true) {
 				patient.removeActivePrescription(patient.getActivePrescriptions().atIndex(i));
-			}
-		}
-	}
+			} // end if
+		} // end for
+	} // end deleteInsurance
 
 	// app information
 	Patient patient; // patient whose insurance is being viewed
 	PatientList patients; // list of all patients
-	AllStock stock;
+	AllStock stock; // complete stock for pharmacy
 
 	// panels
 	private JPanel buttonPanel; // header panel containing logo and buttons
@@ -112,7 +121,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
 
-		JLabel label = new JLabel("ManageRx");
+		JLabel label = new JLabel("ManageRx"); // header label
 		label.setFont(new Font("Arial", Font.BOLD, 20));
 		this.buttonPanel.add(label);
 
@@ -305,7 +314,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SQLHelper helper = new SQLHelper();
+		SQLHelper helper = new SQLHelper(); // connect to sql
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
 			stockUI openStock = new stockUI("ManageRx", patients, stock);
@@ -325,7 +334,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-		// go back to previous page
+			// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
 			deleteInsurance(patient);
 			EditPatientInfoUI openEdit;
@@ -333,10 +342,11 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 				openEdit = new EditPatientInfoUI("ManageRx", patient, patients, stock);
 				openEdit.setVisible(true);
 				setVisible(false);
-			} catch (ParseException e1) {
+			} // end try
+			catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
+			} // end catch
 		} // end if
 			// open add new insurance page
 		if (e.getActionCommand().equals("Add New Insurance")) {
@@ -365,7 +375,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 				if (e.getActionCommand().equals("save" + i)) {
 					String insuranceInfoString = insuranceInfo[i].getText().replaceAll("Company: ", "")
 							.replaceAll("Insurance Number: ", "").trim(); // full insurance
-																									// info field
+																			// info field
 					String[] info = insuranceInfoString.split("\n"); // insurance info field split into lines
 					patient.getInsuranceInformation().get(i).setCompany(info[0]);
 					patient.getInsuranceInformation().get(i).setNumber(Integer.parseInt(info[1]));
@@ -390,7 +400,6 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 					deleteInsurance[i].setActionCommand("archive" + i);
 				} // end if
 			} // end if
-
 		} // end for
 	} // end actionPerformed
 } // end ViewInsuranceUI

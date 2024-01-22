@@ -2,14 +2,12 @@
  ***********************************************
  * @Author : Kyle McKay, modified by John Brown
  * @Originally made : Unknown
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: This program is a StringList object with various methods to edit a linked list containing Strings as the payload
  ***********************************************
  */
 
 package PatientManagement;
-
-
 
 /**
  * An object of type StringList represents a list of strings. Methods are
@@ -50,16 +48,15 @@ public class PatientList {
 	private Node head; // A pointer to the first node in the linked list.
 						// If the list is empty, the value is null.
 
-	
 	// set the head to a new value
 	public void setHead(Node newHead) {
 		head = newHead;
 	} // end setHead
-	
+
 	public Node getHead() {
 		return head;
 	} // end getHead
-	
+
 	// find a patient in the list by name and birthday
 	public int[] findPatientByBirthday(String name, int birthMonth, int birthDay, int birthYear) {
 		Node runner = head;
@@ -71,9 +68,9 @@ public class PatientList {
 		int j = 0;
 		for (runner = head; runner != null; runner = runner.link, i++) {
 
-			if (runner.info.getName().toLowerCase().equals(name.toLowerCase()) && runner.info.getBirthYear() == birthYear //added lowercase check - gavin
-					&& runner.info.getDateOfBirthDay() == birthDay
-					&& runner.info.getDateOfBirthMonth() == birthMonth) {
+			if (runner.info.getName().toLowerCase().equals(name.toLowerCase())
+					&& runner.info.getBirthYear() == birthYear // added lowercase check - gavin
+					&& runner.info.getDateOfBirthDay() == birthDay && runner.info.getDateOfBirthMonth() == birthMonth) {
 				indexes[j] = i;
 				j++;
 
@@ -81,7 +78,7 @@ public class PatientList {
 		} // end for
 		return indexes;
 	} // end findPatientByBirthday
-	
+
 	/*
 	 * Method Name: isEmpty Author: John Brown Creation Date: November 28, 2023
 	 * Modified Date: November 28, 2023 Description: returns true if the list is
@@ -114,9 +111,9 @@ public class PatientList {
 	public Patient returnData(int position) {
 		Node runner = head;
 		if (position >= 0) {
-		for (int i = 0; i < position; i++, runner = runner.link) {
-		} // end for
-		return runner.info;
+			for (int i = 0; i < position; i++, runner = runner.link) {
+			} // end for
+			return runner.info;
 		} // end if
 		else {
 			return null;

@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : John Brown
  * @Originally made : December 23, 2023
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: Add new prescription page in the patient management section of ManageRx
  ***********************************************
  */
@@ -34,7 +34,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 	// app information
 	Patient patient; // patient currently selected
 	PatientList patients; // list containing all patients
-	AllStock stock;
+	AllStock stock; // complete stock for pharmacy
 
 	// panels
 	private JPanel buttonPanel; // header panel
@@ -44,6 +44,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 	private JPanel bottomMain; // bottom panel in main panel
 	private JPanel headerButtons; // buttons and title in header other than back button
 	private JPanel docPrescribed; // doctor who prescribed prescription panel
+	private JPanel panel; // panel containing search button and drug name field
 
 	// header buttons
 	private JButton btnOpenStock; // open stock page
@@ -80,16 +81,22 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 	private Insets gridBagPadding; // padding for some GridBagConstraints
 	private Insets leftButtonPadding; // padding for left button
 	private Insets rightButtonsPadding; // padding for right button
-	private JLabel docPrescribedNameLabel = new JLabel("Doctor's Name");
-	private JTextField docPrescribedNameField = new JTextField("First Last");
-	private JLabel docPrescribedAddressLabel = new JLabel("Doctor's Address");
-	private JTextField docPrescribedAddressField = new JTextField("123 ABC Street, City");
-	private JLabel docPrescribedPhoneLabel = new JLabel("Doctor's Phone Number");
-	private JFormattedTextField docPrescribedPhoneField;
-	private JLabel docPrescribedFaxLabel = new JLabel("Doctor's Fax Number");
-	private JFormattedTextField docPrescribedFaxField;
-	private MaskFormatter dateOfBirthFormat;
-	private MaskFormatter phoneFormat;
+	private JLabel docPrescribedNameLabel = new JLabel("Doctor's Name"); // name of doctor who prescribed meds label
+	private JTextField docPrescribedNameField = new JTextField("First Last"); // name of doctor who prescribed meds
+																				// field
+	private JLabel docPrescribedAddressLabel = new JLabel("Doctor's Address"); // address of doctor who prescribed meds
+																				// label
+	private JTextField docPrescribedAddressField = new JTextField("123 ABC Street, City"); // address of doctor who
+																							// prescribed meds field
+	private JLabel docPrescribedPhoneLabel = new JLabel("Doctor's Phone Number"); // phone number of doctor who
+																					// prescribed meds label
+	private JFormattedTextField docPrescribedPhoneField; // phone number of doctor who prescribed meds field
+	private JLabel docPrescribedFaxLabel = new JLabel("Doctor's Fax Number"); // fax number of doctor who prescribed
+																				// meds label
+	private JFormattedTextField docPrescribedFaxField; // fax number of doctor who prescribed meds field
+	private MaskFormatter dateOfBirthFormat; // format for date of birth
+	private MaskFormatter phoneFormat; // format for phone and fax
+	private JButton searchButton; // search for drug button
 
 	// last page
 	boolean last; // if last is true, the last page was PatientManagementUI. If last is false, the
@@ -100,8 +107,6 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
-	private JPanel panel;
-	private JButton searchButton;
 
 	public AddNewPrescriptionUI(String title, Patient patient, PatientList patients, boolean last, AllStock stock)
 			throws ParseException {
@@ -111,7 +116,6 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		Rectangle screenDims = GraphicsEnvironment.getLocalGraphicsEnvironment().getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds(); // dimensions of screen from
 											// https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
-		// Rectangle screenDims = new Rectangle(1366, 768);
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
@@ -195,12 +199,20 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		Font smallGen = new Font("Arial", Font.PLAIN, 15); // smaller general font where gen font won't fit fully
 		Font nameFont = new Font("Arial", Font.PLAIN, 35); // font for names and titles
 		Color textBoxFill = new Color(204, 204, 204); // fill for textboxes
-		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
+		Border textBoxBorderLine = BorderFactory.createLineBorder(new Color(89, 89, 89), screenDims.width / 700); // line
+																													// for
+																													// textBoxBorder
+																													// https://docs.oracle.com/javase%2Ftutorial%2Fuiswing%2F%2F/components/border.html#:~:text=To%20put%20a%20border%20around,a%20variable%20of%20type%20Border%20.
 		Border textFieldPadding = new EmptyBorder((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
-				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01));
-		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
+				(int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01)); // padding for textBoxBorder
+		CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding); // border made up of
+																								// textBoxBorderLine and
+																								// textFieldPadding
 		gridBagPadding = new Insets(0, (int) (screenDims.width * 0.07), 0, (int) (screenDims.width * 0.07));
-		Insets leftPanelPadding = new Insets(0, (int) (screenDims.width * 0.07), 0, (int) (screenDims.width * 0.07));
+		Insets leftPanelPadding = new Insets(0, (int) (screenDims.width * 0.07), 0, (int) (screenDims.width * 0.07)); // padding
+																														// for
+																														// left
+																														// panel
 		leftButtonPadding = new Insets((int) (screenDims.height * 0.01), 0, (int) (screenDims.height * 0.01),
 				(int) (screenDims.width * 0.25));
 		rightButtonsPadding = new Insets((int) (screenDims.height * 0.01), (int) (screenDims.width * 0.01),
@@ -208,7 +220,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 
 		leftMain = new JPanel(new GridLayout(0, 1, 0, (int) (screenDims.height * 0.05)));
 
-		JPanel innerLeftMain = new JPanel(new GridLayout(0, 1));
+		JPanel innerLeftMain = new JPanel(new GridLayout(0, 1)); // panel for drug information
 		docPrescribed = new JPanel(new GridLayout(0, 1));
 
 		// fix sizing glitch from
@@ -219,7 +231,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		leftMain.setSize(new Dimension((int) (screenDims.width * 0.13), (int) (screenDims.height * 0.8)));
 		leftMain.revalidate();
 
-// add drug title
+		// add drug title
 		GridBagConstraints drugTitleConstraints = new GridBagConstraints(); // constraints for drug title
 
 		drugTitleConstraints.fill = GridBagConstraints.BOTH;
@@ -238,7 +250,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		panel.setLayout(new GridLayout(1, 0, (int) (screenDims.width * 0.01), 0));
 		// mainPanel.add(drugTitle, drugTitleConstraints);
 
-// add drug name label and field
+		// add drug name label and field
 		drugNameField = new JTextField();
 		panel.add(drugNameField);
 		drugNameField.setBorder(textBoxBorder);
@@ -258,7 +270,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		innerLeftMain.add(dinLabel);
 		innerLeftMain.add(dinField);
 
-// add drug form label and field
+		// add drug form label and field
 		formField = new JTextField();
 		formField.setBorder(textBoxBorder);
 		formField.setFont(smallGen);
@@ -303,7 +315,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		leftMain.add(innerLeftMain);
 		leftMain.add(docPrescribed);
 
-// add left panel to main panel
+		// add left panel to main panel
 		GridBagConstraints leftPanelConstraints = new GridBagConstraints(); // constraints for left panel
 
 		leftPanelConstraints.fill = GridBagConstraints.BOTH;
@@ -324,9 +336,9 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		rightMain.setSize(new Dimension((int) (screenDims.width * 0.15), (int) (screenDims.height * 0.8)));
 		rightMain.revalidate();
 
-// add general info title
+		// add general info title
 		GridBagConstraints genInfoTitleConstraints = new GridBagConstraints(); // constraints for general information
-		// title
+																				// title
 
 		genInfoTitleConstraints.fill = GridBagConstraints.BOTH;
 		genInfoTitleConstraints.gridx = 1;
@@ -336,9 +348,8 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		genInfoTitleConstraints.insets = gridBagPadding;
 		genInfoTitle.setFont(nameFont);
 		genInfoTitle.setHorizontalAlignment(JLabel.LEFT);
-		// mainPanel.add(genInfoTitle, genInfoTitleConstraints);
 
-// add date prescribed label and field
+		// add date prescribed label and field
 		datePrescribedField = new JFormattedTextField(dateOfBirthFormat);
 		datePrescribedField.setBorder(textBoxBorder);
 		datePrescribedLabel.setFont(genFont);
@@ -346,7 +357,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		rightMain.add(datePrescribedLabel);
 		rightMain.add(datePrescribedField);
 
-// add number of refills label and field
+		// add number of refills label and field
 		numRefillsField = new JTextField();
 		numRefillsField.setBorder(textBoxBorder);
 		numRefillsLabel.setFont(genFont);
@@ -354,7 +365,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		rightMain.add(numRefillsLabel);
 		rightMain.add(numRefillsField);
 
-// add quantity label and field
+		// add quantity label and field
 		quantityField = new JTextField();
 		quantityField.setBorder(textBoxBorder);
 		quantityField.setFont(genFont);
@@ -362,7 +373,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		rightMain.add(quantityLabel);
 		rightMain.add(quantityField);
 
-// add dosage label and field
+		// add dosage label and field
 		dosageField.setBorder(textBoxBorder);
 		dosageField.setForeground(textBoxFill);
 		dosageField.addFocusListener(this);
@@ -371,7 +382,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		rightMain.add(dosageLabel);
 		rightMain.add(dosageField);
 
-// add instrutions label and field
+		// add instrutions label and field
 		instructionsArea = new JTextArea();
 		instructionsArea.setBorder(textBoxBorder);
 		instructionsArea.setFont(genFont);
@@ -380,7 +391,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		rightMain.add(instructionsLabel);
 		rightMain.add(scroll);
 
-// add prescribed duration label and field
+		// add prescribed duration label and field
 		prescribedDurationField.setBorder(textBoxBorder);
 		prescribedDurationField.setForeground(textBoxFill);
 		prescribedDurationField.addFocusListener(this);
@@ -391,7 +402,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 
 		rightMain.setBorder(textBoxBorder);
 
-// add right panel to main panel
+		// add right panel to main panel
 		GridBagConstraints rightPanelConstraints = new GridBagConstraints(); // constraints for right panel
 
 		rightPanelConstraints.fill = GridBagConstraints.BOTH;
@@ -407,7 +418,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 
 		bottomMain = new JPanel(new GridBagLayout());
 
-// add bottom buttons
+		// add bottom buttons
 		cancel = new JButton("Cancel");
 		cancel.addActionListener(this);
 		saveGoBack = new JButton("Save and Go Back");
@@ -421,7 +432,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		saveGoBack.setBorder(textBoxBorder);
 		saveAddMore.setBorder(textBoxBorder);
 
-// add cancel button
+		// add cancel button
 		GridBagConstraints cancelConstraints = new GridBagConstraints(); // constraints for cancel button
 
 		cancelConstraints.fill = GridBagConstraints.BOTH;
@@ -433,7 +444,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		cancelConstraints.insets = leftButtonPadding;
 		bottomMain.add(cancel, cancelConstraints);
 
-// add save and go back button
+		// add save and go back button
 		GridBagConstraints saveGoBackConstraints = new GridBagConstraints(); // constraints for save and go back button
 
 		saveGoBackConstraints.fill = GridBagConstraints.BOTH;
@@ -444,9 +455,9 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		saveGoBackConstraints.insets = rightButtonsPadding;
 		bottomMain.add(saveGoBack, saveGoBackConstraints);
 
-// add save and add more button
+		// add save and add more button
 		GridBagConstraints saveAddMoreConstraints = new GridBagConstraints(); // constraints for save and add more
-		// button
+																				// button
 
 		saveAddMoreConstraints.fill = GridBagConstraints.BOTH;
 		saveAddMoreConstraints.gridx = 2;
@@ -456,7 +467,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		saveAddMoreConstraints.insets = rightButtonsPadding;
 		bottomMain.add(saveAddMore, saveAddMoreConstraints);
 
-// add bottom buttons to main panel
+		// add bottom buttons to main panel
 		GridBagConstraints buttonConstraints = new GridBagConstraints(); // constraints for bottom buttons
 
 		buttonConstraints.fill = GridBagConstraints.BOTH;
@@ -475,14 +486,20 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 
 		// search button
 		if (e.getActionCommand().equals("Search")) {
+			if (drugNameField.getText().trim().length() > 0) {
 			String[] selection = DrugSelection.getDrugSelection(drugNameField.getText());
 			System.out.println(selection[0] + selection[1] + selection[2]);
 			dinField.setText(selection[0]);
 			drugNameField.setText(selection[1]);
 			dosageField.setText(selection[2]);
 			dosageField.setForeground(Color.black);
-		}
-		// open stock button pressed
+			} // end if
+			else {
+				JOptionPane.showMessageDialog(mainPanel,
+						"Please Enter a Drug to Search");
+			}
+		} // end if
+			// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
 			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
@@ -511,32 +528,31 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 			// save and go back button pressed
 		if (e.getActionCommand().equals("Save and Go Back")) {
 			if (quantityField.getText().length() > 0) {
-			try {
-				int i = Integer.parseInt(quantityField.getText());
-				if (i <= 0) {
-					JOptionPane.showMessageDialog(mainPanel,
-							"Error, quantity must be a whole number greater than 0.");
-				}
-			}
-			catch (NumberFormatException f){
-				JOptionPane.showMessageDialog(mainPanel,
-						"Error, quantity must be a whole number greater than 0.");
-			}
-			}
+				try {
+					int i = Integer.parseInt(quantityField.getText());
+					if (i <= 0) {
+						JOptionPane.showMessageDialog(mainPanel,
+								"Error, quantity must be a whole number greater than 0.");
+					} // end if
+				} // end try
+				catch (NumberFormatException f) {
+					JOptionPane.showMessageDialog(mainPanel, "Error, quantity must be a whole number greater than 0.");
+				} // end catch
+			} // end if
 			if (numRefillsField.getText().length() > 0) {
-			try {
-				int i = Integer.parseInt(numRefillsField.getText());
-				if (i < 0) {
+				try {
+					int i = Integer.parseInt(numRefillsField.getText());
+					if (i < 0) {
+						JOptionPane.showMessageDialog(mainPanel,
+								"Error, number of refills must be a whole number greater than or equal to 0.");
+					} // end if
+				} // end try
+				catch (NumberFormatException f) {
 					JOptionPane.showMessageDialog(mainPanel,
 							"Error, number of refills must be a whole number greater than or equal to 0.");
-				}
-			}
-			catch (NumberFormatException f){
-				JOptionPane.showMessageDialog(mainPanel,
-						"Error, number of refills must be a whole number greater than or equal to 0.");
-			}
-			}
-			// make sure field have been filled in
+				} // end catch
+			} // end if
+				// make sure field have been filled in
 			if (dinField.getText().length() > 0 && datePrescribedField.getText().length() == 10
 					&& numRefillsField.getText().length() > 0 && quantityField.getText().length() > 0
 					&& dosageField.getText().length() > 0 && instructionsArea.getText().length() > 0
@@ -554,10 +570,10 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 				String[] allDins = new String[patient.getActivePrescriptions().length() + 1];
 				for (int i = 0; i < allDins.length - 1; i++) {
 					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
-				}
+				} // end for
 				allDins[allDins.length - 1] = dinField.getText();
 				if (altDisplay.showInteractions(allDins)) {
-					String drugDosage  = dosageField.getText().trim();
+					String drugDosage = dosageField.getText().trim();
 					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
 							null, formField.getText().trim(), drugDosage);
 					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
@@ -575,7 +591,7 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 					openCurrent.setVisible(true);
 
 					setVisible(false);
-				}
+				} // end if
 
 			} // end if
 				// if not all fields have been filled in, open a popup
@@ -592,26 +608,25 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 					if (i <= 0) {
 						JOptionPane.showMessageDialog(mainPanel,
 								"Error, quantity must be a whole number greater than 0.");
-					}
-				}
-				catch (NumberFormatException f){
-					JOptionPane.showMessageDialog(mainPanel,
-							"Error, quantity must be a whole number greater than 0.");
-				}
-				}
-				if (numRefillsField.getText().length() > 0) {
+					} // end if
+				} // end try
+				catch (NumberFormatException f) {
+					JOptionPane.showMessageDialog(mainPanel, "Error, quantity must be a whole number greater than 0.");
+				} // end catch
+			} // end if
+			if (numRefillsField.getText().length() > 0) {
 				try {
 					int i = Integer.parseInt(numRefillsField.getText());
 					if (i < 0) {
 						JOptionPane.showMessageDialog(mainPanel,
 								"Error, number of refills must be a whole number greater than or equal to 0.");
-					}
-				}
-				catch (NumberFormatException f){
+					} // end if
+				} // end try
+				catch (NumberFormatException f) {
 					JOptionPane.showMessageDialog(mainPanel,
 							"Error, number of refills must be a whole number greater than or equal to 0.");
-				}
-				}
+				} // end catch
+			} // end if
 			// make sure all field have been filled in
 			if (dinField.getText().length() > 0 && datePrescribedField.getText().length() == 10
 					&& numRefillsField.getText().length() > 0 && quantityField.getText().length() > 0
@@ -629,16 +644,14 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 				String[] allDins = new String[patient.getActivePrescriptions().length() + 1];
 				for (int i = 0; i < allDins.length - 1; i++) {
 					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
-				}
+				} // end for
 				allDins[allDins.length - 1] = dinField.getText();
 				if (altDisplay.showInteractions(allDins)) {
-					String[][] drugDosage = new String[1][1];
-					drugDosage[0][0] = dosageField.getText().trim();
 					Drug newDrug = new Drug(dinField.getText().trim(), drugNameField.getText().trim(), null, null, null,
-							null, formField.getText().trim(), drugDosage);
+							null, formField.getText().trim(), dosageField.getText());
 					Prescription newScript = new Prescription(newDrug, datePrescribedField.getText().trim(),
 							Integer.parseInt(numRefillsField.getText().trim()),
-							Integer.parseInt(quantityField.getText().trim()), drugDosage,
+							Integer.parseInt(quantityField.getText().trim()), dosageField.getText(),
 							instructionsArea.getText().trim(), prescribedDurationField.getText().trim(),
 							docPrescribedNameField.getText().trim(), docPrescribedAddressField.getText().trim(),
 							docPrescribedPhoneField.getText().trim(), docPrescribedFaxField.getText().trim());
@@ -652,11 +665,12 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 						openAddNew = new AddNewPrescriptionUI("ManageRx", patient, patients, last, stock);
 						openAddNew.setVisible(true);
 						setVisible(false);
-					} catch (ParseException e1) {
+					} // end try
+					catch (ParseException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}
-				}
+					} // end catch
+				} // end if
 			} // end if
 				// if not all fields have been filled in, open a popup
 			else {
@@ -671,25 +685,23 @@ public class AddNewPrescriptionUI extends JFrame implements ActionListener, Focu
 		if (e.getComponent().equals(docPrescribedNameField)) {
 			docPrescribedNameField.setText("");
 			docPrescribedNameField.setForeground(Color.black);
-		}
+		} // end if
 		if (e.getComponent().equals(docPrescribedAddressField)) {
 			docPrescribedAddressField.setText("");
 			docPrescribedAddressField.setForeground(Color.black);
-		}
+		} // end if
 		if (e.getComponent().equals(dosageField) && dosageField.getText().equals("0 units")) {
 			dosageField.setText("");
 			dosageField.setForeground(Color.black);
-		}
+		} // end if
 		if (e.getComponent().equals(prescribedDurationField)) {
 			prescribedDurationField.setText("");
 			prescribedDurationField.setForeground(Color.black);
-		}
+		} // end if
 
-	}
+	} // end focusGained
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	} // end focusLost
 } // end AddNewPrescriptionUI

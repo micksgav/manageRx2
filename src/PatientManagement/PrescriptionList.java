@@ -3,7 +3,7 @@
  ***********************************************
  * @Author : Kyle McKay, modified by John Brown
  * @Originally made : Unknown
- * @Last Modified: December 16, 2023
+ * @Last Modified: January 21, 2024
  * @Description: This program is a StringList object with various methods to edit a linked list containing Strings as the payload
  ***********************************************
  */

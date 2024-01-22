@@ -13,23 +13,26 @@ public class Main {
 
 		SQLHelper helper = new SQLHelper(); // for connecting with sql
 
+		// import from SQL
+		WaitDialog.showWait("Importing Patient Information");
 		PatientList patients = helper.getAllPatients(); // all patients
+		WaitDialog.showWait("Importing Stock Information");
 		DrugStockLinkedList drugStock = helper.getAllDrugStock(); // complete drug stock
 		AllStock stock = new AllStock(drugStock); // complete stock
 		int[] containerStock = helper.getAllContainerStock(); // stock of all container sizes
-		int numSmall = containerStock[0];
-		int numMed = containerStock[1];
-		int numLarge = containerStock[2];
+		int numSmall = containerStock[0]; // number of small containers
+		int numMed = containerStock[1]; // number of medium containers
+		int numLarge = containerStock[2]; // number of large containers
 		stock.setNumSmall(numSmall);
 		stock.setNumMedium(numMed);
 		stock.setNumLarge(numLarge);
+		WaitDialog.showWait("Importing Prescription Information");
 		PrescriptionList allScripts = helper.getAllPrescriptions(); // all prescriptions
 		LinkedList<Insurance> allInsurance = helper.getAllInsurance(); // all insurance
-		String[] usernames = helper.getAllUsernames();
-		String[] passwords = helper.getAllPasswords();
+		String[] usernames = helper.getAllUsernames(); // usernames
+		String[] passwords = helper.getAllPasswords(); // passwords
 
 		// import prescriptions and place in correct patients
-		WaitDialog.showWait("Importing Prescription Information");
 		for (int i = 0; i < allScripts.length(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
 				if (patients.returnData(j).getId() == allScripts.atIndex(i).getPatientID()) {
@@ -44,7 +47,6 @@ public class Main {
 		} // end for
 		
 		// import insurance information and place in correct patients
-		//WaitDialog.disposeWait();
 		WaitDialog.showWait("Importing Insurance Information");
 		for (int i = 0; i < allInsurance.size(); i++) {
 			for (int j = 0; j < patients.numRecs(); j++) {
@@ -54,9 +56,9 @@ public class Main {
 			} // end for
 		} // end for
 
-		WaitDialog.disposeWait();
+		WaitDialog.disposeWait(); // dispose of loading screens
 
-		loginUI oui = new loginUI("ManageRx", patients, stock, usernames, passwords);
+		loginUI oui = new loginUI("ManageRx", patients, stock, usernames, passwords); // open UI
 
 		oui.setVisible(true);
 	}

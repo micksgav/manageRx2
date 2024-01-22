@@ -42,7 +42,7 @@ public class drugFinder {
 
                 String[][] dosage = getDosage(DPC); //each column is an active ingredient, dosage, and unit
 
-                return new Drug(DIN, drugNameBrand, drugClass, drugSchedule, company, description, drugForm, dosage);
+                return new Drug(DIN, drugNameBrand, drugClass, drugSchedule, company, description, drugForm, dosage[0][0]);
             }
         }
         return null;
