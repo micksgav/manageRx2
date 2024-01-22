@@ -1,5 +1,6 @@
 package Main;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 import PatientManagement.*;
@@ -9,7 +10,7 @@ import mainUI.*;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		SQLHelper helper = new SQLHelper(); // for connecting with sql
 
@@ -55,6 +56,10 @@ public class Main {
 		} // end for
 
 		WaitDialog.disposeWait();
+		
+		Drug drug1 = drugFinder.getDrug("00548359");
+		stock.updateStock(100, drug1.getDIN(), drug1.getDrugClass(), "100");
+		stock.updateStock(400, drug1.getDIN(), drug1.getDrugClass(), "");
 
 		loginUI oui = new loginUI("ManageRx", patients, stock, usernames, passwords);
 

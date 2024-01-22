@@ -1,3 +1,12 @@
+/**
+ ***********************************************
+ * @Author: Brayden Johnson
+ * @Creation date: December 22, 2023
+ * @Modification date: January 17, 2023
+ * @Description: The User interface for when no user is logged in and credentials are required for login
+ ***********************************************
+ */
+
 package mainUI;
 
 import utilities.Encrypt;
@@ -38,6 +47,7 @@ public class loginUI extends JFrame implements ActionListener {
 
 	// JPanels
 	private JPanel loginPane = new JPanel(new GridBagLayout());// panel for login components
+	private JPanel buttonPanel;
 	// Jlabels
 	private JLabel managerxLabel = new JLabel("ManageRx");// label for managerx
 	private JLabel usernameLabel = new JLabel("User ID");// label for user id/credentials
@@ -83,6 +93,23 @@ public class loginUI extends JFrame implements ActionListener {
 		this.setPreferredSize(new Dimension(screenDims.width, screenDims.height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+
+		// add all buttons to header, then add header to mainPanel
+		stockIcon = stockIcon.setScale(0.12);
+		orderIcon = orderIcon.setScale(0.12);
+		settingsIcon = settingsIcon.setScale(0.12);
+		patientsIcon = patientsIcon.setScale(0.12);
+
+		this.buttonPanel = new JPanel(new GridBagLayout());
+		this.buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
+
+		JLabel label = new JLabel("ManageRx");
+		label.setFont(new Font("Arial", Font.BOLD, 20));
+
+		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
+																				// back in header
+
+		add(this.buttonPanel, BorderLayout.NORTH);
 		
 		this.patients = patients;
 		this.stock = stock;
@@ -94,17 +121,20 @@ public class loginUI extends JFrame implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(25, 25, 25, 25);
 
+		//add manage rx big label 
 		managerxLabel.setFont(nameFont);
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		loginPane.add(managerxLabel, gbc);
 
+		//constraints and styles for the username label
 		usernameLabel.setFont(genFont);
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.WEST;
 		loginPane.add(usernameLabel, gbc);
 
+		//constraints and styles for username input box
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.gridwidth = 3;
@@ -112,12 +142,14 @@ public class loginUI extends JFrame implements ActionListener {
 		usernameField.setBorder(textBoxBorder);
 		loginPane.add(usernameField, gbc);
 
+		//constraints and styles for password label
 		passwordLabel.setFont(genFont);
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		gbc.anchor = GridBagConstraints.WEST;
 		loginPane.add(passwordLabel, gbc);
 
+		//constraints and styles for password label
 		gbc.gridx = 1;
 		gbc.gridy = 4;
 		gbc.gridwidth = 3;
@@ -125,8 +157,9 @@ public class loginUI extends JFrame implements ActionListener {
 		passwordField.setBorder(textBoxBorder);
 		loginPane.add(passwordField, gbc);
 
+		//constraints and styles for the login button
 		loginButton.addActionListener(this);
-		loginButton.setActionCommand("loginButtonAction");
+		loginButton.setActionCommand("loginButtonAction");//action command
 		gbc.gridx = 2;
 		gbc.gridy = 5;
 		gbc.gridwidth = 1;
@@ -135,7 +168,7 @@ public class loginUI extends JFrame implements ActionListener {
 		loginButton.setBorder(textBoxBorder);
 		loginPane.add(loginButton, gbc);
 
-		add(loginPane, BorderLayout.CENTER);
+		add(loginPane, BorderLayout.CENTER);//add everything in login pane to main panel
 
 		pack();
 		setLocationRelativeTo(null);
@@ -185,21 +218,16 @@ public class loginUI extends JFrame implements ActionListener {
 			break;
 		}
 	}
-		if (!login) {
+		if(!login) {
 			passwordField.setBorder(incorrectFieldBorder);
 		}
 
 		//handle login events
 		if(login) {
-			System.out.println("Logged In");
 			mainUI UI = new mainUI("ManageRx", patients, stock);
 			UI.setVisible(true);
 			setVisible(false);
-			System.out.println(getPassword());
-		}
-		else {
-			System.out.println("Please Fill in All Fields");
-		}
+		}//else login failed
 		return false;
 }
 

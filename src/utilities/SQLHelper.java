@@ -106,7 +106,6 @@ public class SQLHelper {
 		// pushing to
 		try {
 			statement.executeUpdate("UPDATE " + table + " SET " + column + " = \"" + obj + "\" WHERE ID = " + ID);
-			System.out.println("SQL update in " + table);
 
 			return true;
 		} catch (Exception e) {
@@ -393,7 +392,6 @@ public class SQLHelper {
 		} catch (Exception e) {
 			logErrors.log(e.getMessage() + " in getAllDrugStock in SQLHelper");
 		}
-		System.out.println("SQL stock retrieved");
 		return stock;
 	}
 	
@@ -430,7 +428,6 @@ public class SQLHelper {
 			int ID = resultSet.getInt("ID") + 1;
 			statement.executeUpdate("INSERT INTO DrugStock values ( " + ID + " , \"" + drug.getDrugDIN() + "\" , "
 					+ drug.getNumInStock() + " , " + drug.getStockThreshold() + " )");
-			System.out.println("Drug added: " + drug.getDrugDIN());
 			return ID;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
