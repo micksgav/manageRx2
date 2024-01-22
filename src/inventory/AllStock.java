@@ -183,7 +183,7 @@ public class AllStock {
 	* Dependencies: Integer, utilities logErrors
 	* Throws/Exceptions: NumberFormatException
     */
-	public static boolean isInteger(String num)
+	public boolean isInteger(String num)
 	{
 		if (num == null)
 		{

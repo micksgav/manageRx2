@@ -377,7 +377,21 @@ public class stockUI extends JFrame implements ActionListener {
 			viewIncoming();
 		}
 		if (e.getActionCommand().equals("setThreshold")) {
-			setThreshold(setThresholdDrug.getText(), Integer.parseInt(setThresholdNum.getText()));
+			if(setThresholdDrug.getText().length() == 0 || setThresholdNum.getText().length() == 0) {
+				JOptionPane.showMessageDialog(stockPanel, "Please fill in all fields.", "ERROR",
+						JOptionPane.WARNING_MESSAGE); 
+			}
+			else {
+				boolean validThreshold;
+				validThreshold = stock.isInteger(setThresholdNum.getText());
+				if(validThreshold == false) {
+					JOptionPane.showMessageDialog(stockPanel, "Please enter a valid threshold.", "ERROR",
+							JOptionPane.ERROR_MESSAGE); 
+				}
+				else {
+					setThreshold(setThresholdDrug.getText(), Integer.parseInt(setThresholdNum.getText()));
+				}
+			}
 		}
 		if (e.getActionCommand().equals("viewStock")) {
 			try {
@@ -395,7 +409,8 @@ public class stockUI extends JFrame implements ActionListener {
 		}
 	}
 
-	private void viewStock(String drug) throws IOException {
+	private void viewStock(String drug) throws IOException {	
+		
 		boolean drugFound = stock.viewUsage(drug);
 		if (drugFound == false) {
 			JOptionPane.showMessageDialog(stockPanel, "Drug not found in inventory.", "ERROR",
