@@ -1,3 +1,12 @@
+/**
+ ***********************************************
+ * @Author: Brayden Johnson
+ * @Creation date: December 29, 2023
+ * @Modification date: January 17, 2023
+ * @Description: This User interface is for navigating between the main sections of the application at ease
+ ***********************************************
+ */
+
 package mainUI;
 import patientUI.*;
 import swingHelper.*;
@@ -25,9 +34,9 @@ public class mainUI extends JFrame implements ActionListener {
 	private JPanel bPanel = new JPanel(new GridBagLayout());
 	
 	//buttons
-    private JButton btnOpenStock;
-    private JButton btnOpenOrder;
-    private JButton btnOpenPatientManager;
+    private JButton btnOpenStock;//button to open stock ui
+    private JButton btnOpenOrder;//button to open order ui
+    private JButton btnOpenPatientManager;//button to open patient manager ui
     private JButton backButton; // go back to previous page
     
     //icons
@@ -47,24 +56,27 @@ public class mainUI extends JFrame implements ActionListener {
 		this.setSize(new Dimension(screenDims.width, screenDims.height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		Font font = new Font("Arial", Font.PLAIN, 25); // font for buttons
 		
 		this.patients = patients;
 		this.stock = stock;
 
-        stockIcon = stockIcon.setScale(0.12);
-        orderIcon = orderIcon.setScale(0.12);
-        settingsIcon = settingsIcon.setScale(0.12);
-        patientsIcon = patientsIcon.setScale(0.12);
+		//set the icon scales and 
+        stockIcon = stockIcon.setScale(0.25);
+        orderIcon = orderIcon.setScale(0.25);
+        patientsIcon = patientsIcon.setScale(0.25);
         this.headerPanel.setBorder(new LineBorder(Color.BLACK, 2));
         
+        //add managerx label
         JLabel label = new JLabel("ManageRx");
-        label.setFont(new Font("Arial", Font.BOLD, 20));
+        label.setFont(new Font("Arial", Font.BOLD, 40));
         this.headerPanel.add(label);
         
-        GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();//grid constraints 
+        gbc.insets = new Insets(20, 20, 20, 20);//set insets 
         
-        gbc.insets = new Insets(20, 20, 20, 20);
         
+        //constraints and styles for stock ui button
         gbc.gridx = 0;
         gbc.gridy = 0;
         btnOpenStock = new JButton("Stock");
@@ -72,9 +84,10 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenStock.setActionCommand("openStock");
         btnOpenStock.addActionListener(this);
         btnOpenStock.setPreferredSize(new Dimension(180*2, 100*2));
+        btnOpenStock.setFont(font);
         this.bPanel.add(btnOpenStock, gbc);
         
-        
+        //constraints and styles for order ui button
         gbc.gridx = 1;
         gbc.gridy = 0;
         btnOpenOrder = new JButton("Order");
@@ -82,9 +95,10 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenOrder.setActionCommand("openOrder");
         btnOpenOrder.addActionListener(this);
         btnOpenOrder.setPreferredSize(new Dimension(180*2, 100*2));
+        btnOpenOrder.setFont(font);
         this.bPanel.add(btnOpenOrder, gbc);
         
-        
+        //constraints and styles for patient manager button
         gbc.gridx = 2;
         gbc.gridy = 0;
         btnOpenPatientManager = new JButton("Patients");
@@ -92,6 +106,7 @@ public class mainUI extends JFrame implements ActionListener {
         btnOpenPatientManager.setActionCommand("openPatientManager");
         btnOpenPatientManager.addActionListener(this);
         btnOpenPatientManager.setPreferredSize(new Dimension(180*2, 100*2));
+        btnOpenPatientManager.setFont(font);
         this.bPanel.add(btnOpenPatientManager, gbc);
         
         add(this.headerPanel, BorderLayout.NORTH);
@@ -106,6 +121,7 @@ public class mainUI extends JFrame implements ActionListener {
             setVisible(false);
         }
         if (e.getActionCommand().equals("openOrder")) {
+
         	orderUI openOrder = new orderUI("ManageRx", patients, stock);
         	openOrder.setVisible(true);
         	setVisible(false);
