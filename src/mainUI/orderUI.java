@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -34,7 +35,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import PatientManagement.PatientList;
 import swingHelper.AppIcon;
-
+import utilities.DrugSelection;
 import inventory.*;
 import patientUI.SearchAddUI;
 
@@ -66,7 +67,7 @@ public class orderUI extends JFrame implements ActionListener {
 	private JTextField numOfDrug = new JTextField(15);
 	private JTextField numOfContainer = new JTextField(15);
 
-	private JComboBox dosageOfDrug = new JComboBox();
+	private JTextField dosageOfDrug = new JTextField(6);
 
 	private JButton placeOrder = new JButton("Place Order");
 	private JButton confirmOrder = new JButton("Confirm Order");
@@ -195,11 +196,20 @@ public class orderUI extends JFrame implements ActionListener {
 		drugToOrderLabel.setFont(genFont);
 		orderPanel.add(drugToOrderLabel, gbc);
 
+		
+		JPanel orderFieldAndSearch = new JPanel(new GridLayout(2, 1));
+		orderFieldAndSearch.add(drugToOrder);
+		
+		JButton search = new JButton("Search");
+		search.addActionListener(this);
+		search.setBorder(textBoxBorder);
+		search.setFont(genFont);
+		orderFieldAndSearch.add(search);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		drugToOrder.setBorder(textBoxBorder);
 		drugToOrder.setFont(genFont);
-		orderPanel.add(drugToOrder, gbc);
+		orderPanel.add(orderFieldAndSearch, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 3;
@@ -277,6 +287,13 @@ public class orderUI extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		// search button
+				if (e.getActionCommand().equals("Search")) {
+					String[] selection = DrugSelection.getDrugSelection(drugToOrder.getText());
+					System.out.println(selection[0] + selection[1] + selection[2]);
+					drugToOrder.setText(selection[1]);
+					dosageOfDrug.setText(selection[2]);
+				}
 		 if (e.getActionCommand().equals("openStock")) {
 	            stockUI openStock = new stockUI("ManageRx", patients, stock);
 	            openStock.setVisible(true);

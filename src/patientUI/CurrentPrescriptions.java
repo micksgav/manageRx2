@@ -11,6 +11,7 @@
 package patientUI;
 
 import swingHelper.*;
+import utilities.Report;
 import utilities.SQLHelper;
 import utilities.altDisplay;
 
@@ -133,7 +134,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 			numRefills[i] = "Number of Refills: "
 					+ String.valueOf(patient.getActivePrescriptions().atIndex(i).getRefills());
 			quantity[i] = "Quantity: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getQuantity());
-			dosage[i] = "Dosage: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getDosage()[0][0]);
+			dosage[i] = "Dosage: " + String.valueOf(patient.getActivePrescriptions().atIndex(i).getDosage());
 			instructions[i] = "Instructions: " + patient.getActivePrescriptions().atIndex(i).getInstructions();
 			prescribedDuration[i] = "Prescribed Duration: " + patient.getActivePrescriptions().atIndex(i).getDuration();
 			docName[i] = "Doctor's Name: " + patient.getActivePrescriptions().atIndex(i).getDocName();
@@ -232,6 +233,7 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 
 		// panel to hold name, create button, and all prescriptions
 		mainWithTopBar = new JPanel(new GridBagLayout());
+
 
 		// add patient name to screen
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient namae
@@ -363,11 +365,15 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		showInteractionsButton.setBorder(textBoxBorder);
 		showInteractionsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[] allDins = new String[patient.getActivePrescriptions().length()];
-				for (int i = 0; i < allDins.length; i++) {
-					allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+				if (patient.getActivePrescriptions().length() != 0) {
+					String[] allDins = new String[patient.getActivePrescriptions().length()];
+					for (int i = 0; i < allDins.length; i++) {
+						allDins[i] = patient.getActivePrescriptions().atIndex(i).getDIN();
+					}
+					altDisplay.showInteractions(allDins);
+				} else {
+					JOptionPane.showMessageDialog(mainPanel, "Patient Does Not Have Any Prescriptions");
 				}
-				altDisplay.showInteractions(allDins);
 			}
 		});
 		GridBagConstraints gbc_showInteractionsButton = new GridBagConstraints();
@@ -474,14 +480,14 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 							.replaceAll("Quantity: ", "").replaceAll("Dosage: ", "").replaceAll("Dosage: ", "")
 							.replaceAll("Instructions: ", "").replaceAll("Prescribed Duration: ", "")
 							.replaceAll("Doctor's Name: ", "").replaceAll("Doctor's Phone Number: ", "")
-							.replaceAll("Doctor's Fax Number ", "").replaceAll("Doctor's Address ", "").trim(); // all
+							.replaceAll("Doctor's Fax Number: ", "").replaceAll("Doctor's Address: ", "").trim(); // all
 																												// info
 																												// in
 																												// prescription
 																												// area
 					String[] info = prescriptionInfoString.split("\n"); // info in prescription area broken up by line
-					String[][] drugDosage = new String[1][1]; // drug dosage
-					drugDosage[0][0] = info[4];
+					String drugDosage; // drug dosage
+					drugDosage = info[4];
 					patient.getActivePrescriptions().atIndex(i).setBrandName(info[0]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "drugName",
 							patient.getActivePrescriptions().atIndex(i).getBrandName(),
@@ -500,24 +506,24 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 							patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDosage(drugDosage);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "dosage",
-							patient.getActivePrescriptions().atIndex(i).getDosage()[0][0], patient.getId());
+							patient.getActivePrescriptions().atIndex(i).getDosage(), patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDocName(info[5]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedName",
-							patient.getActivePrescriptions().atIndex(i).getDocName(), patient.getId());
+							patient.getActivePrescriptions().atIndex(i).getDocName(), patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDocPhone(info[6]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedPhone",
-							patient.getActivePrescriptions().atIndex(i).getDocPhone(), patient.getId());
+							patient.getActivePrescriptions().atIndex(i).getDocPhone(), patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDocFax(info[7]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedFax",
-							patient.getActivePrescriptions().atIndex(i).getDocFax(), patient.getId());
+							patient.getActivePrescriptions().atIndex(i).getDocFax(), patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDocAddress(info[8]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "docPrescribedAddress",
-							patient.getActivePrescriptions().atIndex(i).getDocAddress(), patient.getId());
+							patient.getActivePrescriptions().atIndex(i).getDocAddress(), patient.getActivePrescriptions().atIndex(i).getID());
 					patient.getActivePrescriptions().atIndex(i).setDuration(info[info.length - 1]);
 					SQLHelper.updatePrescriptionBG("PrescriptionInfo", "prescribedDuration",
 							patient.getActivePrescriptions().atIndex(i).getDuration(),
 							patient.getActivePrescriptions().atIndex(i).getID());
-					String instructions = ""; // new prescriptions
+					String instructions = ""; // new instructions
 					for (int j = 9; j <= info.length - 2; j++) {
 						instructions += info[j] + " ";
 					} // end for

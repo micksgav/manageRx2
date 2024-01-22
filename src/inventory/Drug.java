@@ -26,9 +26,9 @@ public class Drug {
 
 	private String form; // drug form
 
-	private final String[][] dosage; // dosage of drug, column 0 is dosage amount, column 1 is dosage unit
+	private final String dosage; // dosage of drug, column 0 is dosage amount, column 1 is dosage unit
 
-	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String[][] dosage) {
+	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String dosage) {
 		drugName = brandName;
 		drugClass = classDrug;
 		DIN = drugDIN;
@@ -75,7 +75,7 @@ public class Drug {
 		this.drugClass = classDrug;
 	} // end setDrugClass
 
-	public String[][] getDosage() {
+	public String getDosage() {
 		return dosage;
 	} // end getDrugDosage
 

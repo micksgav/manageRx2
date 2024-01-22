@@ -11,6 +11,7 @@
 package patientUI;
 
 import swingHelper.*;
+import utilities.Report;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -61,6 +62,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	private JButton editRecord; // edit patient record
 	private JButton prescriptions; // view patient prescriptions
 	private JButton backButton; // go back to previous page
+	private JButton report;
 
 	// text elements
 	private JLabel familyDoc = new JLabel("Family Doctor"); // family doctor title
@@ -100,6 +102,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 	public AppIcon orderIcon = new AppIcon("icons/clipboard.png");// icon for order
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
+	private JButton btnNewButton;
 
 	public ManagePatientInfoUI(String title, Patient patient, PatientList patients, AllStock stock) {
 
@@ -112,7 +115,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		// Rectangle screenDims = new Rectangle(1366, 768);
 		setSize(screenDims.width, screenDims.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 
 		// instantiate variables
 		this.patient = patient;
@@ -130,7 +133,6 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 
 		JLabel label = new JLabel("ManageRx");
 		label.setFont(new Font("Arial", Font.BOLD, 20));
-		this.buttonPanel.add(label);
 
 		btnOpenStock = new JButton("Stock");
 		btnOpenStock.setIcon(stockIcon);
@@ -180,7 +182,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		overallButtonConstraints.anchor = GridBagConstraints.WEST;
 		this.buttonPanel.add(headerButtons, overallButtonConstraints);
 
-		add(this.buttonPanel, BorderLayout.NORTH);
+		getContentPane().add(this.buttonPanel, BorderLayout.NORTH);
 
 		mainPanel = new JPanel(new GridBagLayout()); // information about GridBagLayout from
 														// https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
@@ -203,6 +205,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 
 		// add patient name
 		GridBagConstraints nameConstraints = new GridBagConstraints(); // constraints for patient name
+		nameConstraints.insets = new Insets(0, 0, 5, 5);
 
 		nameConstraints.fill = GridBagConstraints.BOTH;
 		nameConstraints.gridx = 0;
@@ -292,7 +295,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		lConstraints.gridy = 2;
 		lConstraints.gridheight = 2;
 		lConstraints.anchor = GridBagConstraints.NORTH;
-		lConstraints.insets = new Insets(0, 0, 0, (int) (screenDims.width * 0.01));
+		lConstraints.insets = new Insets(0, 0, 5, 13);
 		lConstraints.ipadx = screenDims.width / 7;
 		mainPanel.add(leftMain, lConstraints);
 
@@ -352,7 +355,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		mConstraints.gridy = 2;
 		mConstraints.gridheight = 2;
 		mConstraints.anchor = GridBagConstraints.NORTH;
-		mConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, (int) (screenDims.width * 0.01));
+		mConstraints.insets = new Insets(0, 13, 5, 13);
 		mConstraints.ipadx = screenDims.width / 7;
 		mainPanel.add(midMain, mConstraints);
 
@@ -365,7 +368,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		familyDocTitleConstraints.gridx = 2;
 		familyDocTitleConstraints.gridy = 1;
 		familyDocTitleConstraints.anchor = GridBagConstraints.NORTH;
-		familyDocTitleConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, 0);
+		familyDocTitleConstraints.insets = new Insets(0, 13, 5, 0);
 		familyDocTitleConstraints.ipadx = screenDims.width / 7;
 		familyDoc.setFont(nameFont);
 		mainPanel.add(familyDoc, familyDocTitleConstraints);
@@ -415,7 +418,7 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		rConstraints.gridy = 3;
 		rConstraints.gridheight = 1;
 		rConstraints.anchor = GridBagConstraints.NORTH;
-		rConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, 0);
+		rConstraints.insets = new Insets(0, 13, 5, 0);
 		rConstraints.ipadx = screenDims.width / 7;
 		mainPanel.add(rightMain, rConstraints);
 
@@ -455,6 +458,19 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		cancel.setBorder(textBoxBorder);
 		editRecord = new JButton("Edit Record");
 		editRecord.addActionListener(this);
+		
+		btnNewButton = new JButton("Generate Patient Report");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Report.patientReport(patient);
+			}
+		});
+		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 16));
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 5;
+		mainPanel.add(btnNewButton, gbc_btnNewButton);
 		editRecord.setBorder(textBoxBorder);
 		cancel.setFont(genFont);
 		editRecord.setFont(genFont);
@@ -472,10 +488,12 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		mainPanel.add(bottomButtonsMain, buttonConstraints);
 
 		// add prescriptions button
+		JPanel prescriptionsReport = new JPanel(new GridLayout(2, 1, 0, 0));
 		prescriptions = new JButton("View Prescriptions");
 		prescriptions.addActionListener(this);
 		prescriptions.setBorder(textBoxBorder);
 		prescriptions.setFont(genFont);
+		prescriptionsReport.add(prescriptions);
 
 		GridBagConstraints prescriptionsConstraints = new GridBagConstraints(); // constraints for prescription button
 
@@ -487,8 +505,26 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		prescriptionsConstraints.insets = new Insets((int) (screenDims.height * 0.05), 0,
 				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.02));
 		mainPanel.add(prescriptions, prescriptionsConstraints);
+		
+		// add report butotn
+		report = new JButton("Print Report");
+		report.addActionListener(this);
+		report.setBorder(textBoxBorder);
+		report.setFont(genFont);
+		prescriptionsReport.add(report);
+		
+		GridBagConstraints reportConstraints = new GridBagConstraints();
+		
+		reportConstraints.fill = GridBagConstraints.BOTH;
+		reportConstraints.gridx = 0;
+		reportConstraints.gridy = 5;
+		reportConstraints.gridheight = 1;
+		reportConstraints.anchor = GridBagConstraints.NORTH;
+//		reportConstraints.insets = new Insets((int) (screenDims.height * 0.05), 0,
+//				(int) (screenDims.height * 0.1), (int) (screenDims.width * 0.02));
+		mainPanel.add(report, reportConstraints);
 
-		add(mainPanel, BorderLayout.CENTER);
+		getContentPane().add(mainPanel, BorderLayout.CENTER);
 
 	} // end ManagePatientInfo
 
@@ -566,5 +602,9 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 				} // end if
 			} // end for
 		} // end if
+		// print report
+		if (e.getActionCommand().equals("Print Report")) {
+			System.out.println("report"); // add the printout file from Gavin
+		}
 	} // end actionPerformed
 } // end ManagePatientInfoUI
