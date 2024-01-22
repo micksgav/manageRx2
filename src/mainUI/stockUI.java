@@ -419,7 +419,7 @@ public class stockUI extends JFrame implements ActionListener {
 	}
 
 	private void viewIncoming() {
-		
+
 	}
 
 	private void viewInventory() throws IOException {

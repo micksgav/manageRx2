@@ -318,7 +318,6 @@ public class orderUI extends JFrame implements ActionListener {
 		// search button
 				if (e.getActionCommand().equals("Search")) {
 					String[] selection = DrugSelection.getDrugSelection(drugToOrder.getText());
-					System.out.println(selection[0] + selection[1] + selection[2]);
 					drugToOrder.setText(selection[1]);
 					dosageOfDrug.setText(selection[2]);
 				}
@@ -337,10 +336,8 @@ public class orderUI extends JFrame implements ActionListener {
 	        	openSearchAdd.setVisible(true);
 	        	setVisible(false);
 	        }
-		System.out.println(e.getActionCommand());
 
 		if (e.getActionCommand().equals("placeOrder")) {
-			System.out.println("placed");
 
 			JTextArea textArea = new JTextArea(5, 20);
 			textArea.setLineWrap(true);
@@ -352,7 +349,6 @@ public class orderUI extends JFrame implements ActionListener {
 
 			int result = JOptionPane.showOptionDialog(null, panel, "Confirmation", JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Confirm", "Cancel" }, "Cancel");
-			System.out.println(result);
 			if (result == JOptionPane.OK_OPTION) {
 				placeOrder("", "", 1, 2, 3, true);
 			}
@@ -363,7 +359,7 @@ public class orderUI extends JFrame implements ActionListener {
 
 	public void placeOrder(String drugToOrder, String containerSize, int drugQty, int containterQty, int dosageIndex,
 			boolean confirmOrder) {
-		System.out.println("order Placed");
+		
 	}
 
 }

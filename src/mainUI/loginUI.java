@@ -47,6 +47,7 @@ public class loginUI extends JFrame implements ActionListener {
 
 	// JPanels
 	private JPanel loginPane = new JPanel(new GridBagLayout());// panel for login components
+	private JPanel buttonPanel;
 	// Jlabels
 	private JLabel managerxLabel = new JLabel("ManageRx");// label for managerx
 	private JLabel usernameLabel = new JLabel("User ID");// label for user id/credentials
@@ -105,59 +106,8 @@ public class loginUI extends JFrame implements ActionListener {
 		JLabel label = new JLabel("ManageRx");
 		label.setFont(new Font("Arial", Font.BOLD, 20));
 
-		btnOpenStock = new JButton("Stock");
-		btnOpenStock.setIcon(stockIcon);
-		btnOpenStock.setActionCommand("openStock");//action command
-		btnOpenStock.addActionListener(this);
-
-		btnOpenOrder = new JButton("Order");
-		btnOpenOrder.setIcon(orderIcon);
-		btnOpenOrder.setActionCommand("openOrder");//action command
-		btnOpenOrder.addActionListener(this);
-
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");//action command
-		btnOpenSettings.addActionListener(this);
-
-		btnOpenPatientManager = new JButton("Patients");
-		btnOpenPatientManager.setIcon(patientsIcon);
-		btnOpenPatientManager.setActionCommand("openPatientManager");//action command
-		btnOpenPatientManager.addActionListener(this);
-
-		// add back button to header
-		backButton = new JButton("Back");
-		backButton.addActionListener(this);
-
-		GridBagConstraints backConstraints = new GridBagConstraints(); // constraints for back button
-
-		backConstraints.gridx = 0;
-		backConstraints.gridy = 0;
-		backConstraints.gridwidth = 1;
-		backConstraints.anchor = GridBagConstraints.WEST;
-		backConstraints.ipadx = (int) (screenDims.width * 0.02);
-		backConstraints.weightx = 0.45;
-		backConstraints.insets = new Insets(0, (int) (screenDims.width * 0.01), 0, 0);
-		this.buttonPanel.add(backButton, backConstraints);
-
-		// add buttons other than back to header
-		headerButtons = new JPanel(new FlowLayout());
-
-		headerButtons.add(label);
-		headerButtons.add(btnOpenStock);
-		headerButtons.add(btnOpenOrder);
-		// headerButtons.add(btnOpenSettings);
-		headerButtons.add(btnOpenPatientManager);
-
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
 																				// back in header
-
-		overallButtonConstraints.gridx = 2;
-		overallButtonConstraints.gridy = 0;
-		overallButtonConstraints.gridwidth = 1;
-		overallButtonConstraints.weightx = 0.55;
-		overallButtonConstraints.anchor = GridBagConstraints.WEST;
-		this.buttonPanel.add(headerButtons, overallButtonConstraints);
 
 		add(this.buttonPanel, BorderLayout.NORTH);
 		
@@ -268,21 +218,16 @@ public class loginUI extends JFrame implements ActionListener {
 			break;
 		}
 	}
-		if (!login) {
+		if(!login) {
 			passwordField.setBorder(incorrectFieldBorder);
 		}
 
 		//handle login events
 		if(login) {
-			System.out.println("Logged In");
 			mainUI UI = new mainUI("ManageRx", patients, stock);
 			UI.setVisible(true);
 			setVisible(false);
-			System.out.println(getPassword());
-		}
-		else {
-			System.out.println("Please Fill in All Fields");
-		}
+		}//else login failed
 		return false;
 }
 
