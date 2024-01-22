@@ -299,14 +299,26 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		// add middle panel elements
 		midMain = new JPanel(new GridLayout(6, 1));
 
+		// fix sizing glitch from
+		// https://stackoverflow.com/questions/4061010/setmaximumsize-not-working-in-java
+		midMain.setMaximumSize(new Dimension((int) (screenDims.width * 0.2), (int) (screenDims.height * 0.57)));
+		midMain.setPreferredSize(new Dimension((int) (screenDims.width * 0.2), (int) (screenDims.height * 0.57)));
+		midMain.setMinimumSize(new Dimension((int) (screenDims.width * 0.2), (int) (screenDims.height * 0.57)));
+		midMain.setSize(new Dimension((int) (screenDims.width * 0.2), (int) (screenDims.height * 0.57)));
+		midMain.revalidate();
+
 		addressField = new JTextField(patient.getAddress());
+		JScrollPane addressScroll = new JScrollPane(addressField); // scroll bar for address
+		addressScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		addressScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		addressField.setEditable(false);
-		addressField.setBorder(textBoxBorder);
+		addressScroll.setBorder(textBoxBorderLine);
 		addressLabel.setFont(genFont);
 		addressField.setFont(genFont);
 		addressField.setBackground(textBoxFill);
+		addressScroll.setBackground(textBoxFill);
 		midMain.add(addressLabel);
-		midMain.add(addressField);
+		midMain.add(addressScroll);
 
 		// generate insurance combobox with all patient insurance
 		if (patient.getInsuranceInformation() != null && patient.getInsuranceInformation().size() > 0) {
@@ -398,13 +410,17 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 		rightMain.add(docFaxField);
 
 		docAddressField = new JTextField(patient.getFamilyDoctor().getAddress());
+		JScrollPane docAddressScroll = new JScrollPane(docAddressField); // scroll bar for doctor address
+		docAddressScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		docAddressScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		docAddressField.setEditable(false);
-		docAddressField.setBorder(textBoxBorder);
+		docAddressScroll.setBorder(textBoxBorderLine);
 		docAddressLabel.setFont(genFont);
 		docAddressField.setFont(genFont);
 		docAddressField.setBackground(textBoxFill);
+		docAddressScroll.setBackground(textBoxFill);
 		rightMain.add(docAddressLabel);
-		rightMain.add(docAddressField);
+		rightMain.add(docAddressScroll);
 
 		rightMain.setBorder(textBoxBorder);
 
