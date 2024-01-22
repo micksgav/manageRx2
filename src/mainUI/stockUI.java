@@ -1,3 +1,12 @@
+/**
+ ***********************************************
+ * @Author: Brayden Johnson
+ * @Creation date: December 29, 2023
+ * @Modification date: January 18, 2023
+ * @Description: The User interface for viewing stock on drugs setting thresholds and incoming shipments
+ ***********************************************
+ */
+
 package mainUI;
 
 import java.awt.BorderLayout;
@@ -97,22 +106,22 @@ public class stockUI extends JFrame implements ActionListener {
 
 		btnOpenStock = new JButton("Stock");
 		btnOpenStock.setIcon(stockIcon);
-		btnOpenStock.setActionCommand("openStock");
+		btnOpenStock.setActionCommand("openStock");//action command
 		btnOpenStock.addActionListener(this);
 
 		btnOpenOrder = new JButton("Order");
 		btnOpenOrder.setIcon(orderIcon);
-		btnOpenOrder.setActionCommand("openOrder");
+		btnOpenOrder.setActionCommand("openOrder");//action command
 		btnOpenOrder.addActionListener(this);
 
 		btnOpenSettings = new JButton("Settings");
 		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
+		btnOpenSettings.setActionCommand("openSettings");//action command
 		btnOpenSettings.addActionListener(this);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
-		btnOpenPatientManager.setActionCommand("openPatientManager");
+		btnOpenPatientManager.setActionCommand("openPatientManager");//action command
 		btnOpenPatientManager.addActionListener(this);
 
 		// add back button to header
@@ -169,39 +178,34 @@ public class stockUI extends JFrame implements ActionListener {
 		GridBagConstraints stockgbc = new GridBagConstraints();
 		stockgbc.insets = new Insets(25, 25, 25, 25);		
 		
-		
+		//constraints and styles for drug stock main label
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-
 		drugStockLabel.setFont(genFont);
 		stockPanel.add(drugStockLabel, gbc);
 		
-		
-		
-		
-		
-		
+		//constraints and styles for drug to check input
 		stockgbc.gridx = 0;
 		stockgbc.gridy = 0;
 		drugNameStockLabel.setFont(genFont);
-		checkStockPane.add(drugNameStockLabel, stockgbc);
+		checkStockPane.add(drugNameStockLabel, stockgbc);//add to check stock pane
 		
+		//constraints and styles for drug name to check stock on 
 		stockgbc.gridx = 0;
 		stockgbc.gridy = 1;
 		stockgbc.gridwidth = 3;
 		viewStockDrugField.setBorder(textBoxBorder);
 		viewStockDrugField.setFont(genFont);
-		checkStockPane.add(viewStockDrugField, stockgbc);
+		checkStockPane.add(viewStockDrugField, stockgbc);//add to check stock pane
 
-		
+		//constraints and styles for view stock label
 		stockgbc.gridx = 3;
 		stockgbc.gridy = 1;
 		viewStockButton.addActionListener(this);
-		viewStockButton.setActionCommand("viewStock");
-
+		viewStockButton.setActionCommand("viewStock");//action command
 		viewStockButton.setBorder(textBoxBorder);
 		viewStockButton.setFont(genFont);
-		checkStockPane.add(viewStockButton, stockgbc);
+		checkStockPane.add(viewStockButton, stockgbc);//add to check stock pane
 
 	
 		//add checkStock to UI
@@ -219,45 +223,49 @@ public class stockUI extends JFrame implements ActionListener {
 		drugSetThresholdLabel.setFont(genFont);
 		stockPanel.add(drugSetThresholdLabel, gbc);
 
+		//threshold panel for threshold options
 		setThresholdPane.setBorder(textBoxBorder);
 		GridBagConstraints thresholdgbc = new GridBagConstraints();
 		thresholdgbc.insets = new Insets(25, 25, 25, 25);
 		
+		//constraints and styles for drug threshold value label
 		thresholdgbc.gridx = 0;
 		thresholdgbc.gridy = 0;
 		drugThresholdLabel.setFont(genFont);
-		setThresholdPane.add(drugThresholdLabel, thresholdgbc);
+		setThresholdPane.add(drugThresholdLabel, thresholdgbc);//add to threshold panel
 		
+		//constraints and styles for drug threshold value input
 		thresholdgbc.gridx = 3;
 		thresholdgbc.gridy = 0;
 		thresholdNumLabel.setFont(genFont);
-		setThresholdPane.add(thresholdNumLabel, thresholdgbc);
+		setThresholdPane.add(thresholdNumLabel, thresholdgbc);//add to threshold panel
 		
+		//constraints and styles for drug name for threshold label
 		thresholdgbc.gridx = 0;
 		thresholdgbc.gridy = 1;
 		thresholdgbc.gridwidth = 3;
 		setThresholdDrug.setBorder(textBoxBorder);
 		setThresholdDrug.setFont(genFont);
-		setThresholdPane.add(setThresholdDrug, thresholdgbc);
+		setThresholdPane.add(setThresholdDrug, thresholdgbc);//add to threshold panel
 		
+		//constraints and styles for drug name for threshold input
 		thresholdgbc.gridx = 3;
 		thresholdgbc.gridy = 1;
 		thresholdgbc.gridwidth = 2;
 		setThresholdNum.setBorder(textBoxBorder);
 		setThresholdNum.setFont(genFont);
-		setThresholdPane.add(setThresholdNum, thresholdgbc);
+		setThresholdPane.add(setThresholdNum, thresholdgbc);//add to threshold panel
 
-		
+		//constraints and styles for set threshold for button 
 		thresholdgbc.gridx = 5;
 		thresholdgbc.gridy = 1;
 		setThresholdButton.addActionListener(this);
-		setThresholdButton.setActionCommand("setThreshold");
-
+		setThresholdButton.setActionCommand("setThreshold");//action command
 		setThresholdButton.setBorder(textBoxBorder);
 		setThresholdButton.setFont(genFont);
-		setThresholdPane.add(setThresholdButton, thresholdgbc);
+		setThresholdPane.add(setThresholdButton, thresholdgbc);//add to threshold panel
 		
-		//add setThreshold to UI
+		//constraints and styles for threshold panel
 		gbc.gridx = 0;
 		gbc.gridy = 5;
 		gbc.gridheight = 2;
@@ -268,25 +276,26 @@ public class stockUI extends JFrame implements ActionListener {
 		buttonOrganizergbc.insets = new Insets(25, 25, 25, 25);
 		buttonOrganizerPane.setBorder(textBoxBorderLine);
 
-		// new
+		//constraints and styles for view invertory button
 		buttonOrganizergbc.gridx = 0;
 		buttonOrganizergbc.gridy = 0;
 		viewInventoryButton.addActionListener(this);
-		viewInventoryButton.setActionCommand("viewInventory");
+		viewInventoryButton.setActionCommand("viewInventory");//action command
 		viewInventoryButton.setBorder(textBoxBorder);
 		viewInventoryButton.setFont(genFont);
 		buttonOrganizerPane.add(viewInventoryButton, buttonOrganizergbc);
 		
 		
-		//view incoming drugs
+		//constraints and styles for view incoming shipments button
 		buttonOrganizergbc.gridx = 0;
 		buttonOrganizergbc.gridy = 1;
 		incomingShipmentsButton.addActionListener(this);
-		incomingShipmentsButton.setActionCommand("viewIncoming");
+		incomingShipmentsButton.setActionCommand("viewIncoming");//action command
 		incomingShipmentsButton.setBorder(textBoxBorder);
 		incomingShipmentsButton.setFont(genFont);
 		buttonOrganizerPane.add(incomingShipmentsButton, buttonOrganizergbc);
 		
+		//constraints and styles for adding misc. buttons to stock ui
 		gbc.gridx = 5;
 		gbc.gridy = 2;
 		gbc.gridheight = 2;

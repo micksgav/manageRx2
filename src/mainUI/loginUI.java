@@ -1,3 +1,12 @@
+/**
+ ***********************************************
+ * @Author: Brayden Johnson
+ * @Creation date: December 22, 2023
+ * @Modification date: January 17, 2023
+ * @Description: The User interface for when no user is logged in and credentials are required for login
+ ***********************************************
+ */
+
 package mainUI;
 
 import utilities.Encrypt;
@@ -102,22 +111,22 @@ public class loginUI extends JFrame implements ActionListener {
 
 		btnOpenStock = new JButton("Stock");
 		btnOpenStock.setIcon(stockIcon);
-		btnOpenStock.setActionCommand("openStock");
+		btnOpenStock.setActionCommand("openStock");//action command
 		btnOpenStock.addActionListener(this);
 
 		btnOpenOrder = new JButton("Order");
 		btnOpenOrder.setIcon(orderIcon);
-		btnOpenOrder.setActionCommand("openOrder");
+		btnOpenOrder.setActionCommand("openOrder");//action command
 		btnOpenOrder.addActionListener(this);
 
 		btnOpenSettings = new JButton("Settings");
 		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
+		btnOpenSettings.setActionCommand("openSettings");//action command
 		btnOpenSettings.addActionListener(this);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
-		btnOpenPatientManager.setActionCommand("openPatientManager");
+		btnOpenPatientManager.setActionCommand("openPatientManager");//action command
 		btnOpenPatientManager.addActionListener(this);
 
 		// add back button to header
@@ -162,17 +171,20 @@ public class loginUI extends JFrame implements ActionListener {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(25, 25, 25, 25);
 
+		//add manage rx big label 
 		managerxLabel.setFont(nameFont);
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		loginPane.add(managerxLabel, gbc);
 
+		//constraints and styles for the username label
 		usernameLabel.setFont(genFont);
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.WEST;
 		loginPane.add(usernameLabel, gbc);
 
+		//constraints and styles for username input box
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.gridwidth = 3;
@@ -180,12 +192,14 @@ public class loginUI extends JFrame implements ActionListener {
 		usernameField.setBorder(textBoxBorder);
 		loginPane.add(usernameField, gbc);
 
+		//constraints and styles for password label
 		passwordLabel.setFont(genFont);
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		gbc.anchor = GridBagConstraints.WEST;
 		loginPane.add(passwordLabel, gbc);
 
+		//constraints and styles for password label
 		gbc.gridx = 1;
 		gbc.gridy = 4;
 		gbc.gridwidth = 3;
@@ -193,8 +207,9 @@ public class loginUI extends JFrame implements ActionListener {
 		passwordField.setBorder(textBoxBorder);
 		loginPane.add(passwordField, gbc);
 
+		//constraints and styles for the login button
 		loginButton.addActionListener(this);
-		loginButton.setActionCommand("loginButtonAction");
+		loginButton.setActionCommand("loginButtonAction");//action command
 		gbc.gridx = 2;
 		gbc.gridy = 5;
 		gbc.gridwidth = 1;
@@ -203,7 +218,7 @@ public class loginUI extends JFrame implements ActionListener {
 		loginButton.setBorder(textBoxBorder);
 		loginPane.add(loginButton, gbc);
 
-		add(loginPane, BorderLayout.CENTER);
+		add(loginPane, BorderLayout.CENTER);//add everything in login pane to main panel
 
 		pack();
 		setLocationRelativeTo(null);

@@ -1,3 +1,12 @@
+/**
+ ***********************************************
+ * @Author: Brayden Johnson
+ * @Creation date: December 29, 2023
+ * @Modification date: January 19, 2023
+ * @Description: The User interface for ordering drugs, with options to change dosage quantity and container spesifications.
+ ***********************************************
+ */
+
 package mainUI;
 
 import java.awt.BorderLayout;
@@ -107,22 +116,22 @@ public class orderUI extends JFrame implements ActionListener {
 
 		btnOpenStock = new JButton("Stock");
 		btnOpenStock.setIcon(stockIcon);
-		btnOpenStock.setActionCommand("openStock");
+		btnOpenStock.setActionCommand("openStock");//action command
 		btnOpenStock.addActionListener(this);
 
 		btnOpenOrder = new JButton("Order");
 		btnOpenOrder.setIcon(orderIcon);
-		btnOpenOrder.setActionCommand("openOrder");
+		btnOpenOrder.setActionCommand("openOrder");//action command
 		btnOpenOrder.addActionListener(this);
 
 		btnOpenSettings = new JButton("Settings");
 		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
+		btnOpenSettings.setActionCommand("openSettings");//action command
 		btnOpenSettings.addActionListener(this);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
-		btnOpenPatientManager.setActionCommand("openPatientManager");
+		btnOpenPatientManager.setActionCommand("openPatientManager");//action command
 		btnOpenPatientManager.addActionListener(this);
 
 		// add back button to header
@@ -173,87 +182,103 @@ public class orderUI extends JFrame implements ActionListener {
 
 		/* content */
 
+		//add the order label with constraints and labels
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		bigOrderLabel.setFont(nameFont);
 		gbc.anchor = GridBagConstraints.WEST;
 		orderPanel.add(bigOrderLabel, gbc);
 
+		//constraints and styles for drug to order label
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.WEST;
 		drugToOrderLabel.setFont(genFont);
 		orderPanel.add(drugToOrderLabel, gbc);
 
+		//constraints and styles for the drug to order
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		drugToOrder.setBorder(textBoxBorder);
 		drugToOrder.setFont(genFont);
 		orderPanel.add(drugToOrder, gbc);
 
+		//constraints and styles for drug dosage label
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		dosageOfDrugLabel.setFont(genFont);
 		orderPanel.add(dosageOfDrugLabel, gbc);
 
+		//constraints and styles for dosage of selected drug
 		gbc.gridx = 0;
 		gbc.gridy = 4;
 		dosageOfDrug.setBorder(textBoxBorder);
 		dosageOfDrug.setFont(genFont);
 		orderPanel.add(dosageOfDrug, gbc);
 
+		//constraints and styles for quantity of drug label 
 		gbc.gridx = 0;
 		gbc.gridy = 5;
 		numOfDrugLabel.setFont(genFont);
 		orderPanel.add(numOfDrugLabel, gbc);
 
+		//constraints and styles for quantity of drugs 
 		gbc.gridx = 0;
 		gbc.gridy = 6;
 		numOfDrug.setBorder(textBoxBorder);
 		numOfDrug.setFont(genFont);
 		orderPanel.add(numOfDrug, gbc);
-
+		
+		//add radio buttons to button group
 		containerSizeGroup.add(orderSmallContainer);
 		containerSizeGroup.add(orderMediumContainer);
 		containerSizeGroup.add(orderLargeContainer);
+		
+		JPanel containerSizePane = new JPanel(new FlowLayout());//initialize pane for container size buttons
 
-		JPanel containerSizePane = new JPanel(new FlowLayout());
-
+		//add padding to radio buttons
 		orderSmallContainer.setBorder(textFieldPadding);
 		orderMediumContainer.setBorder(textFieldPadding);
 		orderLargeContainer.setBorder(textFieldPadding);
 		
+		//add radio buttons to container panel
 		containerSizePane.add(orderSmallContainer);
 		containerSizePane.add(orderMediumContainer);
 		containerSizePane.add(orderLargeContainer);
 
+		//constraints and styles for container size label
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		containerSizeLabel.setFont(genFont);
 		orderPanel.add(containerSizeLabel, gbc);
 
+		//constraints and styles for panel for container size buttons 
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		containerSizePane.setBorder(textBoxBorderLine);
 		containerSizePane.setFont(genFont);
 		orderPanel.add(containerSizePane, gbc);
 
+		//constraints and styles for container qty. label
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		numOfContainerLabel.setFont(genFont);
 		orderPanel.add(numOfContainerLabel, gbc);
 
+		//constraints and styles for quantities of containers
 		gbc.gridx = 1;
 		gbc.gridy = 4;
 		numOfContainer.setBorder(textBoxBorder);
 		numOfContainer.setFont(genFont);
 		orderPanel.add(numOfContainer, gbc);
 
+		
+		//constraints and styles for place order button
 		gbc.gridx = 1;
 		gbc.gridy = 6;
 		gbc.anchor = GridBagConstraints.EAST;
 		placeOrder.addActionListener(this);
-		placeOrder.setActionCommand("placeOrder");
+		placeOrder.setActionCommand("placeOrder");//action command
 		placeOrder.setBorder(textBoxBorder);
 		placeOrder.setFont(genFont);
 		orderPanel.add(placeOrder, gbc);
@@ -267,7 +292,7 @@ public class orderUI extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
+		//if place order is pressed show a option pane for confirmation
 		if (e.getActionCommand().equals("placeOrder")) {
 			System.out.println("placed");
 

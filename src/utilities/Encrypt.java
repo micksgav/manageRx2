@@ -1,3 +1,12 @@
+/**
+ ***********************************************
+ * @Author: Brayden Johnson
+ * @Creation date: December 19, 2023
+ * @Modification date: January 10, 2023
+ * @Description: This object is used for hashing Strings with sha256 and sha512 and symmetric encryption and decryption with a key generator
+ ***********************************************
+ */
+
 package utilities;
 
 import java.security.MessageDigest;
