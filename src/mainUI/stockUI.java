@@ -396,7 +396,6 @@ public class stockUI extends JFrame implements ActionListener {
 	}
 
 	private void viewStock(String drug) throws IOException {
-		System.out.println("View Stock: " + drug);
 		boolean drugFound = stock.viewUsage(drug);
 		if (drugFound == false) {
 			JOptionPane.showMessageDialog(stockPanel, "Drug not found in inventory.", "ERROR",
@@ -416,12 +415,10 @@ public class stockUI extends JFrame implements ActionListener {
 	}
 
 	private void setThreshold(String drug, int threshold) {
-		System.out.println("Set Threshold: " + drug + threshold);
 		stock.changeThreshold(drug, threshold);
 	}
 
 	private void viewIncoming() {
-		System.out.println("View Incoming: ");
 	}
 
 	private void viewInventory() throws IOException {

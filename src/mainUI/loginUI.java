@@ -218,21 +218,16 @@ public class loginUI extends JFrame implements ActionListener {
 			break;
 		}
 	}
-		if (!login) {
+		if(!login) {
 			passwordField.setBorder(incorrectFieldBorder);
 		}
 
 		//handle login events
 		if(login) {
-			System.out.println("Logged In");
 			mainUI UI = new mainUI("ManageRx", patients, stock);
 			UI.setVisible(true);
 			setVisible(false);
-			System.out.println(getPassword());
-		}
-		else {
-			System.out.println("Please Fill in All Fields");
-		}
+		}//else login failed
 		return false;
 }
 
