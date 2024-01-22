@@ -24,7 +24,6 @@ public class drugFinder {
         while ((line = br.readLine()) != null) {
             if (line.substring(0, line.indexOf(" ")).equals(DIN)) {
                 line2 = br.readLine();
-                System.out.println(DIN + " is being parsed.");
                 String drugNameBrand = line.substring(line.indexOf(" ") + 1); //Brand Name - from drugData.txt;
                 String DPC = line2.substring(line2.indexOf(" ") + 1); //used in backend - from drugData.txt;
 

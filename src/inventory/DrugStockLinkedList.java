@@ -57,15 +57,12 @@ public class DrugStockLinkedList {
 	public boolean checkStockDIN(String searchDIN) {
 		Node runner;
 		runner = head;
-		System.out.println("searching for DIN " + searchDIN);
 		while(runner != null) {
 			if(runner.drugStock.getDrugDIN().equals(searchDIN)) {
-				System.out.println("found");
 				return true;
 			} // end if
 			runner = runner.next;
 		} // end while	
-		System.out.println("not found");
 		return false;
 	} // end checkStock
 	
@@ -161,16 +158,13 @@ public class DrugStockLinkedList {
 			previous.next = newNode;
 
 		} // end else
-		
-		System.out.println("new node inserted");
-		
+				
 		if(saveToSQL == true) {
 			int ID = helper.addDrugStock(insertDrugStock);
 			insertDrugStock.setID(ID);
 		} // end if
 
-		printDINs(); // mainly for testing purposes - may not need to keep in code?
-
+		// printDINs(); // was used for testing purposes
 	} // end insert()
 	
 	/** Method Name: fillPrescription
@@ -207,13 +201,11 @@ public class DrugStockLinkedList {
     */
 	public void newShipment(String arrivalDIN, int newStock) {
 		// if inventory already has some of the drug in stock
-		System.out.println("adding new shipment");
 		Node runner;
 		runner = head;
 		while(runner != null) {
 			if(runner.drugStock.getDrugDIN().equals(arrivalDIN)) {
 				runner.drugStock.addToStock(newStock);
-				System.out.println("shipment added");
 				break;
 			} // end if
 			runner = runner.next;
@@ -224,7 +216,7 @@ public class DrugStockLinkedList {
 	* @Author Christina Wong 
 	* @Date December 18, 2023
 	* @Modified December 19, 2023
-	* @Description This prints the DINs of all drugs currently in stock.
+	* @Description This prints the DINs of all drugs currently in stock, was used in testing code.
 	* @Parameters  N/A
 	* @Returns void
 	* Dependencies: DrugStock
@@ -234,7 +226,6 @@ public class DrugStockLinkedList {
 		Node runner;
 		runner = head;
 		while(runner != null) {
-			System.out.println(runner.drugStock.getDrugDIN());
 			runner = runner.next;
 		} // end while
 	} // end printDINS
@@ -250,7 +241,6 @@ public class DrugStockLinkedList {
 	* Throws/Exceptions: error message, if DIN is not found
     */
 	public boolean viewStockUsage(String DIN) {
-		System.out.println("Viewing stock usage");
 		Node runner;
 		runner = head;
 		boolean found = false;
@@ -263,7 +253,6 @@ public class DrugStockLinkedList {
 			runner = runner.next;
 		} // end while
 		if(found == false) {
-			System.out.println("Drug not found in inventory");
 			return false;
 		} // end if
 		
@@ -332,7 +321,6 @@ public class DrugStockLinkedList {
 		while(runner != null) {
 			if(runner.drugStock.getDrugDIN().equals(DIN)) {
 				runner.drugStock.setStockThreshold(newThreshold);
-				System.out.println("new threshold for " + runner.drugStock.getDrugName() + " (" + runner.drugStock.getDrugDIN() + ")");
 			} // end if
 			runner = runner.next;
 		} // end while
@@ -354,20 +342,12 @@ public class DrugStockLinkedList {
 		int lineCount = 0;
 		Node runner;
 		runner = head;
-		System.out.println("INVENTORY:");
-		System.out.println("Drug Name:\t\tDIN:\t\tCurrent Stock:");
 		while(runner != null) {
 			allInventory[lineCount][0] = runner.drugStock.getDrugName();
-			System.out.print(runner.drugStock.getDrugName() + "\t\t");
 			if(runner.drugStock.getDrugName().length() < 8) {
-				System.out.print("\t");
 			} // end if
 			allInventory[lineCount][1] = runner.drugStock.getDrugDIN();
-			allInventory[lineCount][2] = String.valueOf(runner.drugStock.getNumInStock());
-			System.out.print(runner.drugStock.getDrugDIN() + "\t");
-			System.out.print(runner.drugStock.getNumInStock());
-			System.out.println();			
-			
+			allInventory[lineCount][2] = String.valueOf(runner.drugStock.getNumInStock());	
 			lineCount++;
 			runner = runner.next;
 		} // end while

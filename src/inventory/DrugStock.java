@@ -78,7 +78,6 @@ public class DrugStock {
     */
 	public void removeFromStock(int filled) {
 		this.numInStock -= filled;
-		System.out.println("prescription of " + filled);
 		changeInStock("Prescription filled:", filled, numInStock);
 		helper.update("DrugStock", "quantity", this.numInStock, ID);
 		checkThreshold();		
@@ -96,11 +95,9 @@ public class DrugStock {
     */
 	public int checkThreshold() {
 		if(numInStock < stockThreshold) {
-			System.out.println("\nSTOCK IS BELOW THRESHOLD\n");
 			return 1;
 		} // end if
 		else if(numInStock == stockThreshold) {
-			System.out.println("\nSTOCK IS AT THRESHOLD\n");
 			return 2;
 		} // end else if
 		return 0;
@@ -227,19 +224,19 @@ public class DrugStock {
 	* Throws/Exceptions: N/A
     */
 	public void viewUsage() {
-		System.out.println("\nDATE:\t\tINVENTORY CHANGE:\t\tAMOUNT:\t\tCURRENT STOCK:");
+// used in testing		
+//		System.out.println("\nDATE:\t\tINVENTORY CHANGE:\t\tAMOUNT:\t\tCURRENT STOCK:");
 		for (int row = 1; row < stockChanges.length; row++) {
 			// if the row has information to print
 			if(stockChanges[row][0].length() != 0) {
-				System.out.print(stockChanges[row][0] + ":\t");
-				System.out.print(stockChanges[row][1] + "\t\t");
-				System.out.print(stockChanges[row][2] + "\t\t");
-				System.out.print(stockChanges[row][3]);
-				System.out.println();
+//				System.out.print(stockChanges[row][0] + ":\t");
+//				System.out.print(stockChanges[row][1] + "\t\t");
+//				System.out.print(stockChanges[row][2] + "\t\t");
+//				System.out.print(stockChanges[row][3]);
+//				System.out.println();
 			} // end if
 
 		} // end for
-		System.out.println("\nInventory report complete");
 
 	} // end viewUsage
 } // end DrugStock
