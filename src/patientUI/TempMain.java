@@ -1,5 +1,6 @@
 package patientUI;
 
+import java.io.IOException;
 import java.sql.*;
 
 import PatientManagement.*;
@@ -11,7 +12,7 @@ import java.util.*;
 
 public class TempMain {
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException, IOException {
 //		String[][] idk = { { "400", "400" }, { "400", "400" } };
 //		String[] alts = { "h", "h" };
 //		Drug drug = new Drug("00015", "Advil", "a class", "idk", "Pfizer", "Advil 400 mg", "Pill", idk);
@@ -101,6 +102,12 @@ public class TempMain {
 		
 		
 		Patient patient = new Patient();
+		
+		Drug drug1 = drugFinder.getDrug("00548359");
+		stock.updateStock(100, drug1.getDIN(), drug1.getDrugClass(), "500");
+		stock.updateStock(400, drug1.getDIN(), drug1.getDrugClass(), "");
+
+		
 		SearchAddUI oui = new SearchAddUI("ManageRx", patients, stock);
 		
 		

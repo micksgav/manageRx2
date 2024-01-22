@@ -121,7 +121,6 @@ public class AllStock {
 			drugSearch(drugDIN);			
 		} // end if
 		else {
-			System.out.println("Drug is not found in inventory.");
 			
 		} // end else
 	} // end searchByDIN
@@ -140,7 +139,6 @@ public class AllStock {
 		String searchDIN = "";
 		searchDIN = drugsList.checkStockName(drugName);		
 		if(searchDIN.equals("")) {
-			System.out.println("Drug is not found in inventory.");
 		} // end if
 		else {
 			drugSearch(searchDIN);
@@ -158,7 +156,6 @@ public class AllStock {
 	* Throws/Exceptions: N/A
     */
 	public void drugSearch(String printDrug) {
-		System.out.println("\nInventory Information:");
 		drugsList.printDrugInfo(printDrug);		
 	} // end drugSearch
 	
@@ -229,7 +226,6 @@ public class AllStock {
 					drugsList.insert(newDrugStock, true);
 				} // end if
 				else {
-					System.out.println("Invalid threshold.  Enter threshold:");
 					newThreshold = ui.nextLine();
 				} // end else
 			} // end while
