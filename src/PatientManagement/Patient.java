@@ -106,10 +106,11 @@ public class Patient {
 		this.healthCardNum = healthCardNum;
 	} // end setHealthCardNumber
 
-	public void newFamilyDoctor(String newName, String newAddress, String phoneNumber) {
+	public void newFamilyDoctor(String newName, String newAddress, String phoneNumber, String faxNumber) {
 		familyDoctor.setName(newName);
 		familyDoctor.setAddress(newAddress);
 		familyDoctor.setPhoneNumber(phoneNumber);
+		familyDoctor.setFax(faxNumber);
 	} // end newFamilyDoctor
 
 	public ArrayList<String[]> drugInteractions(Drug newDrug) throws IOException {
@@ -243,8 +244,8 @@ public class Patient {
 		return insuranceInformation;
 	} // end getInsuranceInformation
 
-	public void addNewInsuranceInfo(String company, int num, String notes) {
-		insuranceInformation.add(new Insurance(company, num, notes, id));
+	public void addNewInsuranceInfo(String company, int num) {
+		insuranceInformation.add(new Insurance(company, num, id));
 	} // end addNewInsuranceInfo
 
 	public void addNewInsuranceInfo(Insurance insurance) {
@@ -267,5 +268,6 @@ public class Patient {
 	public FamilyDoctor getFamilyDoctor() {
 		return familyDoctor;
 	}
+
 
 } // end Patient

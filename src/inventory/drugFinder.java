@@ -40,7 +40,7 @@ public class drugFinder {
 
                 String drugForm = getForm(DPC); //Drug Form (pill, cream, etc)
 
-                String[][] dosage = getDosage(DPC); //each column is an active ingredient, dosage, and unit
+                String dosage = getDosage(DPC)[0][0] + " " + getDosage(DPC)[0][1] + " " + getDosage(DPC)[0][2]; //each column is an active ingredient, dosage, and unit
 
                 return new Drug(DIN, drugNameBrand, drugClass, drugSchedule, company, description, drugForm, dosage);
             }

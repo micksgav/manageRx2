@@ -20,7 +20,6 @@ import com.formdev.flatlaf.*;
 
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import PatientManagement.*;
 import inventory.AllStock;
@@ -71,7 +70,6 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 	private JLabel insuranceTitle = new JLabel("Insurance Information"); // title label
 	String[] insuranceCompany; // array containing all insurance company info
 	String[] insuranceNumber; // array containing all insurance number info
-	String[] insuranceNotes; // array containing all insurance notes info
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -97,14 +95,12 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		this.stock = stock;
 		insuranceCompany = new String[patient.getInsuranceInformation().size()];
 		insuranceNumber = new String[patient.getInsuranceInformation().size()];
-		insuranceNotes = new String[patient.getInsuranceInformation().size()];
 		insurancePanels = new JPanel[patient.getInsuranceInformation().size()];
 
 		for (int i = 0; i < insuranceCompany.length; i++) {
 			insuranceCompany[i] = "Company: " + patient.getInsuranceInformation().get(i).getCompany();
 			insuranceNumber[i] = "Insurance Number: "
 					+ String.valueOf(patient.getInsuranceInformation().get(i).getNumber());
-			insuranceNotes[i] = "Notes: " + patient.getInsuranceInformation().get(i).getNotes();
 		} // end for
 
 		// setup all buttons for the header
@@ -129,11 +125,6 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		btnOpenOrder.setIcon(orderIcon);
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
-
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
 
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
@@ -161,7 +152,6 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for header buttons other
@@ -272,7 +262,7 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 			editArchive[i] = new JPanel(new GridLayout(1, 2, (int) (screenDims.width * 0.005), 0));
 			editArchive[i].add(editInsurance[i]);
 			editArchive[i].add(deleteInsurance[i]);
-			insuranceInfo[i].setText(insuranceCompany[i] + "\n" + insuranceNumber[i] + "\n" + insuranceNotes[i]);
+			insuranceInfo[i].setText(insuranceCompany[i] + "\n" + insuranceNumber[i]);
 			insurancePanels[i].setBorder(simpleLine);
 			insuranceInfo[i].setEditable(false);
 			insurancePanels[i].add(insuranceInfo[i]);
@@ -318,23 +308,24 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 		SQLHelper helper = new SQLHelper();
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
 			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open patient management page
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-			// go back to previous page
+		// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
 			deleteInsurance(patient);
 			EditPatientInfoUI openEdit;
@@ -373,17 +364,11 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 			if (deleteInsurance[i].getText().equals("Save")) {
 				if (e.getActionCommand().equals("save" + i)) {
 					String insuranceInfoString = insuranceInfo[i].getText().replaceAll("Company: ", "")
-							.replaceAll("Insurance Number: ", "").replaceAll("Notes: ", "").trim(); // full insurance
+							.replaceAll("Insurance Number: ", "").trim(); // full insurance
 																									// info field
 					String[] info = insuranceInfoString.split("\n"); // insurance info field split into lines
 					patient.getInsuranceInformation().get(i).setCompany(info[0]);
 					patient.getInsuranceInformation().get(i).setNumber(Integer.parseInt(info[1]));
-
-					String notes = ""; // updated insurance notes
-					for (int j = 2; j < info.length; j++) {
-						notes += info[j] + " ";
-					} // end for
-					patient.getInsuranceInformation().get(i).setNotes(notes.trim());
 
 					System.out.println(patient.getInsuranceInformation().get(i).getID());
 					helper.updateInsuranceBG("InsuranceInfo", "company",
@@ -391,9 +376,6 @@ public class ViewInsuranceUI extends JFrame implements ActionListener {
 							patient.getInsuranceInformation().get(i).getID());
 					helper.updateInsuranceBG("InsuranceInfo", "number",
 							patient.getInsuranceInformation().get(i).getNumber(),
-							patient.getInsuranceInformation().get(i).getID());
-					helper.updateInsuranceBG("InsuranceInfo", "notes",
-							patient.getInsuranceInformation().get(i).getNotes(),
 							patient.getInsuranceInformation().get(i).getID());
 
 					editInsurance[i].setText("Edit");

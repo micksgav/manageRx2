@@ -5,6 +5,7 @@ import inventory.*;
 public class mainMainTemp {
 
 
+	
 	public static void main(String[] args) throws IOException {
 //		loginUI login = new loginUI();
 //		login.setVisible(true);
@@ -19,18 +20,22 @@ public class mainMainTemp {
 		
 		AllStock inventory = new AllStock();
 		Drug drug1 = drugFinder.getDrug("00548359");
-
 		inventory.updateStock(100, drug1.getDIN(), drug1.getDrugClass(), "500");
 		
-		Drug drug2 = drugFinder.getDrug("02248808");
-		inventory.updateStock(50, drug2.getDIN(), drug2.getDrugClass(), "60");
+//		Drug drug2 = drugFinder.getDrug("02248808");
+//		inventory.updateStock(80, drug2.getDIN(), drug2.getDrugClass(), "40");
 		
 		inventory.updateStock(400, drug1.getDIN(), drug1.getDrugClass(), "");
+//		
+//		Drug drug3 = drugFinder.getDrug("02532042");
+//		inventory.updateStock(100, drug3.getDIN(), drug3.getDrugClass(), "30");
 		
-		Drug drug3 = drugFinder.getDrug("02532042");
-		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), "30");
+//		Drug drug4 = drugFinder.getDrug("00013285");	
+//		inventory.updateStock(299, drug4.getDIN(), drug4.getDrugClass(), "199");
+		//inventory.updateStock(100, "00548459", drug1.getDrugClass(), "50");
+
 		
-//		stockUI stock = new stockUI();
+//		stockUI stock = new stockUI(inventory);
 //		stock.setVisible(true);
 
 //		Drug drug2 = drugFinder.getDrug("02248808");
@@ -42,7 +47,7 @@ public class mainMainTemp {
 //		System.out.println("\nEnter threshold:");
 //		inventory.updateStock(500, drug3.getDIN(), drug3.getDrugClass(), "30");
 
-		stockUI stock = new stockUI(inventory);
+		//stockUI stock = new stockUI(inventory);
 //		DrugStockUI viewStock = new DrugStockUI(inventory, drug1.getDIN());
 
 	}

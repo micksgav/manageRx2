@@ -36,6 +36,8 @@ import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import PatientManagement.PatientList;
+import inventory.AllStock;
 import swingHelper.AppIcon;
 
 import javax.swing.JLabel;
@@ -45,8 +47,6 @@ public class loginUI extends JFrame implements ActionListener {
 
 	// JPanels
 	private JPanel loginPane = new JPanel(new GridBagLayout());// panel for login components
-	private JPanel buttonPanel; // header panel
-	private JPanel headerButtons; // buttons other than back in header
 	// Jlabels
 	private JLabel managerxLabel = new JLabel("ManageRx");// label for managerx
 	private JLabel usernameLabel = new JLabel("User ID");// label for user id/credentials
@@ -57,15 +57,11 @@ public class loginUI extends JFrame implements ActionListener {
 	// JButtons
 	private JButton loginButton = new JButton("Login");
 	
-
-	// header buttons
-	private JButton btnOpenStock; // open stock
-	private JButton btnOpenOrder; // open order
-	private JButton btnOpenSettings; // open settings
-	private JButton btnOpenPatientManager; // open patient manager
-
-	// main buttons
-	private JButton backButton; // go back to previous page
+	// app info
+	PatientList patients;
+	AllStock stock;
+	String[] usernames;
+	String[] passwords;
 
 	// icons
 	public AppIcon stockIcon = new AppIcon("icons/box.png");// icon for stock
@@ -85,7 +81,7 @@ public class loginUI extends JFrame implements ActionListener {
 	private CompoundBorder textBoxBorder = new CompoundBorder(textBoxBorderLine, textFieldPadding);
 	private CompoundBorder incorrectFieldBorder = new CompoundBorder(redBoxBorderLine,textFieldPadding);
 
-	public loginUI() {
+	public loginUI(String title, PatientList patients, AllStock stock, String[] usernames, String[] passwords) {
 		
 		// setup screen attributes
 		FlatLightLaf.setup();
@@ -165,6 +161,10 @@ public class loginUI extends JFrame implements ActionListener {
 
 		add(this.buttonPanel, BorderLayout.NORTH);
 		
+		this.patients = patients;
+		this.stock = stock;
+		this.usernames = usernames;
+		this.passwords = passwords;	
 		
 		loginPane.setBorder(textBoxBorder);
 		
@@ -213,7 +213,7 @@ public class loginUI extends JFrame implements ActionListener {
 		gbc.gridx = 2;
 		gbc.gridy = 5;
 		gbc.gridwidth = 1;
-		gbc.anchor = GridBagConstraints.EAST;
+		gbc.anchor = GridBagConstraints.CENTER;
 		loginButton.setFont(genFont);
 		loginButton.setBorder(textBoxBorder);
 		loginPane.add(loginButton, gbc);
@@ -245,26 +245,47 @@ public class loginUI extends JFrame implements ActionListener {
 		}
 		
 		//check username
-		if(!usernameField.getText().equals("username")) {
-			login = false;
+		for (int i = 0; i < usernames.length; i ++) {
+		if(!usernameField.getText().equals(usernames[i])) {
+			login = false;	
+		}
+		else {
+			login = true;
+			break;
+		}
+		}
+		if (!login) {
 			usernameField.setBorder(incorrectFieldBorder);
 		}
 		//if username/login-identifier found in db get user password hash 
 		//compare password hash's
-		if(!getPassword().equals("5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")) {
+		for (int i = 1; i < passwords.length; i += 2) {
+		if(!getPassword().equals(passwords[i])) {
 			login = false;
+		}
+		else {
+			login = true;
+			break;
+		}
+	}
+		if (!login) {
 			passwordField.setBorder(incorrectFieldBorder);
 		}
 
 		//handle login events
 		if(login) {
 			System.out.println("Logged In");
-			mainUI UI = new mainUI();
+			mainUI UI = new mainUI("ManageRx", patients, stock);
 			UI.setVisible(true);
 			setVisible(false);
+			System.out.println(getPassword());
+		}
+		else {
+			System.out.println("Please Fill in All Fields");
 		}
 		return false;
-	}
+}
+
 	
 	private String getPassword() {
 		String password = new String(passwordField.getPassword());

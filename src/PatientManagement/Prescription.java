@@ -16,7 +16,7 @@ public class Prescription {
 	private String datePrescribed; // prescribed date for the drug
 	private int numRefills; // number of refills left
 	private int quantity; // number of pills if applicable
-	private String[][] dosage; // dosage of the drug
+	private String dosage; // dosage of the drug
 	private String instructions; // instructions for taking the prescription
 	private String prescribedDuration; // duration to take prescribed drug for
 	private int ID;
@@ -28,7 +28,7 @@ public class Prescription {
 	private String docPrescribedFax;
 	private boolean delete;
 	
-	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String[][] dosage, String instructions, String prescribedDuration, String docPrescribedName, String docPrescribedAddress, String docPrescribedPhone, String docPrescribedFax) {
+	public Prescription(Drug drug, String datePrescribed, int numRefills, int quantity, String dosage, String instructions, String prescribedDuration, String docPrescribedName, String docPrescribedAddress, String docPrescribedPhone, String docPrescribedFax) {
 		this.drug = drug;
 		this.datePrescribed = datePrescribed;
 		this.numRefills = numRefills;
@@ -133,11 +133,11 @@ public class Prescription {
 		this.quantity = quantity;
 	} // end setQuantity
 
-	public String[][] getDosage() {
+	public String getDosage() {
 		return dosage;
 	} // end getDosage
 
-	public void setDosage(String[][] dosage) {
+	public void setDosage(String dosage) {
 		this.dosage = dosage;
 	} // end setDosage
 

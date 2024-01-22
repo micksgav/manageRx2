@@ -3,8 +3,8 @@
  @Name: Drug
  @Author           : Christina Wong
  @Creation Date    : December 12, 2023
- @Modified Date	   : January 10, 2024
-   @Description    : 
+ @Modified Date	   : January 19, 2024
+   @Description    : This stores all information for a specific drug and allows information to be edited and retrieved.
    
 ***********************************************
 */
@@ -26,9 +26,9 @@ public class Drug {
 
 	private String form; // drug form
 
-	private final String[][] dosage; // dosage of drug, column 0 is dosage amount, column 1 is dosage unit
+	private final String dosage; // dosage of drug, column 0 is dosage amount, column 1 is dosage unit
 
-	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String[][] dosage) {
+	public Drug(String drugDIN, String brandName, String classDrug, String schedule, String company, String description, String form, String dosage) {
 		drugName = brandName;
 		drugClass = classDrug;
 		DIN = drugDIN;
@@ -61,11 +61,11 @@ public class Drug {
 	
 	public String getForm() {
 		return form;
-	}
+	} // end getForm
 	
 	public void setForm(String form) {
 		this.form = form;
-	}
+	} // end setForm
 
 	public String getDrugClass() {
 		return drugClass;
@@ -75,7 +75,7 @@ public class Drug {
 		this.drugClass = classDrug;
 	} // end setDrugClass
 
-	public String[][] getDosage() {
+	public String getDosage() {
 		return dosage;
 	} // end getDrugDosage
 

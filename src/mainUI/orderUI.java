@@ -17,6 +17,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -41,13 +42,19 @@ import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import PatientManagement.PatientList;
 import swingHelper.AppIcon;
-
+import utilities.DrugSelection;
 import inventory.*;
+import patientUI.SearchAddUI;
 
 
 public class orderUI extends JFrame implements ActionListener {
 
+	// app information
+	PatientList patients;
+	AllStock stock;
+	
 	private JPanel orderPanel = new JPanel(new GridBagLayout());
 
 	private JPanel buttonPanel; // header panel
@@ -69,7 +76,7 @@ public class orderUI extends JFrame implements ActionListener {
 	private JTextField numOfDrug = new JTextField(15);
 	private JTextField numOfContainer = new JTextField(15);
 
-	private JComboBox dosageOfDrug = new JComboBox();
+	private JTextField dosageOfDrug = new JTextField(6);
 
 	private JButton placeOrder = new JButton("Place Order");
 	private JButton confirmOrder = new JButton("Confirm Order");
@@ -89,7 +96,7 @@ public class orderUI extends JFrame implements ActionListener {
 	public AppIcon settingsIcon = new AppIcon("icons/gear.png");// icon for settings
 	public AppIcon patientsIcon = new AppIcon("icons/person.png");// icon for patients
 
-	public orderUI() {
+	public orderUI(String title, PatientList patients, AllStock stock) {
 		// setup screen attributes
 		FlatLightLaf.setup();
 		setTitle("ManageRx");
@@ -101,6 +108,10 @@ public class orderUI extends JFrame implements ActionListener {
 		this.setPreferredSize(new Dimension(screenDims.width, screenDims.height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		
+		// instantiate app variables
+		this.patients = patients;
+		this.stock = stock;
 
 		// add all buttons to header, then add header to mainPanel
 		stockIcon = stockIcon.setScale(0.12);
@@ -195,13 +206,22 @@ public class orderUI extends JFrame implements ActionListener {
 		gbc.anchor = GridBagConstraints.WEST;
 		drugToOrderLabel.setFont(genFont);
 		orderPanel.add(drugToOrderLabel, gbc);
-
+    
 		//constraints and styles for the drug to order
+		JPanel orderFieldAndSearch = new JPanel(new GridLayout(2, 1));
+		orderFieldAndSearch.add(drugToOrder);
+		
+		JButton search = new JButton("Search");
+		search.addActionListener(this);
+		search.setBorder(textBoxBorder);
+		search.setFont(genFont);
+		orderFieldAndSearch.add(search);
+    
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		drugToOrder.setBorder(textBoxBorder);
 		drugToOrder.setFont(genFont);
-		orderPanel.add(drugToOrder, gbc);
+		orderPanel.add(orderFieldAndSearch, gbc);
 
 		//constraints and styles for drug dosage label
 		gbc.gridx = 0;
@@ -292,7 +312,33 @@ public class orderUI extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+
 		//if place order is pressed show a option pane for confirmation
+
+		// search button
+				if (e.getActionCommand().equals("Search")) {
+					String[] selection = DrugSelection.getDrugSelection(drugToOrder.getText());
+					System.out.println(selection[0] + selection[1] + selection[2]);
+					drugToOrder.setText(selection[1]);
+					dosageOfDrug.setText(selection[2]);
+				}
+		 if (e.getActionCommand().equals("openStock")) {
+	            stockUI openStock = new stockUI("ManageRx", patients, stock);
+	            openStock.setVisible(true);
+	            setVisible(false);
+	        }
+	        if (e.getActionCommand().equals("openOrder")) {
+	        	orderUI openOrder = new orderUI("ManageRx", patients, stock);
+	        	openOrder.setVisible(true);
+	        	setVisible(false);
+	        }
+	        if (e.getActionCommand().equals("openPatientManager")) {
+	        	SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
+	        	openSearchAdd.setVisible(true);
+	        	setVisible(false);
+	        }
+		System.out.println(e.getActionCommand());
+
 		if (e.getActionCommand().equals("placeOrder")) {
 			System.out.println("placed");
 
@@ -311,6 +357,7 @@ public class orderUI extends JFrame implements ActionListener {
 				placeOrder("", "", 1, 2, 3, true);
 			}
 		}
+		
 
 	}
 

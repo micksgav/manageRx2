@@ -1,3 +1,13 @@
+/**
+***********************************************
+ @Name: DrugStockUI
+ @Author           : Christina Wong
+ @Creation Date    : January 16, 2024
+ @Modified Date	   : January 19, 2024
+   @Description    : This displays information for a specific drug stocked in the inventory.
+   
+***********************************************
+*/
 package inventory;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -18,6 +28,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import PatientManagement.PatientList;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,8 +37,6 @@ import java.awt.event.ActionEvent;
 public class DrugStockUI {
 
 	private JFrame frame;
-	String[] display;
-	String selection;
 	
 	private JLabel dateLabel = new JLabel("Date:");
 	private JLabel changeLabel = new JLabel("Inventory Change:");
@@ -37,13 +47,15 @@ public class DrugStockUI {
 	private static JTextArea stockAmt = new JTextArea();
 	private static JTextArea currentStock = new JTextArea();
 	 
-	private AllStock stock;
-	private String[][] stockInventory;
+	private AllStock stock; // inventory
+	private String[][] stockInventory; // drug's inventory information
 
-	public DrugStockUI(AllStock fullStock, String DIN) throws IOException {
+	public DrugStockUI(String title, PatientList patients, AllStock fullStock, String DIN) throws IOException {
 		stock = fullStock;
 		stock.viewUsage(DIN);
 		stockInventory = stock.viewDrugInventory(DIN);
+		
+		// fields for inventory information
 		changeDate.setText("");
 		change.setText("");
 		stockAmt.setText("");
@@ -57,30 +69,35 @@ public class DrugStockUI {
         stockAmt.setFont(new Font("Sans Serif", Font.PLAIN, 16));
         currentStock.setFont(new Font("Sans Serif", Font.PLAIN, 16));
 
-
+        // adds all information to fields
 		for(int i = 1; i < stockInventory.length; i++) {
 			if(stockInventory[i][0].length() != 0) {
 				changeDate.append(stockInventory[i][0] + "\n");
 				change.append(stockInventory[i][1] + "\n");
 				stockAmt.append(stockInventory[i][2] + "\n");
 				currentStock.append(stockInventory[i][3] + "\n");
-			}
-
-		}
+			} // end if
+		} // end for
 		
 		initialize();
 		
-	}
+	} // end DrugStockUI constructor
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	/** Method Name: initialize
+	* @Author Christina Wong 
+	* @Date January 16, 2024
+	* @Modified January 19, 2024
+	* @Description This creates the interface for the drug inventory information.
+	* @Parameters N/A
+	* @Returns void
+	* Dependencies: N/A
+	* Throws/Exceptions: N/A
+    */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 695, 341);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-
 		
 		JLabel lblNewLabel = new JLabel("Inventory for " + stockInventory[0][0] + " (" + stockInventory[0][1] + ")");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -98,7 +115,6 @@ public class DrugStockUI {
 		amountLabel.setFont(new Font("Sans Serif", Font.PLAIN, 18));
 		curLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		curLabel.setFont(new Font("Sans Serif", Font.PLAIN, 18));
-
 
 		panel.add(dateLabel);
 		panel.add(changeLabel);
@@ -128,17 +144,18 @@ public class DrugStockUI {
 		frame.add(panel, BorderLayout.CENTER);
 		
 		JButton btnNewButton = new JButton("Close");
+		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// button action
 				frame.dispose();
-			}
+			} // end actionPerformed
 		});
+		
 		btnNewButton.setBounds(549, 261, 120, 30);
 		frame.add(btnNewButton, BorderLayout.SOUTH);
 
 		frame.setVisible(true);
-	}
+	} // end initialize
 	
-
-}
+} // end DrugStockUI

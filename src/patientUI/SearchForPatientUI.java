@@ -26,7 +26,6 @@ import PatientManagement.*;
 import inventory.AllStock;
 import mainUI.loginUI;
 import mainUI.orderUI;
-import mainUI.settingsUI;
 import mainUI.stockUI;
 import swingHelper.AppIcon;
 
@@ -176,11 +175,6 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		btnOpenOrder.setActionCommand("openOrder");
 		btnOpenOrder.addActionListener(this);
 
-		btnOpenSettings = new JButton("Settings");
-		btnOpenSettings.setIcon(settingsIcon);
-		btnOpenSettings.setActionCommand("openSettings");
-		btnOpenSettings.addActionListener(this);
-
 		btnOpenPatientManager = new JButton("Patients");
 		btnOpenPatientManager.setIcon(patientsIcon);
 		btnOpenPatientManager.setActionCommand("openPatientManager");
@@ -207,7 +201,6 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 		headerButtons.add(label);
 		headerButtons.add(btnOpenStock);
 		headerButtons.add(btnOpenOrder);
-		// headerButtons.add(btnOpenSettings);
 		headerButtons.add(btnOpenPatientManager);
 
 		GridBagConstraints overallButtonConstraints = new GridBagConstraints(); // constraints for buttons other than
@@ -293,25 +286,26 @@ public class SearchForPatientUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// open stock button pressed
 		if (e.getActionCommand().equals("openStock")) {
-			stockUI openStock = new stockUI(stock);
+			stockUI openStock = new stockUI("ManageRx", patients, stock);
 			openStock.setVisible(true);
 			setVisible(false);
 		} // end if
 			// open order button pressed
 		if (e.getActionCommand().equals("openOrder")) {
-			orderUI openOrder = new orderUI();
+			orderUI openOrder = new orderUI("ManageRx", patients, stock);
 			openOrder.setVisible(true);
 			setVisible(false);
 		} // end if
-		// open patient management page
+			// open patient manager button pressed
 		if (e.getActionCommand().equals("openPatientManager")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			// open patient manager page
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
-			// go back to previous page
+		// go back to previous page
 		if (e.getActionCommand().equals("Back")) {
-			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patient, patients, stock);
+			SearchAddUI openSearchAdd = new SearchAddUI("ManageRx", patients, stock);
 			openSearchAdd.setVisible(true);
 			setVisible(false);
 		} // end if
