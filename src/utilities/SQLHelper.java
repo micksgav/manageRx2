@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -475,5 +476,52 @@ public class SQLHelper {
 		} // end for
 		return passes;
 	}
+	
+	public int addOrder(String DIN, int qty, String size, String dosage, int containerQty) {
+		try {
+			ResultSet resultSet = statement.executeQuery(
+					"SELECT ID FROM OrderInfo WHERE ID = (SELECT MAX(ID) FROM OrderInfo)");
+			resultSet.next();
+			int ID = resultSet.getInt("ID") + 1;
+			statement.executeUpdate("INSERT INTO OrderInfo values ( " + ID + " , \"" + DIN + "\" , "
+					+ qty + " , \"" + size + "\" , \"" + dosage + "\" , \"" + containerQty + "\" , \"example@supplier.ca\" , " + 0 + ")"); //testme
+			System.out.println("order added: " + DIN);
+			return ID;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//logErrors.log(e.getMessage() + " in addDrugStock in SQLHelper");
+			return -1;
+		}
+
+	}
+	
+	public String[][] getAllOrders() {
+		ArrayList<String[]> al = new ArrayList<>();
+		try {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM OrderInfo");
+			while (resultSet.next()) {
+				String[] entry = new String[7];
+				entry[0] = Integer.toString(resultSet.getInt("ID"));
+				entry[1] = resultSet.getString("DIN");
+				entry[2] = Integer.toString(resultSet.getInt("drugQuantity"));
+				entry[3] = resultSet.getString("size");
+				entry[4] = resultSet.getString("dosage");
+				entry[5] = Integer.toString(resultSet.getInt("containerQuantity"));
+				entry[6] = Integer.toString(resultSet.getInt("delivered"));
+				al.add(entry);
+			}
+		} catch (Exception e) {
+			logErrors.log(e.getMessage() + " in getAllContainerStock in SQLHelper");
+		}
+		
+		String[][] ret = new String[al.size()][7];
+		for (int i = 0; i < al.size(); i++) {
+			ret[i] = al.get(i);
+		}
+		
+		return ret;
+	}
+	
+	
 
 }

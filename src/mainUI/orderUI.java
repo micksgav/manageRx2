@@ -36,6 +36,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import PatientManagement.PatientList;
 import swingHelper.AppIcon;
 import utilities.DrugSelection;
+import utilities.SQLHelper;
 import inventory.*;
 import patientUI.SearchAddUI;
 
@@ -43,6 +44,7 @@ import patientUI.SearchAddUI;
 public class orderUI extends JFrame implements ActionListener {
 
 	// app information
+	SQLHelper helper = new SQLHelper();
 	PatientList patients;
 	AllStock stock;
 	
@@ -325,16 +327,16 @@ public class orderUI extends JFrame implements ActionListener {
 					JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Confirm", "Cancel" }, "Cancel");
 			System.out.println(result);
 			if (result == JOptionPane.OK_OPTION) {
-				placeOrder("", "", 1, 2, 3, true);
+				
+				placeOrder(drugToOrder.getText(), "m", Integer.parseInt(numOfDrug.getText()), Integer.parseInt(numOfContainer.getText()), dosageOfDrug.getText()); //fix
 			}
 		}
 		
 
 	}
 
-	public void placeOrder(String drugToOrder, String containerSize, int drugQty, int containterQty, int dosageIndex,
-			boolean confirmOrder) {
-		System.out.println("order Placed");
+	public void placeOrder(String drugToOrder, String containerSize, int drugQty, int containerQty, String dosage) {
+		helper.addOrder(drugToOrder, drugQty, containerSize, dosage, containerQty);
 	}
 
 }

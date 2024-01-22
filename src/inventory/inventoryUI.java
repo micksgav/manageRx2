@@ -29,6 +29,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import PatientManagement.PatientList;
+import utilities.Report;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -86,12 +87,12 @@ public class inventoryUI{
 		frame = new JFrame();
 		frame.setBounds(100, 100, 695, 341);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
+		frame.getContentPane().setLayout(new BorderLayout());
 
 		JLabel lblNewLabel = new JLabel("Full Inventory:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Monospaced", Font.BOLD, 16));
-		frame.add(lblNewLabel, BorderLayout.NORTH);
+		frame.getContentPane().add(lblNewLabel, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 3, 20, 30));
@@ -121,9 +122,13 @@ public class inventoryUI{
         scroll3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
         scroll3.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 		panel.add(scroll3);
-		frame.add(panel, BorderLayout.CENTER);
+		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		
+		JPanel panel_1 = new JPanel();
+		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
 		
 		JButton btnNewButton = new JButton("Close");
+		panel_1.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// button action
@@ -131,7 +136,14 @@ public class inventoryUI{
 			} // end actionPerformed
 		});
 		btnNewButton.setBounds(549, 261, 120, 30);
-		frame.add(btnNewButton, BorderLayout.SOUTH);
+		
+		JButton stockPrint = new JButton("Print Stock List");
+		stockPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Report.stockReport(); // where is linked list?
+			}
+		});
+		panel_1.add(stockPrint);
 
 		frame.setVisible(true);
 	} // end initialize
