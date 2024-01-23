@@ -371,11 +371,11 @@ public class CurrentPrescriptions extends JFrame implements ActionListener {
 		mainWithTopBar.add(viewArchived, viewArchivedConstraints);
 
 		getContentPane().add(mainWithTopBar);
-		GridBagConstraints gbc_showInteractionsButton = new GridBagConstraints();
-		gbc_showInteractionsButton.gridx = 1;
-		gbc_showInteractionsButton.gridy = 3;
-		gbc_showInteractionsButton.insets = new Insets((int) (screenDims.height * 0.01), 0, 0, 0);
-		mainWithTopBar.add(showInteractionsButton, gbc_showInteractionsButton);
+		//GridBagConstraints gbc_showInteractionsButton = new GridBagConstraints();
+		//gbc_showInteractionsButton.gridx = 1;
+		//gbc_showInteractionsButton.gridy = 3;
+		//gbc_showInteractionsButton.insets = new Insets((int) (screenDims.height * 0.01), 0, 0, 0);
+		//mainWithTopBar.add(showInteractionsButton, gbc_showInteractionsButton);
 	} // end CurrentPrescriptions
 
 	@Override
