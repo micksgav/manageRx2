@@ -256,14 +256,18 @@ public class ManagePatientInfoUI extends JFrame implements ActionListener {
 																										// weight
 
 		genderField = new JTextField(patient.getGender());
+		JScrollPane genderScroll = new JScrollPane(genderField);
+		genderScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		genderScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		genderScroll.setBackground(textBoxFill);
 		genderField.setEditable(false);
-		genderField.setBorder(textBoxBorder);
+		genderField.setBorder(textBoxBorderLine);
 		genderLabel.setFont(genFont);
 		genderField.setFont(genFont);
 		genderField.setBackground(textBoxFill);
 		genderLabel.setHorizontalAlignment(JLabel.RIGHT);
 		weightGenderGrid.add(genderLabel);
-		weightGenderGrid.add(genderField);
+		weightGenderGrid.add(genderScroll);
 
 		weightField = new JTextField(String.valueOf(patient.getWeight()));
 		weightField.setEditable(false);
