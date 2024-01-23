@@ -41,7 +41,6 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 	// header buttons
 	private JButton btnOpenStock; // open stock page
 	private JButton btnOpenOrder; // open order page
-	private JButton btnOpenSettings; // open settings page
 	private JButton btnOpenPatientManager; // open patient manager page
 
 	// main buttons
@@ -56,7 +55,6 @@ public class AddNewInsuranceUI extends JFrame implements ActionListener {
 	private JTextField insuranceCompanyField; // company field
 	private JLabel insuranceNumberLabel = new JLabel("Insurance Number"); // number label
 	private JTextField insuranceNumberField; // number field
-	private JLabel notesLabel = new JLabel("Notes"); // notes label
 	private JTextArea notesArea; // notes area
 	private JLabel patientName; // name of patient
 	private Insets gridBagPadding; // padding for some GridBagLayout elements

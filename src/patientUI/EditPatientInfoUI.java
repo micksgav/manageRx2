@@ -106,8 +106,8 @@ public class EditPatientInfoUI extends JFrame implements ActionListener, FocusLi
 	private JTextField docNameField; // doctor name field
 	private JLabel docPhoneNumberLabel = new JLabel("Phone Number"); // doctor phone number label
 	private JFormattedTextField docPhoneNumberField; // doctor phone number field
-	private JLabel docFaxLabel = new JLabel("Fax Number");
-	private JTextField docFaxField;
+	private JLabel docFaxLabel = new JLabel("Fax Number"); // doctor fax label
+	private JTextField docFaxField; // doctor fax field
 	private JLabel docAddressLabel = new JLabel("Address"); // doctor address label
 	private JTextField docAddressField; // doctor address field
 	private JLabel patientNameLabel = new JLabel("Name"); // patient name label
